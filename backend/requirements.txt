@@ -1,7 +1,13 @@
-# fastapi
-# uvicorn[standard]
-# pydantic
-# jsonschema
-# rapidfuzz
-# pythainlp
-# pandas
+fastapi
+uvicorn[standard]
+pydantic>=2
+jsonschema
+pandas
+pymupdf
+python-docx
+pytesseract
+Pillow
+pythainlp
+pytest
+fpdf2
+python-multipart
