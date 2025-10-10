@@ -1,0 +1,7 @@
+# fastapi
+# uvicorn[standard]
+# pydantic
+# jsonschema
+# rapidfuzz
+# pythainlp
+# pandas
