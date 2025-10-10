@@ -1,0 +1,30 @@
+{
+  "schema_version":"0.1.0",
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Parsed Resume",
+  "type":"object",
+  "required":["schema_version","resume_id","experience","skills_raw"],
+  "properties":{
+    "schema_version":{"type":"string"},
+    "resume_id":{"type":"string"},
+    "summary":{"type":["string","null"]},
+    "experience":{
+      "type":"array",
+      "items":{
+        "type":"object",
+        "required":["title","company","start_date"],
+        "properties":{
+          "title":{"type":"string"},
+          "company":{"type":"string"},
+          "start_date":{"type":"string"},
+          "end_date":{"type":["string","null"]},
+          "is_current":{"type":"boolean","default":false},
+          "bullets":{"type":"array","items":{"type":"string"}}
+        }
+      }
+    },
+    "education":{"type":"array"},
+    "skills_raw":{"type":"array","items":{"type":"string"}},
+    "languages":{"type":"array"}
+  }
+}
