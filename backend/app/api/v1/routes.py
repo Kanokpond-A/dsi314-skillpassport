@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 from io import BytesIO
 from fpdf import FPDF
+from ...services.scoring.logic import score_applicant, ScoringConfig
 
 router = APIRouter(prefix="/api/v1", tags=["v1"])
 
@@ -65,3 +66,29 @@ async def ucb_pdf(payload: UCBPayload):
         media_type="application/pdf",
         headers={"Content-Disposition": "inline; filename=ucb.pdf"}
     )
+
+@router.post("/score")
+async def score(parsed: ParsedResume):
+    result = score_applicant(parsed.skills, parsed.evidence, ScoringConfig())
+    mv = result["machine_view"]   # fit_score 0–1 + gaps (เข้ากับระบบเดิม)
+    # ถ้ายังอยากตอบตาม schema เดิม:
+    return {
+        "name": parsed.name,
+        "skills": parsed.skills,
+        "fit_score": mv["fit_score"],
+        "gaps": mv["gaps"],
+        "evidence": parsed.evidence
+    }
+
+@router.post("/score-hr")
+async def score_hr(parsed: ParsedResume):
+    result = score_applicant(parsed.skills, parsed.evidence, ScoringConfig())
+    hr = result["hr_view"]
+    return {
+        "name": parsed.name,
+        "score": hr["score"],            # 0–100
+        "level": hr["level"],            # Excellent/Strong/Moderate/Needs improvement
+        "summary": hr["summary"],        # matched %, gaps, evidence bonus
+        "breakdown": hr["breakdown"],    # รายสกิลละเอียด
+        "notes": hr["notes"]
+    }
