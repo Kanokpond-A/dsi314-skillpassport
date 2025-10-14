@@ -2,6 +2,9 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Iterable, Dict, List, Tuple
+from ...core.logging import get_logger
+
+log = get_logger("ucb.scoring")
 
 # -----------------------------
 # 1) การตั้งค่า (แก้ได้ง่าย)
@@ -74,6 +77,10 @@ def score_applicant(
     # --- เตรียมชุดสกิลที่ต้องการแบบ normalize ---
     req_norm = { _normalize(k, cfg): w for k, w in cfg.required_weights.items() }
 
+    # add log
+    log.info(f"Start scoring | have={sorted(have)} | required={list(req_norm.keys())} "
+             f"| weights={list(req_norm.values())}")
+
     # --- คำนวณคะแนนตามน้ำหนัก ---
     max_raw = sum(req_norm.values()) or 1.0
     raw_score = 0.0
@@ -87,9 +94,11 @@ def score_applicant(
             raw_score += weight
             matched.append(skill)
             contributions.append({"skill": skill, "weight": weight, "hit": True})
+            log.debug(f"  + {skill:<10} hit  (w={weight}) -> raw={raw_score:.2f}")
         else:
             missing.append(skill)
             contributions.append({"skill": skill, "weight": weight, "hit": False})
+            log.debug(f"  - {skill:<10} miss (w={weight}) -> raw={raw_score:.2f}")
 
     # --- scale เป็น 0–100 ---
     base_score_0_100 = (raw_score / max_raw) * 100.0
@@ -97,6 +106,11 @@ def score_applicant(
     # --- เพิ่มโบนัสจากหลักฐาน ---
     bonus = min(cfg.evidence_bonus_each * len(evidence), cfg.evidence_bonus_cap)
     final_score_0_100 = max(0.0, min(100.0, base_score_0_100 + bonus))
+
+    band = _band_label(final_score_0_100, cfg)
+
+    log.info(f"Base={base_score_0_100:.1f} | bonus={bonus:.1f} (evidence={len(evidence)}) "
+             f"| final={final_score_0_100:.1f} → {band}")
 
     # --- คำนวณสัดส่วนแมตช์ ---
     matched_percent = round((len(matched) / len(req_norm)) * 100, 1) if req_norm else 0.0
