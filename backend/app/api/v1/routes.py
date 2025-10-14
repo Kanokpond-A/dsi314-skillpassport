@@ -1,8 +1,53 @@
-from fpdf import FPDF
-from fastapi.responses import StreamingResponse
+from fastapi import APIRouter, UploadFile, File
+from fastapi.responses import JSONResponse, StreamingResponse
+from pydantic import BaseModel
 from io import BytesIO
+from fpdf import FPDF
 
-@app.post("/ucb-pdf")
+router = APIRouter(prefix="/api/v1", tags=["v1"])
+
+# ----- models (ย้ายไปไฟล์แยกก็ได้ภายหลัง) -----
+class ParsedResume(BaseModel):
+    name: str
+    education: list = []
+    skills: list = []
+    evidence: list = []
+
+class UCBPayload(BaseModel):
+    name: str
+    skills: list
+    fit_score: float
+    gaps: list
+    evidence: list
+
+# ----- endpoints -----
+@router.get("/health")
+def health():
+    return {"status": "ok"}
+
+@router.post("/parse-resume")
+async def parse_resume(file: UploadFile | None = File(default=None)):
+    sample = {
+        "name": "Jane Doe",
+        "education": [{"degree": "B.Eng", "year": 2023}],
+        "skills": ["Python", "FastAPI", "SQL"],
+        "evidence": [{"type": "pdf", "page": 2}]
+    }
+    return JSONResponse(sample)
+
+@router.post("/score", response_model=UCBPayload)
+async def score(parsed: ParsedResume):
+    fit = min(1.0, 0.2 + 0.1 * len(parsed.skills))
+    gaps = ["Docker"] if "Docker" not in parsed.skills else []
+    return UCBPayload(
+        name=parsed.name,
+        skills=parsed.skills,
+        fit_score=round(fit, 2),
+        gaps=gaps,
+        evidence=parsed.evidence
+    )
+
+@router.post("/ucb-pdf")
 async def ucb_pdf(payload: UCBPayload):
     pdf = FPDF()
     pdf.add_page()
@@ -15,5 +60,8 @@ async def ucb_pdf(payload: UCBPayload):
     buf = BytesIO()
     pdf.output(buf)
     buf.seek(0)
-    return StreamingResponse(buf, media_type="application/pdf",
-                             headers={"Content-Disposition":"inline; filename=ucb.pdf"})
+    return StreamingResponse(
+        buf,
+        media_type="application/pdf",
+        headers={"Content-Disposition": "inline; filename=ucb.pdf"}
+    )
