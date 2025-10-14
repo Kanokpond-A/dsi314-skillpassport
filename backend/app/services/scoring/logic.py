@@ -77,9 +77,10 @@ def score_applicant(
     # --- คำนวณคะแนนตามน้ำหนัก ---
     max_raw = sum(req_norm.values()) or 1.0
     raw_score = 0.0
-    matched: List[str] = []
-    missing: List[str] = []
-    contributions: List[dict] = []   # ใช้อธิบายว่าแต่ละสกิลให้กี่คะแนน
+    # matched: List[str] = []
+    # missing: List[str] = []
+    # contributions: List[dict] = []   # ใช้อธิบายว่าแต่ละสกิลให้กี่คะแนน
+    matched, missing, contributions = [], [], []
 
     for skill, weight in req_norm.items():
         if skill in have:

@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 from io import BytesIO
 from fpdf import FPDF
-from ...services.scoring.logic import score_applicant, ScoringConfig
+from backend.app.services.scoring import score_applicant, ScoringConfig
 
 router = APIRouter(prefix="/api/v1", tags=["v1"])
 
@@ -36,17 +36,17 @@ async def parse_resume(file: UploadFile | None = File(default=None)):
     }
     return JSONResponse(sample)
 
-@router.post("/score", response_model=UCBPayload)
-async def score(parsed: ParsedResume):
-    fit = min(1.0, 0.2 + 0.1 * len(parsed.skills))
-    gaps = ["Docker"] if "Docker" not in parsed.skills else []
-    return UCBPayload(
-        name=parsed.name,
-        skills=parsed.skills,
-        fit_score=round(fit, 2),
-        gaps=gaps,
-        evidence=parsed.evidence
-    )
+# @router.post("/score", response_model=UCBPayload)
+# async def score(parsed: ParsedResume):
+#     fit = min(1.0, 0.2 + 0.1 * len(parsed.skills))
+#     gaps = ["Docker"] if "Docker" not in parsed.skills else []
+#     return UCBPayload(
+#         name=parsed.name,
+#         skills=parsed.skills,
+#         fit_score=round(fit, 2),
+#         gaps=gaps,
+#         evidence=parsed.evidence
+#     )
 
 @router.post("/ucb-pdf")
 async def ucb_pdf(payload: UCBPayload):
