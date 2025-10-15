@@ -9,3 +9,20 @@ python A_backend/normalize_scoring/scoring.py \
   --out shared_data/latest_ucb/a.json
 pytest -q
 ```
+
+
+### Quick Run (W4) — One command
+
+```bash
+python A_backend/app/parsers/run_all.py --lang eng --skip-existing
+pytest -q
+```
+
+
+
+### Quick Run (W4) — One command
+
+```bash
+python A_backend/app/parsers/run_all.py --lang eng --skip-existing
+pytest -q
+```
