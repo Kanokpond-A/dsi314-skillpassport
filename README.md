@@ -26,3 +26,12 @@ pytest -q
 python A_backend/app/parsers/run_all.py --lang eng --skip-existing
 pytest -q
 ```
+
+
+
+### Quick Run (W5) — Mini Dashboard
+
+```bash
+pip install streamlit
+streamlit run frontend/streamlit_app.py
+```
