@@ -6,6 +6,7 @@ from fpdf import FPDF
 from backend.app.services.scoring import score_applicant, ScoringConfig
 from backend.app.services.report.pdf_report import build_ucb_pdf
 from backend.app.services.analytics.summary import build_summary
+from backend.app.core.privacy import redact_payload
 from fastapi import Query
 
 router = APIRouter(prefix="/api/v1", tags=["v1"])
@@ -56,7 +57,8 @@ async def ucb_json(parsed: ParsedResume):
     """
     Generate UCB (JSON) — สำหรับ HR/UI
     """
-    result = score_applicant(parsed.skills, parsed.evidence, ScoringConfig())
+    data = redact_payload(parsed.model_dump())
+    result = score_applicant(data.get("skills", []), data.get("evidence", []), ScoringConfig())
     hr = result["hr_view"]
     return {
         "name": parsed.name,
@@ -65,6 +67,18 @@ async def ucb_json(parsed: ParsedResume):
         "summary": hr["summary"],
         "breakdown": hr["breakdown"],
     }
+
+@router.post("/ucb-pdf")
+async def ucb_pdf_endpoint(parsed: ParsedResume):
+    data = redact_payload(parsed.model_dump())  # ✅ ซ่อน PII
+    result = score_applicant(data.get("skills", []), data.get("evidence", []), ScoringConfig())
+    hr = result["hr_view"]
+    buf = build_ucb_pdf(data.get("name","Unknown"), hr)
+    return StreamingResponse(
+        buf,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'inline; filename="{data.get("name","Candidate")}_UCB.pdf"'}
+    )
 
 # @router.post("/ucb-pdf")
 # async def ucb_pdf(payload: UCBPayload):
@@ -99,9 +113,6 @@ async def ucb_pdf(parsed: ParsedResume):
     """
     Generate PDF summary for HR
     """
-    from backend.app.services.scoring.logic import score_applicant
-    from backend.app.services.report.pdf_report import build_ucb_pdf
-
     result = score_applicant(parsed.skills, parsed.evidence)
     hr_view = result["hr_view"]
 
