@@ -5,6 +5,8 @@ from io import BytesIO
 from fpdf import FPDF
 from backend.app.services.scoring import score_applicant, ScoringConfig
 from backend.app.services.report.pdf_report import build_ucb_pdf
+from backend.app.services.analytics.summary import build_summary
+from fastapi import Query
 
 router = APIRouter(prefix="/api/v1", tags=["v1"])
 
@@ -137,3 +139,10 @@ async def score_hr(parsed: ParsedResume):
         "breakdown": hr["breakdown"],    # รายสกิลละเอียด
         "notes": hr["notes"]
     }
+
+@router.get("/summary")
+def summary(
+    refresh: bool = Query(False, description="true = คำนวณใหม่, false = ใช้ cache"),
+    limit: int | None = Query(None, ge=1, description="จำกัดจำนวนแถว candidates")
+):
+    return build_summary(refresh=refresh, limit=limit)
