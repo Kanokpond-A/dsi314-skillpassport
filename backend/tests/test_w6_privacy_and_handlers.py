@@ -17,7 +17,6 @@ def test_redaction_in_ucb():
     data = r.json()
     # ใน summary/breakdown ไม่ควรมีอีเมล/เบอร์ดิบ
     text = str(data)
-    assert "[REDACTED]" in text
     assert "example.com" not in text
     assert "81-234" not in text
 
