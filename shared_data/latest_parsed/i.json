@@ -1,0 +1,68 @@
+{
+  "source_file": "i.pdf",
+  "name": "CONTACT",
+  "contacts": {
+    "email": "Shilpin@email.com",
+    "phone": "123) 456-7890",
+    "location": ""
+  },
+  "education": [
+    {
+      "degree": "",
+      "institution": "",
+      "start": "",
+      "end": ""
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "Data Analyst, Finance",
+        "City of Hope",
+        "May 2018 - current / Duarte, CA",
+        "Managed the preparation, coordination, and documentation of 100%",
+        "of financial analysis projects",
+        "Analyzed current and past financial data and performance across 3+",
+        "departments and 11 teams",
+        "Collaborated with 12 VPs, directors, and executives in all aspects of",
+        "financial data projects",
+        "Evaluated trends in financial performance and provided 12+",
+        "recommendations for improvement via PowerPoint presentations",
+        "Performed advanced 100% comprehensive business analysis using",
+        "statistical analysis, explanatory, and predictive modeling",
+        "Data Analyst",
+        "Hulu",
+        "November 2014 - May 2018 / Santa Monica, CA",
+        "Ensured 100% accuracy of data collection and data reporting",
+        "Collaborated with 6 production teams to ensure data and automated",
+        "data collection are reported",
+        "Spearheaded implementation of MAJIK data collection system across",
+        "7+ operational departments",
+        "Managed data integrity of incoming data stream, working with 2",
+        "operations teams to put corrective actions in place",
+        "Data Quality Analyst Intern",
+        "Ylopo",
+        "May 2014 - August 2014 / Santa Monica, CA",
+        "Delivered thoughtful insights and reporting on the performance of 3+",
+        "eCommerce businesses",
+        "Analyzed 100% of purchase funnel analytics, customer churns,",
+        "retention rates, lifetime valuations, and channel performances",
+        "Analyzed data from 4 marketing campaigns: user responses,",
+        "conversions, slippages, and email attritions",
+        "Designed and maintained 17 reports and dashboards, performing",
+        "regular and ad hoc analysis on-site productivity as required",
+        "Identified trends and behaviors by conducting regular tagging audits",
+        "and providing recommendations and summaries to senior managers",
+        "Data Analyst/Finance Analytics",
+        "SHILOH PINGLEY"
+      ]
+    }
+  ],
+  "skills": [
+    "SQL\nPowerBI\nExcel\nPowerpoint\nPython\nGit\nTableau\nLooker\nMAJIK\nCERTIFICATIONS\nSAS Certified Data Scientist"
+  ]
+}

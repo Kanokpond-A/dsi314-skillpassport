@@ -1,0 +1,32 @@
+{
+  "candidate_id": "v",
+  "headline": "Candidate — Data Analytics\nData Visualization\nMicrosoft SQL\nMicrosoft Power BI\nTableau\nPython and R\nCERTIFICATIONS\nGoogle Data Analytics\nProfessional\nAssociate Certified Analytics\nProfessional (aCAP)",
+  "skills": {
+    "normalized": [
+      "Python"
+    ],
+    "raw": [
+      "Data Analytics\nData Visualization\nMicrosoft SQL\nMicrosoft Power BI\nTableau\nPython and R\nCERTIFICATIONS\nGoogle Data Analytics\nProfessional\nAssociate Certified Analytics\nProfessional (aCAP)"
+    ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
+  },
+  "fit_score": 37,
+  "reasons": [
+    "matched required/nice skills",
+    "experience blocks ≈ 1",
+    "contacts detected"
+  ],
+  "gaps": [
+    "SQL",
+    "Tableau"
+  ],
+  "evidence": {},
+  "meta": {
+    "generated_at": null,
+    "schema_version": "1.0.0"
+  }
+}

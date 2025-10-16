@@ -1,0 +1,47 @@
+{
+  "candidate_id": "q",
+  "headline": "Candidate — Microsoft Excel\nSQL\nTableau\nPython\nR\nPower BI\nGoogle Analytics\nSAS\nHadoop\nSPSS",
+  "skills": {
+    "normalized": [
+      "Power BI",
+      "Python",
+      "SQL",
+      "Tableau"
+    ],
+    "raw": [
+      "Microsoft Excel\nSQL\nTableau\nPython\nR\nPower BI\nGoogle Analytics\nSAS\nHadoop\nSPSS"
+    ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
+  },
+  "fit_score": 60,
+  "reasons": [
+    "matched required/nice skills",
+    "experience blocks ≈ 1",
+    "contacts detected"
+  ],
+  "gaps": [],
+  "evidence": {
+    "Power BI": [
+      "skills[0]"
+    ],
+    "Python": [
+      "skills[0]"
+    ],
+    "SQL": [
+      "skills[0]",
+      "experiences[0].bullets[7]"
+    ],
+    "Tableau": [
+      "skills[0]"
+    ]
+  },
+  "meta": {
+    "generated_at": null,
+    "schema_version": "1.1.0",
+    "jd_source": "config/jd_profiles/data-analyst.yml"
+  }
+}

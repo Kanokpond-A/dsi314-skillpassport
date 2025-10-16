@@ -1,0 +1,79 @@
+{
+  "source_file": "cc.pdf",
+  "name": "SYDNEY LOXX",
+  "contacts": {
+    "email": "Sydlo@email.com",
+    "phone": "123) 456-7890",
+    "location": ""
+  },
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "",
+      "start": "",
+      "end": ""
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "Revenue Reporting Data Analyst",
+        "Google",
+        "September 2018 - current",
+        "Remote",
+        "Managed, reviewed, analyzed, and presented 105+ financial",
+        "and budgetary reports required by governmental",
+        "regulations",
+        "Spearheaded the movement of 3 teams from outdated",
+        "revenue systems codebase to new SAP sub-ledger",
+        "Partnered with 2 finance and systems teams to understand",
+        "business requirements and collaborate with 12+",
+        "stakeholders",
+        "Collaborated with 4+ cross-functional departments",
+        "including accounting, tax, legal, external reporting, and",
+        "engineering",
+        "Utilized SQL coding to provide 100% of financial data for",
+        "internal and external financial reporting",
+        "Analyzed data gathered from 23 sources, identifying gaps",
+        "and composing high-level information into detailed guides",
+        "Architected 15+ innovative data solutions to automate and",
+        "scale business growth reporting by over 45%",
+        "Data & Revenue Management Internship",
+        "FirstKey Homes",
+        "May 2018 - August 2018",
+        "Los Angeles, CA",
+        "Managed cross-functional stakeholders and teams to",
+        "ensure timely execution and fulfillment of 100% of",
+        "necessary deliverables",
+        "Received 530+ hours of training in SQL and learned to build",
+        "custom Datasets in SQL and PowerBI",
+        "Built 4 interactive PowerBI dashboards using Excel Datasets",
+        "and created a PowerPoint to display data findings to",
+        "stakeholders",
+        "Collaborated with department leadership to build summary",
+        "stats in Excel, of leasing performance across 47 state",
+        "markets",
+        "Spearheaded the merging of 28 Yardi reports to Excel to",
+        "make custom datasets designed to showcase critical",
+        "business issues",
+        "Participated in 37 activities targeting short, middle, and",
+        "long-term revenue growth initiatives"
+      ]
+    }
+  ],
+  "skills": [
+    "Powerpoint",
+    "and PowerBI",
+    "I've excelled in gathering",
+    "analyzing",
+    "interpreting",
+    "and presenting crucial findings from all types and\nsizes of datasets. By combining my attention to detail",
+    "love for\ndata",
+    "and excellent communication",
+    "I'm seeking to grow into\nGoogle's Revenue Reporting management team."
+  ]
+}

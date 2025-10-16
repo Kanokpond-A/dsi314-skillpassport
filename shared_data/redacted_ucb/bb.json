@@ -1,0 +1,32 @@
+{
+  "candidate_id": "bb",
+  "headline": "Candidate — RStudio; ggplot2; dplyr; Base R statistics; caret ; RSQLite; Spark; rvest;\ntidytext; GitLab",
+  "skills": {
+    "normalized": [
+      "SQL"
+    ],
+    "raw": [
+      "RStudio; ggplot2; dplyr; Base R statistics; caret ; RSQLite; Spark; rvest;\ntidytext; GitLab"
+    ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
+  },
+  "fit_score": 37,
+  "reasons": [
+    "matched required/nice skills",
+    "experience blocks ≈ 1",
+    "contacts detected"
+  ],
+  "gaps": [
+    "Python",
+    "Tableau"
+  ],
+  "evidence": {},
+  "meta": {
+    "generated_at": null,
+    "schema_version": "1.0.0"
+  }
+}

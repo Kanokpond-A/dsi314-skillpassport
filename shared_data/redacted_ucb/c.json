@@ -1,0 +1,32 @@
+{
+  "candidate_id": "c",
+  "headline": "Candidate — Amazon Redshift\nAmazon Glue\nAmazon EMR\nAmazon QuickSight\nTensorFlow\nCouchbase\nApache NiFi\nCERTIFICATIONS\nAWS Certified Data Analytics\nCAREER OBJECTIVE",
+  "skills": {
+    "normalized": [
+      "Amazon Redshift\nAmazon Glue\nAmazon EMR\nAmazon QuickSight\nTensorFlow\nCouchbase\nApache NiFi\nCERTIFICATIONS\nAWS Certified Data Analytics\nCAREER OBJECTIVE"
+    ],
+    "raw": [
+      "Amazon Redshift\nAmazon Glue\nAmazon EMR\nAmazon QuickSight\nTensorFlow\nCouchbase\nApache NiFi\nCERTIFICATIONS\nAWS Certified Data Analytics\nCAREER OBJECTIVE"
+    ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
+  },
+  "fit_score": 27,
+  "reasons": [
+    "experience blocks ≈ 1",
+    "contacts detected"
+  ],
+  "gaps": [
+    "Python",
+    "SQL",
+    "Tableau"
+  ],
+  "evidence": {},
+  "meta": {
+    "generated_at": null,
+    "schema_version": "1.0.0"
+  }
+}

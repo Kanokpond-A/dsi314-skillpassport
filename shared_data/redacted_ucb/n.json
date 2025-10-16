@@ -1,0 +1,45 @@
+{
+  "candidate_id": "n",
+  "headline": "Candidate — Programming: SQL, Python\n(Pandas, scikit-learn)\nA, B Testing and\nExperimentation\nModeling: Linear and\nLogistic Regressions\nData Visualization: Excel, Google Sheets",
+  "skills": {
+    "normalized": [
+      "SQL",
+      "Python",
+      "scikit-learn)\nA",
+      "Excel",
+      "Google Sheets",
+      "Matplotlib",
+      "Tableau",
+      "communicative",
+      "and quick-to-learn recent computer"
+    ],
+    "raw": [
+      "Programming: SQL",
+      "Python\n(Pandas",
+      "scikit-learn)\nA",
+      "B Testing and\nExperimentation\nModeling: Linear and\nLogistic Regressions\nData Visualization: Excel",
+      "Google Sheets",
+      "Matplotlib",
+      "Tableau\nCAREER OBJECTIVE\nOrganized",
+      "communicative",
+      "and quick-to-learn recent computer"
+    ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
+  },
+  "fit_score": 61,
+  "reasons": [
+    "matched required/nice skills",
+    "experience blocks ≈ 1",
+    "contacts detected"
+  ],
+  "gaps": [],
+  "evidence": {},
+  "meta": {
+    "generated_at": null,
+    "schema_version": "1.0.0"
+  }
+}

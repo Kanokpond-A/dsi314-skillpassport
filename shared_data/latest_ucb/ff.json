@@ -1,0 +1,46 @@
+{
+  "candidate_id": "ff",
+  "headline": "Candidate — Snowflake\nSQL\nTableau\nMicrosoft Power BI\nPython\nAWS\nApache Airflow\nTalend\nShell Scripts\nGit\nCERTIFICATIONS\nSnowPro Advanced: Data\nAnalyst",
+  "skills": {
+    "normalized": [
+      "Python",
+      "SQL",
+      "Tableau"
+    ],
+    "raw": [
+      "Snowflake\nSQL\nTableau\nMicrosoft Power BI\nPython\nAWS\nApache Airflow\nTalend\nShell Scripts\nGit\nCERTIFICATIONS\nSnowPro Advanced: Data\nAnalyst"
+    ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
+  },
+  "fit_score": 59,
+  "reasons": [
+    "matched required/nice skills",
+    "experience blocks ≈ 1",
+    "contacts detected"
+  ],
+  "gaps": [],
+  "evidence": {
+    "Python": [
+      "skills[0]",
+      "experiences[0].bullets[27]"
+    ],
+    "SQL": [
+      "skills[0]",
+      "experiences[0].bullets[6]",
+      "experiences[0].bullets[21]"
+    ],
+    "Tableau": [
+      "skills[0]",
+      "experiences[0].bullets[9]"
+    ]
+  },
+  "meta": {
+    "generated_at": null,
+    "schema_version": "1.1.0",
+    "jd_source": "config/jd_profiles/data-analyst.yml"
+  }
+}

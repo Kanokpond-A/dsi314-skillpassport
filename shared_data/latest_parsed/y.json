@@ -1,0 +1,74 @@
+{
+  "source_file": "y.pdf",
+  "name": "MADISON",
+  "contacts": {
+    "email": "m.richardson@email.com",
+    "phone": "123) 456-7890",
+    "location": ""
+  },
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "University of Colorado",
+      "start": "2014",
+      "end": "2018"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "2021",
+      "end": "2024",
+      "bullets": [
+        "Data Analyst",
+        "Microsoft",
+        "2024 - current",
+        "Denver, CO",
+        "Maintained complex PivotTables in Excel, analyzing data from",
+        "102,580+ customer interactions to derive key insights for",
+        "marketing teams",
+        "Wrote SELECT queries to extract large datasets from SQL",
+        "Server Management Studio, supporting analysis for 18",
+        "departmental projects",
+        "Utilized Azure SQL Data Warehouse to manage and",
+        "consolidate data across multiple departments, ensuring",
+        "seamless reporting for 57 business units",
+        "Developed eight Tableau dashboards, enabling real-time",
+        "tracking of performance metrics for over 212 products across",
+        "global markets",
+        "Data Coordinator",
+        "Ball Aerospace",
+        "2021 - 2024",
+        "Boulder, CO",
+        "Harnessed Pandas to clean and validate 13M aerospace",
+        "data records, enhancing reporting accuracy and speed",
+        "Built data models in Azure ML Studio, enabling predictive",
+        "analysis for mission-critical systems in aerospace engineering",
+        "projects",
+        "Created dynamic reports using DAX and Power BI to track",
+        "and report on project milestones for over 36 teams",
+        "Integrated data sources through SQL Server Management",
+        "Studio, ensuring accurate data feeds for easy access by over",
+        "52 stakeholders",
+        "Research Assistant",
+        "Space Systems Loral (SSL)",
+        "2018 - 2021",
+        "Boulder, CO",
+        "Engineered visualizations that showcased satellite",
+        "performance metrics using ggplot2",
+        "Managed data documentation and version control using",
+        "SharePoint, facilitating collaboration and accessibility for a",
+        "research team of 24 members",
+        "Conducted rigorous experiments on satellite technologies,",
+        "contributing to seven successful launches while enhancing",
+        "performance metrics by 47%",
+        "Presented research findings in weekly team meetings with 16",
+        "stakeholders, ensuring goals and timeline alignment"
+      ]
+    }
+  ],
+  "skills": [
+    "PivotTables\nSQL Server Management\nStudio\nSELECT Queries\nAzure SQL Data Warehouse\nPandas\nggplot2\nDAX\nTableau\nAzure ML Studio\nSharePoint"
+  ]
+}

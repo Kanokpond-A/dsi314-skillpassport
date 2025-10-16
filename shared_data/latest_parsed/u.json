@@ -1,0 +1,78 @@
+{
+  "source_file": "u.pdf",
+  "name": "MARCELLUS",
+  "contacts": {
+    "email": "m.quinn@email.com",
+    "phone": "123) 456-7890",
+    "location": ""
+  },
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "University of Southern",
+      "start": "2013",
+      "end": "2017"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "2019",
+      "end": "2022",
+      "bullets": [
+        "HR Data Analyst",
+        "Hulu",
+        "2022 - current",
+        "Los Angeles, CA",
+        "Developed interactive dashboards in Tableau to visualize 6",
+        "workforce demographics and improve diversity tracking",
+        "initiatives.",
+        "Formulated 2 advanced Microsoft Excel models to forecast",
+        "hiring needs, discovering and avoiding $13,941 extra talent",
+        "acquisition costs.",
+        "Promoted the use of Power BI for creating data reports that",
+        "streamlined HR decision-making, lowering the average",
+        "time to make key employee decisions by 3 days.",
+        "Researched and enforced a new HR data governance",
+        "framework, helping the HR team eliminate 19 potential data",
+        "security risks.",
+        "HR Analyst",
+        "Snap Inc.",
+        "2019 - 2022",
+        "Los Angeles, CA",
+        "Created a predictive model on R to identify high-potential",
+        "employees, leading to a 17% increase in internal promotions",
+        "within one quarter.",
+        "Handled the Greenhouse ATS, expediting existing",
+        "recruitment workflows that shortened the average hiring",
+        "time by 4 days.",
+        "Used 15Five to track and delegate equal workload to",
+        "employees as per business goals, resulting in a 21% rise in",
+        "monthly team performance metrics.",
+        "Worked with senior managers to ideate and test various",
+        "talent management strategies which mitigated annual",
+        "turnover rates by 11%.",
+        "HR Generalist",
+        "Grubhub",
+        "2017 - 2019",
+        "Los Angeles, CA",
+        "Assisted technical writers in creating a new employee",
+        "handbook, resulting in a 34% decrease in policy-related",
+        "inquiries.",
+        "Leveraged Workday to automate monthly payrolls, ensuring",
+        "accurate disbursement while reducing the average payout",
+        "time by 2 days.",
+        "Integrated Zapier with recruitment tools to streamline",
+        "communication between HR applications, achieving",
+        "responses from multiple platforms 6 minutes quicker.",
+        "Conducted in-depth analysis with the help of Visier to",
+        "identify skill gaps, reporting the information to help senior",
+        "HRs implement 8 new training programs."
+      ]
+    }
+  ],
+  "skills": [
+    "Workday\nTableau\nMicrosoft Excel\nR \nPower BI\nGreenhouse\nCulture Amp\n15Five\nVisier\nZapier"
+  ]
+}

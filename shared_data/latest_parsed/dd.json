@@ -1,0 +1,72 @@
+{
+  "source_file": "dd.pdf",
+  "name": "ALONSO ROMERO",
+  "contacts": {
+    "email": "alonsoromero@email.com",
+    "phone": "123) 456-7890",
+    "location": ""
+  },
+  "education": [
+    {
+      "degree": "",
+      "institution": "University of Pittsburgh",
+      "start": "",
+      "end": ""
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "Senior Data Analyst",
+        "Ross Industries",
+        "February 2020 - current / New York, NY",
+        "Used Tableau and SQL to redefine and track KPIs surrounding marketing",
+        "initiatives, and supplied recommendations to boost landing page",
+        "conversion rate by 38%",
+        "Led a team of 4 analysts to brainstorm potential marketing and sales",
+        "improvements, and implemented A/B tests to generate 15% more client",
+        "leads",
+        "Redesigned data model through iterations that improved predictions by",
+        "12%",
+        "Discovered new storage and tracking method of live data, and wrote and",
+        "directed SOPs for analyst team",
+        "Data Analyst",
+        "Liberty Mutual Insurance",
+        "January 2018 - February 2020 / New York, NY",
+        "Built data models and maps to generate meaningful insights from",
+        "customer data, boosting successful sales efforts by 12%",
+        "Modeled targets likely to renew, and presented analysis to leadership,",
+        "which led to a YoY revenue increase of $300K",
+        "Compiled, studied, and inferred large amounts of data, modeling",
+        "information to drive auto policy pricing",
+        "Coached less experienced analysts, and mentored 2 interns annually in",
+        "sophisticated modeling",
+        "Data Analyst",
+        "Chegg",
+        "April 2015 - January 2018 / New York, NY",
+        "Devised KPIs using SQL across company website in collaboration with",
+        "cross-functional teams to achieve a 120% jump in organic traffic",
+        "Analyzed, documented, and reported user survey results to improve",
+        "customer communication processes by 18%",
+        "Collaborated with analyst team to oversee end-to-end process",
+        "surrounding customers' return data",
+        "Worked with finance, sales, and operations to update and maintain",
+        "manuals and SOPs"
+      ]
+    }
+  ],
+  "skills": [
+    "Programming: Python (Scikit-learn)",
+    "SQL\nData Visualization: Tableau",
+    "Excel",
+    "Google Sheets",
+    "Matplotlib\nModeling: Logistic regressions",
+    "linear\nregressions",
+    "decision trees\nProduct Analytics: Google Analytics",
+    "B Testing & Experimentation"
+  ]
+}

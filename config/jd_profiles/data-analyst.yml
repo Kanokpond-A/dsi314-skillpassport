@@ -1,0 +1,19 @@
+title: Data Analyst
+title_keywords:
+  - data analyst
+  - business analyst
+must_skills:
+  - Python
+  - SQL
+  - Tableau
+nice_skills:
+  - Excel
+  - Power BI
+  - Looker
+  - R
+  - Statistics
+weights:            # ใช้ได้กับ scoring.py เวอร์ชันล่าสุด (ถ้าใส่จะ override 40/20/20/20)
+  skills: 0.4
+  exp: 0.2
+  title: 0.2
+  contacts: 0.2
