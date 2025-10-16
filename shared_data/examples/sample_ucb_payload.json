@@ -1,0 +1,2 @@
+{"name":"Jane Doe","skills":["Python","FastAPI","SQL"],
+ "fit_score":0.5,"gaps":["Docker"],"evidence":[{"type":"pdf","page":2}]}

@@ -1,0 +1,42 @@
+{
+  "$id": "https://example.com/schemas/ucb_payload.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UCB Payload",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ucb_id", "resume_id", "snapshot", "skills"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "0.1.0" },
+    "ucb_id": { "type": "string" },
+    "resume_id": { "type": "string" },
+    "jd_id": { "type": ["string", "null"] },
+    "header": { "type": "object" },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fit_score", "top_reasons", "gaps"],
+      "properties": {
+        "fit_score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "top_reasons": { "type": "array", "items": { "type": "string" }, "maxItems": 3 },
+        "gaps": { "type": "array", "items": { "type": "string" }, "maxItems": 2 },
+        "score_components": { "type": "object" }
+      }
+    },
+    "experience_timeline": { "type": "array" },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "years": { "type": "number" }
+        }
+      }
+    },
+    "evidence": { "type": "object" },
+    "redaction": { "type": "object" },
+    "meta": { "type": "object" }
+  }
+}
