@@ -1,2 +1,13 @@
-{"name":"Jane Doe","education":[{"degree":"B.Eng","year":2023}],
- "skills":["Python","FastAPI","SQL"],"evidence":[{"type":"pdf","page":2}]}
+{
+  "source_file": "resume.pdf",
+  "name": "Projects",
+  "contacts": {
+    "email": "natamon027@gmail.com",
+    "phone": "+66 98-278-4097",
+    "location": ""
+  },
+  "education": [],
+  "experiences": [],
+  "skills": []
+}
+}
