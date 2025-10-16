@@ -25,7 +25,7 @@ def test_missing_all():
 
 @pytest.mark.parametrize("skills, expected", [
     (["Python"], "Moderate fit"),
-    (["Python","SQL"], "Strong fit"),
+    (["Python","SQL"], "Excellent fit"),
 ])
 def test_band_labels(skills, expected):
     cfg = ScoringConfig(required_weights={"Python":0.5,"SQL":0.5},
