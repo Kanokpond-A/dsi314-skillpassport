@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from io import BytesIO
 from fpdf import FPDF
 from backend.app.services.scoring import score_applicant, ScoringConfig
+from backend.app.services.report.pdf_report import build_ucb_pdf
 
 router = APIRouter(prefix="/api/v1", tags=["v1"])
 
@@ -48,24 +49,68 @@ async def parse_resume(file: UploadFile | None = File(default=None)):
 #         evidence=parsed.evidence
 #     )
 
+@router.post("/ucb")
+async def ucb_json(parsed: ParsedResume):
+    """
+    Generate UCB (JSON) — สำหรับ HR/UI
+    """
+    result = score_applicant(parsed.skills, parsed.evidence, ScoringConfig())
+    hr = result["hr_view"]
+    return {
+        "name": parsed.name,
+        "score": hr["score"],
+        "level": hr["level"],
+        "summary": hr["summary"],
+        "breakdown": hr["breakdown"],
+    }
+
+# @router.post("/ucb-pdf")
+# async def ucb_pdf(payload: UCBPayload):
+#     pdf = FPDF()
+#     pdf.add_page()
+#     pdf.set_font("Arial", size=14)
+#     pdf.cell(0, 10, txt=f"UCB for: {payload.name}", ln=1)
+#     pdf.cell(0, 10, txt=f"Skills: {', '.join(payload.skills)}", ln=1)
+#     pdf.cell(0, 10, txt=f"Fit score: {payload.fit_score}", ln=1)
+#     if payload.gaps:
+#         pdf.cell(0, 10, txt=f"Gaps: {', '.join(payload.gaps)}", ln=1)
+#     buf = BytesIO()
+#     pdf.output(buf)
+#     buf.seek(0)
+#     return StreamingResponse(
+#         buf,
+#         media_type="application/pdf",
+#         headers={"Content-Disposition": "inline; filename=ucb.pdf"}
+#     )
+
+@router.post("/ucb")
+async def ucb_summary(parsed: ParsedResume):
+    """
+    Generate summarized result for HR
+    """
+    from backend.app.services.scoring.logic import score_applicant
+    result = score_applicant(parsed.skills, parsed.evidence)
+    return result["hr_view"]
+
 @router.post("/ucb-pdf")
-async def ucb_pdf(payload: UCBPayload):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=14)
-    pdf.cell(0, 10, txt=f"UCB for: {payload.name}", ln=1)
-    pdf.cell(0, 10, txt=f"Skills: {', '.join(payload.skills)}", ln=1)
-    pdf.cell(0, 10, txt=f"Fit score: {payload.fit_score}", ln=1)
-    if payload.gaps:
-        pdf.cell(0, 10, txt=f"Gaps: {', '.join(payload.gaps)}", ln=1)
-    buf = BytesIO()
-    pdf.output(buf)
-    buf.seek(0)
+async def ucb_pdf(parsed: ParsedResume):
+    """
+    Generate PDF summary for HR
+    """
+    from backend.app.services.scoring.logic import score_applicant
+    from backend.app.services.report.pdf_report import build_ucb_pdf
+
+    result = score_applicant(parsed.skills, parsed.evidence)
+    hr_view = result["hr_view"]
+
+    buf = build_ucb_pdf(parsed.name, hr_view)
     return StreamingResponse(
         buf,
         media_type="application/pdf",
         headers={"Content-Disposition": "inline; filename=ucb.pdf"}
     )
+
+
 
 @router.post("/score")
 async def score(parsed: ParsedResume):
