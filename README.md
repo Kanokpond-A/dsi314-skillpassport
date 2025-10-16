@@ -35,6 +35,15 @@ pytest -q
 pip install streamlit
 streamlit run frontend/streamlit_app.py
 ```
+
+
+### Quick Run (W5) — Pilot & Metrics
+
+```bash
+python tools/log_time.py --user hr1 --mode before --resume a.json --seconds 95 --thumb down --reason "หาสกิลไม่เจอ"
+python tools/log_time.py --user hr1 --mode after  --resume a.json --seconds 55 --thumb up   --reason "เห็น gaps ชัด"
+python tools/metrics.py
+```
 ## Quick Run
 
 Parse PDFs:  python A_backend/parsers/batch_parse_pdfs.py
