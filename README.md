@@ -26,3 +26,11 @@ pytest -q
 python A_backend/app/parsers/run_all.py --lang eng --skip-existing
 pytest -q
 ```
+## Quick Run
+
+Parse PDFs:  python A_backend/parsers/batch_parse_pdfs.py
+Validate:    python A_backend/tests/validate_parsed.py
+Run tests:   pytest -q
+
+
+OCR lang: use --lang eng or --lang eng+tha (if installed)
