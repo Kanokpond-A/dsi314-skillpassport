@@ -10,6 +10,22 @@ python A_backend/normalize_scoring/scoring.py \
 pytest -q
 ```
 
+
+### Quick Run (W4) — One command
+
+```bash
+python A_backend/app/parsers/run_all.py --lang eng --skip-existing
+pytest -q
+```
+
+
+
+### Quick Run (W4) — One command
+
+```bash
+python A_backend/app/parsers/run_all.py --lang eng --skip-existing
+pytest -q
+```
 ## Quick Run
 
 Parse PDFs:  python A_backend/parsers/batch_parse_pdfs.py
