@@ -1,22 +1,18 @@
-{
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "Parsed Resume Schema",
-    "type": "object",
-    "properties": {
-      "source_file": {"type": "string"},
-      "name": {"type": "string"},
-      "contacts": {
-        "type": "object",
-        "properties": {
-          "email": {"type": "string"},
-          "phone": {"type": "string"},
-          "location": {"type": "string"}
-        }
-      },
-      "education": {"type": "array", "items": {"type": "object"}},
-      "experiences": {"type": "array", "items": {"type": "object"}},
-      "skills": {"type": "array", "items": {"type": "string"}}
-    },
-    "required": ["name", "education", "experiences", "skills"]
+{ "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type":"object",
+  "required":["source_file","name","contacts","education","experiences","skills"],
+  "additionalProperties":false,
+  "properties":{
+    "source_file":{"type":"string"},
+    "name":{"type":"string"},
+    "contacts":{"type":"object","required":["email","phone","location"],
+      "additionalProperties":true,
+      "properties":{"email":{"type":"string"},"phone":{"type":"string"},"location":{"type":"string"}}},
+    "education":{"type":"array","items":{"type":"object","additionalProperties":true,
+      "properties":{"degree":{"type":"string"},"institution":{"type":"string"},"start":{"type":"string"},"end":{"type":"string"}}}},
+    "experiences":{"type":"array","items":{"type":"object","additionalProperties":true,
+      "properties":{"company":{"type":"string"},"role":{"type":"string"},"start":{"type":"string"},"end":{"type":"string"},
+        "bullets":{"type":"array","items":{"type":"string"}}}}},
+    "skills":{"type":"array","items":{"type":"string"}}
   }
-  
+}
