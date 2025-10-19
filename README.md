@@ -44,3 +44,11 @@ python tools/log_time.py --user hr1 --mode before --resume a.json --seconds 95 -
 python tools/log_time.py --user hr1 --mode after  --resume a.json --seconds 55 --thumb up   --reason "เห็น gaps ชัด"
 python tools/metrics.py
 ```
+## Quick Run
+
+Parse PDFs:  python A_backend/parsers/batch_parse_pdfs.py
+Validate:    python A_backend/tests/validate_parsed.py
+Run tests:   pytest -q
+
+
+OCR lang: use --lang eng or --lang eng+tha (if installed)
