@@ -10,16 +10,16 @@
     {
       "degree": "Bachelor",
       "institution": "University of California",
-      "start": "",
-      "end": ""
+      "start": "2009",
+      "end": "2013"
     }
   ],
   "experiences": [
     {
       "company": "Data Analytics Manager",
       "role": "Intuit Inc.",
-      "start": "",
-      "end": "",
+      "start": "2016",
+      "end": "2019",
       "bullets": [
         "Intuit Inc. - Data Analytics Manager",
         "2019 - current",

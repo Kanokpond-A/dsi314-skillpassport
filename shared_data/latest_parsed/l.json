@@ -3,10 +3,67 @@
   "name": "AISHA PATEL",
   "contacts": {
     "email": "a.patel@email.com",
-    "phone": "2016 - 2019",
+    "phone": "123) 456-7890",
     "location": ""
   },
-  "education": [],
-  "experiences": [],
-  "skills": []
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "University of Washington",
+      "start": "2009",
+      "end": "2013"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "2016",
+      "end": "2019",
+      "bullets": [
+        "Data Governance Analyst",
+        "Amazon.com, Inc.",
+        "2019 - current",
+        "Seattle, WA",
+        "Utilized OpenRefine to identify and rectify anomalies, resulting",
+        "in a 27% improvement in overall data accuracy.",
+        "Spearheaded an initiative to streamline data governance",
+        "processes, saving $50,000 annually and reducing time-to",
+        "insight by 29%.",
+        "Integrated Apache Atlas to automate metadata management,",
+        "minimizing manual efforts and enhancing data lineage",
+        "visibility.",
+        "Led the enhancement of the Collibra Catalog, resulting in 21%",
+        "reduction in time spent searching for critical datasets.",
+        "Data Integration Developer",
+        "Expedia Group",
+        "2016 - 2019",
+        "Seattle, WA",
+        "Streamlined data pipeline workflows using Informatica",
+        "PowerCenter, leading to a 21-minute decrease in overall",
+        "processing time.",
+        "Executed cost-effective data integration strategies, saving 13%",
+        "in infrastructure expenses.",
+        "Implemented data profiling techniques using Informatica Data",
+        "Quality, improving data accuracy by 22%.",
+        "Leveraged IBM Guardium for real-time data monitoring,",
+        "reducing the risk of data breaches by 26%.",
+        "Database Administrator",
+        "Nordstrom, Inc.",
+        "2014 - 2016",
+        "Seattle, WA",
+        "Automated routine tasks, saving 12 hours per week and",
+        "allowing the reallocation of resources.",
+        "Championed the adoption of Talend, resulting in a 33%",
+        "reduction in data integration time.",
+        "Incorporated Alteryx workflows, improving data cleansing",
+        "efficiency and reducing errors by 28%.",
+        "Enhanced database performance by 41% through proactive",
+        "monitoring and optimization initiatives."
+      ]
+    }
+  ],
+  "skills": [
+    "OpenRefine\nApache Atlas\nCollibra Catalog\nInformatica MDM\nCollibra Policy Manager\nIBM Guardium\nInformatica Enterprise Data Catalog\nTalend\nAlteryx\nConfluence"
+  ]
 }

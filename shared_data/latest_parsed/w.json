@@ -3,10 +3,53 @@
   "name": "Miryem Bank",
   "contacts": {
     "email": "miryem.b@email.com",
-    "phone": "2012 - 2016",
+    "phone": "123) 456-7890",
     "location": ""
   },
-  "education": [],
-  "experiences": [],
-  "skills": []
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "",
+      "start": "2012",
+      "end": "2016"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "Disney Media & Entertainment Distribution",
+      "role": "Lead Data Analyst",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "Disney Media & Entertainment Distribution - Lead Data Analyst",
+        "March 2020 - current",
+        "Santa Monica, CA",
+        "Led team of 12 in data warehousing (500+ TB), tools, queries, and 1,200 reports for media enterprise",
+        "Spearheaded and launched big data program to examine consumer demands, compare them to",
+        "internal libraries, and archive unused data, which reduced data storage requirements by 11%",
+        "Created 23 data pipeline procedures and processes, decreasing data processing times by 13%",
+        "Partnered with IT and Marketing to create an advertising analysis tool/database and automated ad",
+        "selling process, leading to the elimination of two roles ($120k+)",
+        "Tek Ninjas - Data Analyst",
+        "September 2016 - February 2020",
+        "Santa Monica, CA",
+        "Oversaw 19 contractors, updating databases and warehousing for enterprise reporting systems",
+        "Gathered and organized training data and reported 21 sets of statistics to senior management",
+        "Received the 2019 Outstanding Achievement Award for developing an innovative company database",
+        "Trained over 27 specialists on data management standards to ensure system-wide consistency",
+        "SimplePractice - Data Analyst Internship",
+        "May 2015 - August 2015",
+        "Santa Monica, CA",
+        "Completed project to identify, analyze, and interpret trends in consumer credit data",
+        "Designed 6 analytical workflows to automate report generation and enable self-service analytics",
+        "Built 4 data solutions for metrics-gathering and KPIs using SQL and BI data visualization tools",
+        "Analyzed 7 large datasets and created 32 reports using Alteryx, SQL, and Python"
+      ]
+    }
+  ],
+  "skills": [
+    "Databases (MS SQL",
+    "SAP); Computer Programming (R",
+    "Python); Google Analytics; Machine Learning\nCERTIFICATIONS\nGoogle Data Analytics Professional"
+  ]
 }

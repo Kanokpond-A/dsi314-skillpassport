@@ -2,12 +2,15 @@
   "candidate_id": "a",
   "headline": "Intuit Inc. — Workflow canvas; Data preparation tools; Predictive modeling tools; Data visualization; Interactive dashboards\n; Database querying; Data manipulation; Data extraction",
   "skills": {
-    "normalized": [
-      "Workflow canvas; Data preparation tools; Predictive modeling tools; Data visualization; Interactive dashboards\n; Database querying; Data manipulation; Data extraction"
-    ],
+    "normalized": [],
     "raw": [
       "Workflow canvas; Data preparation tools; Predictive modeling tools; Data visualization; Interactive dashboards\n; Database querying; Data manipulation; Data extraction"
     ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
   },
   "fit_score": 27,
   "reasons": [
@@ -22,6 +25,7 @@
   "evidence": {},
   "meta": {
     "generated_at": null,
-    "schema_version": "1.0.0"
+    "schema_version": "1.1.0",
+    "jd_source": "config/jd_profiles/data-analyst.yml"
   }
 }

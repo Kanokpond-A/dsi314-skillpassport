@@ -3,10 +3,64 @@
   "name": "JAMES MILLER",
   "contacts": {
     "email": "j.miller@email.com",
-    "phone": "",
+    "phone": "123) 456-7890",
     "location": ""
   },
-  "education": [],
-  "experiences": [],
-  "skills": []
+  "education": [
+    {
+      "degree": "",
+      "institution": "University of Texas",
+      "start": "",
+      "end": ""
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "Healthcare Data Analyst",
+        "United Healthcare Group",
+        "July 2020 - current",
+        "San Antonio, TX",
+        "Built machine learning models with PyTorch to improve",
+        "predictive analytics by 38%",
+        "Streamlined data processes by reducing processing time",
+        "by 26% and improving overall data integrity via Oracle",
+        "Applied CPT codes to the billing process to ensure",
+        "accuracy and eliminate compliance issues",
+        "Used Sisense to create interactive healthcare reports,",
+        "leading to an 11% increase in data-driven decision-making",
+        "Healthcare Data Entry Specialist",
+        "Christus Health",
+        "August 2017 - June 2020",
+        "Irving, TX",
+        "Leveraged Allscripts to enter patient health information,",
+        "achieving a 98% accuracy rate",
+        "Utilized RapidMiner for data preprocessing and cleaning,",
+        "reducing data inconsistencies by 82%",
+        "Reduced system downtime by 29% by working with the IT",
+        "team to troubleshoot and resolve data-related issues",
+        "Ensured data availability by conducting regular data",
+        "backups and recovery drills",
+        "Healthcare Claims Examiner",
+        "Cigna",
+        "May 2014 - June 2017",
+        "Plano, TX",
+        "Identified and rectified discrepancies in 320+ claims,",
+        "resulting in significant cost savings",
+        "Coordinated with the finance team to ensure accurate",
+        "claim payments and reduced financial discrepancies",
+        "Worked with healthcare providers to verify and clarify",
+        "unclear claims, reducing claim disputes by 33%",
+        "Managed sensitive claim data in compliance with",
+        "company and regulatory data protection requirements"
+      ]
+    }
+  ],
+  "skills": [
+    "Power BI\nAllscripts\nOracle\nTrizetto\nCurrent Procedural Terminology\n(CPT)\nPyTorch\nSisense\nRapidMiner\nCERTIFICATIONS\nCertified Health Data Analyst\n(CHDA)\nCertified Analytics Professional\n(CAP)"
+  ]
 }

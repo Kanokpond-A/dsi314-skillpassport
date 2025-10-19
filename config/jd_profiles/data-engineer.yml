@@ -1,0 +1,19 @@
+title: Data Engineer
+title_keywords:
+  - data engineer
+  - platform engineer
+must_skills:
+  - Python
+  - SQL
+  - Airflow
+nice_skills:
+  - Spark
+  - Kafka
+  - Docker
+  - Terraform
+  - DBT
+weights:
+  skills: 0.4
+  exp: 0.3
+  title: 0.2
+  contacts: 0.1

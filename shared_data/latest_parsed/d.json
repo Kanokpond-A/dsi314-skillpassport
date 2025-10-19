@@ -3,10 +3,69 @@
   "name": "GABRIEL",
   "contacts": {
     "email": "g.thompson@email.com",
-    "phone": "2010 - 2014",
+    "phone": "123) 456-7890",
     "location": ""
   },
-  "education": [],
-  "experiences": [],
-  "skills": []
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "University",
+      "start": "2010",
+      "end": "2014"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "2017",
+      "end": "2020",
+      "bullets": [
+        "Big Data Analyst",
+        "Comcast Corporation",
+        "2020 - current",
+        "Philadelphia, PA",
+        "Presented data insights to key stakeholders, contributing to",
+        "strategic decisions, which improved customer satisfaction",
+        "by 41%.",
+        "Ran training sessions for team members on advanced data",
+        "analytics tools, enhancing team productivity by 24%.",
+        "Isolated customer behavior trends through data analysis",
+        "that increased engagement by 16%.",
+        "Identified cost-saving opportunities through advanced data",
+        "analytics and cut operational expenses by 22%.",
+        "Senior Data Analyst",
+        "Aramark",
+        "2017 - 2020",
+        "Philadelphia, PA",
+        "Analyzed petabytes of data using MapReduce, improving",
+        "data accuracy by 27%.",
+        "Utilized MLlib to build machine learning models for",
+        "predictive analysis and achieved 93% accuracy in customer",
+        "segmentation.",
+        "Led the seamless integration of data pipelines from diverse",
+        "sources, which improved data accessibility by 46%.",
+        "Conducted data quality assessments that reduced",
+        "anomalies by 53% and ensured data consistency across the",
+        "organization.",
+        "Big Data Engineer",
+        "The PNC Financial Services Group, Inc.",
+        "2014 - 2017",
+        "Pittsburgh, PA",
+        "Designed a distributed data processing system using HDFS",
+        "that handled 400TB of data per day, increasing efficiency by",
+        "21%.",
+        "Developed Hive data models that led to a 33% improvement",
+        "in query performance.",
+        "Leveraged Spark SQL to optimize complex analytical queries",
+        "that shortened execution time by 54%.",
+        "Implemented real-time data streaming with Spark",
+        "Streaming, which reduced data ingestion latency to less",
+        "than 1 second."
+      ]
+    }
+  ],
+  "skills": [
+    "HDFS\nMapReduce\nHive\nSpark SQL\nSpark Streaming\nMLlib\nReal-time data streaming\nData pipeline integration"
+  ]
 }

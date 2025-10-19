@@ -3,10 +3,39 @@
   "name": "SERAPHINA BLAKE",
   "contacts": {
     "email": "s.blake@email.com",
-    "phone": "2019 - 2021",
+    "phone": "123) 456-7890",
     "location": ""
   },
-  "education": [],
-  "experiences": [],
-  "skills": []
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "University",
+      "start": "2013",
+      "end": "2017"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "Lead Data Analyst",
+        "Allegheny Health Network",
+        "2021 - current",
+        "Pittsburgh, PA",
+        "Conducted data audits on Excel using the “COUNTIF” function,",
+        "identifying and correcting discrepancies that reduced errors in",
+        "monthly patient records by 26%.",
+        "Automated data extraction processes with SQL, expediting the",
+        "average medical incident reporting time by 4 minutes.",
+        "Used R language for predictive modeling, allowing the hospital to",
+        "forecast 79% of patient admissions within one year."
+      ]
+    }
+  ],
+  "skills": [
+    "Microsoft Excel\nSQL\nTableau\nPython\nR\nPower BI\nGoogle Analytics\nSAS\nHadoop\nSPSS"
+  ]
 }

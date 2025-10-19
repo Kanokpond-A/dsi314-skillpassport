@@ -3,10 +3,65 @@
   "name": "ELLA CLARK",
   "contacts": {
     "email": "ella.clark@email.com",
-    "phone": "",
+    "phone": "123) 456-7890",
     "location": ""
   },
-  "education": [],
-  "experiences": [],
-  "skills": []
+  "education": [
+    {
+      "degree": "",
+      "institution": "",
+      "start": "",
+      "end": ""
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "Business Data Analyst",
+        "Fidelity Investments",
+        "Apr 2019 - current / Boston, MA",
+        "Used QlikView to create interactive data visualizations that",
+        "enhanced the understanding of complex business data",
+        "Employed Plotly to generate data-driven reports, providing",
+        "actionable insights that contributed to a 19% rise in",
+        "operational efficiency of risk assessment",
+        "Conducted complex data analysis via PostgreSQL that led to",
+        "the discovery of key insights that improved portfolio",
+        "performance by 26%",
+        "Reduced data storage costs and improved data retrieval",
+        "speed by using Google BigQuery for handling large datasets",
+        "Business Intelligence Analyst",
+        "Liberty Mutual Insurance",
+        "Jun 2013 - Feb 2019 / Boston, MA",
+        "Leveraged PostgreSQL to create and manage extensive",
+        "databases, boosting data processing efficiency by 34%",
+        "Developed efficient data processing algorithms in C++ that",
+        "improved data analysis speed by 27%",
+        "Ensured data availability by designing and implementing",
+        "backup strategies through Apache NiFi",
+        "Trained other team members in MATLAB and QlikView,",
+        "increasing data literacy within the department by 41%",
+        "Research Assistant",
+        "Tufts Medical Center",
+        "May 2012 - May 2013 / Boston, MA",
+        "Helped in the design and execution of a major research",
+        "study into the neurobiology of addiction that led to 3 articles",
+        "being published in high-impact journals",
+        "Assisted with the preparation and submission of 7 grant",
+        "proposals, securing $260K in research funding",
+        "Collected high-quality data for research studies by",
+        "conducting 260+ patient interviews and surveys",
+        "Developed and maintained a database of research",
+        "participants, ensuring accurate and organized data for over",
+        "1,100+ patients"
+      ]
+    }
+  ],
+  "skills": [
+    "PostgreSQL\nQlikView\nMATLAB\nPlotly\nC++\nKeras\nApache NiFi\nCERTIFICATIONS\nCertified Business Analysis\nProfessional (CBAP)"
+  ]
 }

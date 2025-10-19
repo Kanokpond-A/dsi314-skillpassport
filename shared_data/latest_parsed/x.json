@@ -3,10 +3,46 @@
   "name": "Carter Park",
   "contacts": {
     "email": "c.park@email.com",
-    "phone": "2014 - 2018",
+    "phone": "123) 456-7890",
     "location": ""
   },
-  "education": [],
-  "experiences": [],
-  "skills": []
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "University - Bachelor of Science",
+      "start": "2014",
+      "end": "2018"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "Marketing Data Analyst",
+      "role": "Cummins Inc.",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "Cummins Inc. - Marketing Data Analyst",
+        "September 2021 - current",
+        "Columbus, IN",
+        "Employed STATA for statistical analysis, contributing to a 29% increase in the effectiveness of",
+        "marketing campaigns",
+        "Created insightful reports on marketing trends using IBM Cognos that led to a 21% improvement in",
+        "strategic decision-making",
+        "Saved 20+ hours of manual work per week by automating routine data processing tasks on MongoDB",
+        "Maintained data integrity and reduced errors by 96% by conducting regular data audits via Trifacta",
+        "Boosted sales with predictive models developed using STATA to forecast sales trends",
+        "Hylant - Marketing Coordinator",
+        "May 2018 - August 2021",
+        "Fort Wayne, IN",
+        "Organized and executed 12 promotional events annually, boosting brand visibility",
+        "Oversaw update and maintenance of company website, contributing to a 36% increase in site traffic",
+        "Raised media coverage by 41% by developing and maintaining strong relationships with media outlets",
+        "Used Instagram to promote company services and increase online engagement by 28%",
+        "Managed a $2M marketing budget and ensured that all activities stayed within budget"
+      ]
+    }
+  ],
+  "skills": [
+    "Domo\nSTATA\nMongoDB\nIBM Cognos\nTrifacta\nMarketo"
+  ]
 }

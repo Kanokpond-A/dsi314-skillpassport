@@ -50,7 +50,6 @@ def force_refresh():
     except AttributeError:
         st.experimental_rerun()    # เผื่อเวอร์ชันเก่า
 
-
 def stringify_list(lst, sep=", "):
     return sep.join(lst) if lst else "—"
 

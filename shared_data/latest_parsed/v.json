@@ -3,10 +3,73 @@
   "name": "TOMISLAV ABRAMOVIC",
   "contacts": {
     "email": "tomislav.abram@email.com",
-    "phone": "2016 - 2020",
+    "phone": "123) 456-7890",
     "location": ""
   },
-  "education": [],
-  "experiences": [],
-  "skills": []
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "University of San Francisco",
+      "start": "2016",
+      "end": "2020"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "Junior Data Analyst",
+        "Sunbit",
+        "July 2020 - current",
+        "San Francisco, CA",
+        "Designed over 310 ad hoc queries with SQL in Cognos",
+        "ReportNet, examined reports, and presented findings in",
+        "PowerPoint and Excel",
+        "Built 140 complex SQL reports to audit $2.5M of pay and",
+        "benefits for over 1,300 employees",
+        "Reengineered standard operational procedures that",
+        "improved 22 functional areas and data management",
+        "Maintained reports with a 98% on-time delivery",
+        "Facilitated data distribution, file sharing, and report",
+        "tracking for over 4,000 files with SharePoint",
+        "Data Analyst Internship",
+        "DoorDash",
+        "October 2019 - May 2020",
+        "San Francisco, CA",
+        "Performed advanced analytics functions, including data",
+        "modeling and prescriptive analytics",
+        "Utilized techniques and business intelligence (Power BI) to",
+        "create 24 dashboards and 35 ad hoc reports to address",
+        "business problems and streamline processes",
+        "Supported 16 T-SQL / VBA applications and tools",
+        "PROJECT",
+        "Digital Analytics Association (DAA)",
+        "Member",
+        "Led Gender and Age detection project leveraging data",
+        "from organizational membership and associated websites",
+        "Created a Python application that predicts the age and",
+        "gender of a site visitor based on a single image",
+        "Used computer vision tools to recognize digital images",
+        "and Deep Learning to determine age and gender based",
+        "on facial characteristics",
+        "Published applications including AI algorithms that",
+        "accounted for makeup, facial expressions, lighting, and",
+        "obstructions in gender and age detection",
+        "CAREER",
+        "OBJECTIVE",
+        "Highly educated, innovative, and",
+        "motivated data analysis",
+        "professional with a wealth of",
+        "knowledge. Seeking a challenging",
+        "and career-advancing position as a",
+        "junior data analyst with Tech Firefly."
+      ]
+    }
+  ],
+  "skills": [
+    "Data Analytics\nData Visualization\nMicrosoft SQL\nMicrosoft Power BI\nTableau\nPython and R\nCERTIFICATIONS\nGoogle Data Analytics\nProfessional\nAssociate Certified Analytics\nProfessional (aCAP)"
+  ]
 }

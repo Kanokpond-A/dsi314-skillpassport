@@ -3,10 +3,73 @@
   "name": "DANIELA WHARTON",
   "contacts": {
     "email": "danielawharton@tol.com",
-    "phone": "",
+    "phone": "123) 456-7890",
     "location": ""
   },
-  "education": [],
-  "experiences": [],
-  "skills": []
+  "education": [
+    {
+      "degree": "",
+      "institution": "University",
+      "start": "",
+      "end": ""
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "Analytics Manager",
+        "Betterment",
+        "February 2018 - current / New York, NY",
+        "Led a team of 2 data analysts and 1 data engineer in developing",
+        "marketing mix models that improved ROI by 23% on digital",
+        "marketing spent over the last 6 months",
+        "Constructed a real-time reporting infrastructure that standardized",
+        "metrics across the company, saving 210 monthly hours of manual",
+        "reporting",
+        "Worked with product and marketing teams to identify which",
+        "customer interactions during free trial maximized the likelihood of",
+        "conversions, resulting in a conversion rate increase of 14%",
+        "Focused on customer retention by building customer segment",
+        "models, and recommended particular segment attention that",
+        "increased retention by 21%",
+        "Senior Data Analyst",
+        "Stripe",
+        "January 2015 - February 2018 / New York, NY",
+        "Worked with product team to build production recommendation",
+        "engine in Python, improving time on page for users and resulting in",
+        "$325K in incremental annual revenue",
+        "Built a customer attrition random forest model that improved",
+        "monthly retention by 8 basis points for customers who were likely to",
+        "attrite by servicing relevant product features for them",
+        "Identified bottlenecks to reduce customers' time navigating support",
+        "channels by 6 minutes through data visualization",
+        "Data Analyst",
+        "HavenLife",
+        "April 2012 - April 2013 / Washington D.C.",
+        "Created clusters in Python to identify inactive clients likely to require",
+        "future service, providing insight to marketing and sales teams to",
+        "increase renewals by 8%",
+        "Identified and reported areas of improvement for internal channels",
+        "data to reduce outdated or superfluous information, which reduced",
+        "IT work tickets by 19%",
+        "Reviewed and updated marketing, sales, financial, and project",
+        "management KPIs, working with leadership to meet overall goal of a",
+        "5% increase in customer retention"
+      ]
+    }
+  ],
+  "skills": [
+    "SQL (Redshift",
+    "MySQL",
+    "Postgres",
+    "NoSQL)\nGit\nPython (NumPy",
+    "Pandas",
+    "Scikit-learn",
+    "Keras",
+    "Flask)"
+  ]
 }

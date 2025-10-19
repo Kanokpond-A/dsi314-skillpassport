@@ -3,10 +3,77 @@
   "name": "CYMBER MOORE",
   "contacts": {
     "email": "cymbermoore@email.com",
-    "phone": "",
+    "phone": "123) 456-7890",
     "location": ""
   },
-  "education": [],
-  "experiences": [],
-  "skills": []
+  "education": [
+    {
+      "degree": "",
+      "institution": "University",
+      "start": "",
+      "end": ""
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "SQL Data Analyst",
+        "Newsela",
+        "May 2018 - current",
+        "New York, NY",
+        "Worked across marketing and product business units to build",
+        "out the reporting infrastructure in Tableau from ground up",
+        "Created interactive cohort analysis report in Tableau Server for",
+        "the product team with global filters and parameters that",
+        "helped improve monthly retention by 17% for a specific target",
+        "Automated processing of billions of rows of data from Redshift",
+        "and Postgres to improve real-time reporting of product metrics,",
+        "saving the company $273K yearly in reduced downtime",
+        "Used stored procedures, triggers, and views to provide",
+        "structured data to business units by combining millions of",
+        "rows of data from 19 disparate data sources",
+        "SQL Data Analyst",
+        "Mint",
+        "August 2016 - May 2018",
+        "New York, NY",
+        "Built forecasting using parameters, trend lines, and reference",
+        "lines that were reported to Wall Street for quarterly earnings",
+        "reports, saving 60 hours of manual work each quarter",
+        "Automated a report for the sales team using filters,",
+        "parameters, and calculated sets that automatically qualified",
+        "sales leads, improving conversion rate by 17%",
+        "Implemented security guidelines by using user filters and row",
+        "level security, reducing private data exposure by 73%",
+        "Presented presentations concerning ad-hoc research and",
+        "findings from disparate sources to upper-level management",
+        "Business Intelligence Intern",
+        "KPMG",
+        "August 2014 - August 2016",
+        "Washington D.C.",
+        "Worked with clients to understand business needs and",
+        "translate those needs into actionable reports in Tableau,",
+        "saving 16 hours of manual work each week",
+        "Utilized C++ to process large streaming datasets, and improved",
+        "ingestion and processing speed of that data by 85%",
+        "Built basic ETL that ingested transactional and event data from",
+        "a web app with 10,000 daily active users that saved over $85K",
+        "annually in external vendor costs",
+        "Formed hypotheses, and tested ideas to determine viability of",
+        "operation outcomes"
+      ]
+    }
+  ],
+  "skills": [
+    "Tableau Desktop",
+    "Tableau Server\nSQL (Postgres",
+    "Redshift",
+    "MySQL)\nPL",
+    "SQL\nTriggers",
+    "stored procedures",
+    "views\nMS Excel"
+  ]
 }
