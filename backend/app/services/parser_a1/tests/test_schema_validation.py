@@ -1,4 +1,4 @@
-# A_backend/tests/test_schema_validation.py
+# backend/app/services/tests/test_schema_validation.py
 import json, glob
 from pathlib import Path
 from jsonschema import Draft202012Validator
