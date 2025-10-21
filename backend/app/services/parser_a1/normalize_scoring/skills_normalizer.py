@@ -1,4 +1,4 @@
-# backend/app/services/A_backend/normalize_scoring/skills_normalizer.py
+# backend/app/services/parser_a1/normalize_scoring/skills_normalizer.py
 from __future__ import annotations
 from pathlib import Path
 import csv, re
