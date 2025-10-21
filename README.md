@@ -53,7 +53,7 @@ Run tests:   pytest -q
 
 OCR lang: use --lang eng or --lang eng+tha (if installed)
 
-###Run FastAPI
+### Run FastAPI
 ```bash
 uvicorn backend.app.main:app --reload
 ```
