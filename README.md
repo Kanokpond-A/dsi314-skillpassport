@@ -4,9 +4,7 @@
 ### Quick Run (W3) — Scoring → UCB
 
 ```bash
-python A_backend/normalize_scoring/scoring.py \
-  --in shared_data/latest_parsed/a.json \
-  --out shared_data/latest_ucb/a.json
+python ./backend/app/services/parser_a1/normalize_scoring/scoring.py --in shared_data/latest_parsed/a.json --out shared_data/latest_ucb/a.json
 pytest -q
 ```
 
@@ -14,16 +12,7 @@ pytest -q
 ### Quick Run (W4) — One command
 
 ```bash
-python A_backend/app/parsers/run_all.py --lang eng --skip-existing
-pytest -q
-```
-
-
-
-### Quick Run (W4) — One command
-
-```bash
-python A_backend/app/parsers/run_all.py --lang eng --skip-existing
+python ./backend/app/services/parser_a1/parsers/run_all.py --lang eng --skip-existing
 pytest -q
 ```
 
@@ -44,3 +33,33 @@ python tools/log_time.py --user hr1 --mode before --resume a.json --seconds 95 -
 python tools/log_time.py --user hr1 --mode after  --resume a.json --seconds 55 --thumb up   --reason "เห็น gaps ชัด"
 python tools/metrics.py
 ```
+## Quick Run
+
+Parse PDFs:  python A_backend/parsers/batch_parse_pdfs.py
+Validate:    python A_backend/tests/validate_parsed.py
+Run tests:   pytest -q
+
+
+OCR lang: use --lang eng or --lang eng+tha (if installed)
+
+### Run FastAPI
+```bash
+uvicorn backend.app.main:app --reload
+```
+
+
+### Additional installation program
+
+1. pdf_parser.py จะทำงานสำเร็จได้เมื่อ pdf2image library มีโปรแกรมเสริมที่ชื่อว่า poppler
+
+https://github.com/oschwartz10612/poppler-windows/releases/
+
+เมื่อติดตั้งแล้วให้นำเข้าไปใน env : System variables > path
+C:\Users\ACER\Downloads\Release-25.07.0-0\poppler-25.07.0\Library\bin
+
+2. เราต้องการอ่านตัวอักษรจากรูปภาพซึ่ง pytesseract เป็นตัวกลางที่ไปเรียกใช้ Tesseract OCR
+
+https://github.com/UB-Mannheim/tesseract/wiki
+
+เมื่อติดตั้งแล้วให้นำเข้าไปใน env : System variables > path
+C:\Program Files\Tesseract-OCR
