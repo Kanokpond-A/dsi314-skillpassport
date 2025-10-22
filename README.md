@@ -48,7 +48,7 @@ uvicorn backend.app.main:app --reload
 ```
 
 
-### additional Program install
+### Additional installation program
 
 1. pdf_parser.py จะทำงานสำเร็จได้เมื่อ pdf2image library มีโปรแกรมเสริมที่ชื่อว่า poppler
 
