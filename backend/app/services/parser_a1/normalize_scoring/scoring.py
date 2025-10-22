@@ -147,7 +147,7 @@ def main():
 
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     json.dump(payload, open(args.out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-    print(f"[OK] score={total} → {args.out}  (redact={'on' if args.redact else 'off'})")
+    print(f"[OK] score={total} -> {args.out}  (redact={'on' if args.redact else 'off'})")
 
 if __name__ == "__main__":
     main()

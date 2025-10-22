@@ -4,7 +4,7 @@ from pathlib import Path
 
 # --- ชี้รากโปรเจกต์ (repo root) ให้ถูกต้อง ---
 # โครงสร้าง: backend/app/services/A_backend/app/parsers/run_all.py  -> ขึ้นไป 6 ระดับถึงราก
-ROOT = Path(__file__).resolve().parents[6]
+ROOT = Path(__file__).resolve().parents[5]
 
 # โฟลเดอร์อินพุต/เอาต์พุตหลักอิงจากรากโปรเจกต์
 DEFAULT_IN = ROOT / "samples"
@@ -22,7 +22,7 @@ SCORING        = BASE / "normalize_scoring/scoring.py"
 def run(cmd):
     """รันคำสั่งและโชว์ stdout/stderr เมื่อพัง เพื่อดีบักง่าย"""
     print("→", " ".join(map(str, cmd)))
-    p = subprocess.run(list(map(str, cmd)), capture_output=True, text=True)
+    p = subprocess.run(list(map(str, cmd)), capture_output=True, text=True, encoding='utf-8')
     if p.returncode != 0:
         if p.stdout: print("STDOUT:\n", p.stdout[:2000])
         if p.stderr: print("STDERR:\n", p.stderr[:2000])
