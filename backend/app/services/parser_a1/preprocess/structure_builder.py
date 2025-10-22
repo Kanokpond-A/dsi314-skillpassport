@@ -135,4 +135,4 @@ if __name__ == "__main__":
 
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     json.dump(parsed, open(args.out,"w",encoding="utf-8"), ensure_ascii=False, indent=2)
-    print("[OK] built parsed_resume.json →", args.out)
+    print("[OK] built parsed_resume.json ->", args.out)
