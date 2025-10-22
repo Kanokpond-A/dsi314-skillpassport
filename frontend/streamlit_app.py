@@ -1,22 +1,41 @@
 # frontend/streamlit_app.py
-import json, glob, io, csv, math
+import json, glob, io, csv, math, datetime
 from collections import Counter, defaultdict
 from pathlib import Path
 import streamlit as st
 import pandas as pd
 
+# ---------------- Page Config ----------------
 st.set_page_config(page_title="UCB Mini Dashboard", layout="wide")
 
 UCB_DIR = Path("shared_data/latest_ucb")
 PARSED_DIR = Path("shared_data/latest_parsed")
-LOG_FILE = Path("shared_data/pilot_log.csv")  # ถ้ามีจะแสดง Metrics ให้ด้วย
-PII_KEYS = {"email","phone","location","address","linkedin","github","line","facebook"}
+LOG_FILE = Path("shared_data/pilot_log.csv")  # optional metrics
+PII_KEYS = {
+    "email", "phone", "location", "address",
+    "linkedin", "github", "line", "facebook",
+    "linkedin_url", "github_url", "portfolio_url"
+}
 
-# ---------- Helpers ----------
+PASS_THRESHOLD = 70  # HR-friendly quick benchmark
+
+# ---------------- Helpers ----------------
+def _bar_or_fallback(*, chart_fn, kwargs_width, kwargs_legacy):
+    """Use new width API; fallback to use_container_width for older Streamlit."""
+    try:
+        return chart_fn(**kwargs_width)
+    except TypeError:
+        # older streamlit
+        return chart_fn(**kwargs_legacy)
+
 def redact_contacts(c: dict):
-    """แทนค่าคอนแทคที่เป็น PII ด้วย ••• เสมอ"""
-    if not isinstance(c, dict): return {}
-    return {k: ("•••" if isinstance(v, str) and k.lower() in PII_KEYS and v else v) for k,v in c.items()}
+    """Mask PII values with ••• (payload already redacted, but double-guard)."""
+    if not isinstance(c, dict):
+        return {}
+    return {
+        k: ("•••" if isinstance(v, str) and k.lower() in PII_KEYS and v else v)
+        for k, v in c.items()
+    }
 
 @st.cache_data(show_spinner=False)
 def load_ucb():
@@ -24,11 +43,11 @@ def load_ucb():
     for p in sorted(UCB_DIR.glob("*.json")):
         try:
             d = json.load(open(p, encoding="utf-8"))
-            norm_sk = list(d.get("skills",{}).get("normalized", []))
+            norm_sk = list(d.get("skills", {}).get("normalized", []))
             gaps = list(d.get("gaps", []))
             rows.append({
                 "file": p.name,
-                "headline": d.get("headline",""),
+                "headline": d.get("headline", ""),
                 "fit_score": int(d.get("fit_score", 0)),
                 "skills": norm_sk,
                 "gaps": gaps,
@@ -38,17 +57,19 @@ def load_ucb():
             })
             all_skills.update(norm_sk)
         except Exception as e:
-            rows.append({"file": p.name, "headline":"<error>", "fit_score":0,
-                         "skills":[], "gaps":[f"error:{e}"], "reasons":[], "contacts":{}, "raw": {}})
+            rows.append({
+                "file": p.name, "headline": "<error>", "fit_score": 0,
+                "skills": [], "gaps": [f"error:{e}"], "reasons": [],
+                "contacts": {}, "raw": {}
+            })
     return rows, sorted(all_skills)
 
 def force_refresh():
-    # ล้าง cache ของ load_ucb แล้ว rerun หน้า
     load_ucb.clear()
     try:
-        st.rerun()                 # Streamlit ≥ 1.30
+        st.rerun()  # Streamlit >= 1.30
     except AttributeError:
-        st.experimental_rerun()    # เผื่อเวอร์ชันเก่า
+        st.experimental_rerun()
 
 def stringify_list(lst, sep=", "):
     return sep.join(lst) if lst else "—"
@@ -58,36 +79,12 @@ def score_bucket(x, step=10):
 
 def safe_unlink(p: Path) -> bool:
     try:
-        if p.exists(): p.unlink(); return True
+        if p.exists():
+            p.unlink()
+            return True
     except Exception:
         pass
     return False
-
-# ---------- Header ----------
-st.title("UCB Mini Dashboard")
-top_left, top_mid, top_right = st.columns([3,2,1])
-with top_left:
-    st.caption("ค้นหา/กรอง/ดูเหตุผล และเปรียบเทียบผู้สมัครแบบมืออาชีพ • ข้อมูลติดต่อถูกซ่อนโดยอัตโนมัติ")
-with top_mid:
-    st.info("⚠️ เพื่อการทดสอบภายในเท่านั้น (PII ถูกปิดทับแล้ว)")
-with top_right:
-    if st.button("↻ Refresh cache", use_container_width=True):
-        force_refresh()
-
-rows, ALL_SKILLS = load_ucb()
-
-# ---------- Control Panel ----------
-st.subheader("Filters")
-c1, c2, c3, c4 = st.columns([2,1.2,1.2,1.2])
-with c1:
-    q = st.text_input("ค้นหา (ไฟล์ / headline / skills / gaps)", "")
-with c2:
-    min_s, max_s = st.slider("ช่วงคะแนน", 0, 100, (0,100))
-with c3:
-    must_have = st.multiselect("ต้องมีสกิลเหล่านี้", ALL_SKILLS, placeholder="เลือกสกิลจำเป็น")
-with c4:
-    sort_by = st.selectbox("เรียงตาม", ["fit_score","file","headline"])
-asc = st.toggle("เรียงจากน้อยไปมาก", value=False)
 
 def row_text(r):
     return " ".join([
@@ -97,136 +94,206 @@ def row_text(r):
         " ".join(r["reasons"]),
     ]).lower()
 
+# ---------------- Data ----------------
+rows, ALL_SKILLS = load_ucb()
+
+# ---------------- Sidebar (Filters) ----------------
+with st.sidebar:
+    st.header("Filters")
+    q = st.text_input("Search (file / headline / skills / gaps)", "", key="q_search")
+    min_s, max_s = st.slider("Score range", 0, 100, (0, 100), key="score_range")
+    must_have = st.multiselect("Must-have skills", ALL_SKILLS, placeholder="Select skills", key="must_skills")
+    sort_by = st.selectbox("Sort by", ["fit_score", "file", "headline"], index=0, key="sort_by")
+    asc = st.toggle("Ascending", value=False, key="ascending")
+    st.caption("PII is masked for internal testing.")
+
+    st.divider()
+    if st.button("↻ Refresh", key="refresh_btn"):
+        force_refresh()
+
 def match(r):
-    if not (min_s <= r["fit_score"] <= max_s): return False
-    if q and (q.lower() not in row_text(r)): return False
-    if must_have and not set(must_have).issubset(set(r["skills"])): return False
+    if not (min_s <= r["fit_score"] <= max_s):
+        return False
+    if q and (q.lower() not in row_text(r)):
+        return False
+    if must_have and not set(must_have).issubset(set(r["skills"])):
+        return False
     return True
 
 filtered = [r for r in rows if match(r)]
 filtered = sorted(filtered, key=lambda r: r[sort_by], reverse=not asc)
 
-# ---------- KPIs ----------
-st.subheader("Overview")
-k1,k2,k3,k4 = st.columns(4)
+# ---------------- Header ----------------
+st.markdown("## UCB Mini Dashboard")
+st.caption("Shortlist faster. Compare candidates. Understand skill gaps. — **HR view**")
+
+# ---------------- KPIs ----------------
 count = len(filtered)
-avg = int(sum(r["fit_score"] for r in filtered)/count) if count else 0
+avg = int(sum(r["fit_score"] for r in filtered) / count) if count else 0
+passed = sum(1 for r in filtered if r["fit_score"] >= PASS_THRESHOLD)
+pass_rate = f"{(passed * 100 // count) if count else 0}%"
 top_sk = Counter(s for r in filtered for s in r["skills"]).most_common(3)
 top_gap = Counter(g for r in filtered for g in r["gaps"]).most_common(3)
-k1.metric("จำนวนผู้สมัคร (ที่กรอง)", count)
-k2.metric("คะแนนเฉลี่ย", avg)
-k3.metric("Top skills", stringify_list([f"{k} ({v})" for k,v in top_sk]))
-k4.metric("Top gaps", stringify_list([f"{k} ({v})" for k,v in top_gap]))
 
-# ---------- Charts (ง่ายๆ ช่วย HR มองภาพรวม) ----------
-st.markdown("**Distribution**")
+k1, k2, k3, k4 = st.columns(4)
+k1.metric("Candidates (after filters)", count)
+k2.metric("Average score", avg)
+k3.metric(f"Pass rate ≥ {PASS_THRESHOLD}", pass_rate)
+k4.metric("Top skills / Top gaps",
+          f"{stringify_list([f'{k} ({v})' for k, v in top_sk])}  |  "
+          f"{stringify_list([f'{k} ({v})' for k, v in top_gap])}")
+
+st.divider()
+
+# ---------------- Charts ----------------
 g1, g2 = st.columns(2)
 
 with g1:
-    # histogram 10 คะแนนต่อถัง
+    st.subheader("Score distribution")
     buckets = Counter(score_bucket(r["fit_score"]) for r in filtered)
     labels = sorted(buckets.keys(), key=lambda s: int(s.split("-")[0]))
-    df_hist = pd.DataFrame({
-        "bucket": labels,
-        "count": [buckets[l] for l in labels]
-    })
-    st.bar_chart(df_hist, x="bucket", y="count", use_container_width=True)
+    df_hist = pd.DataFrame({"bucket": labels, "count": [buckets[l] for l in labels]})
+    _bar_or_fallback(
+        chart_fn=st.bar_chart,
+        kwargs_width={"data": df_hist, "x": "bucket", "y": "count", "width": "stretch"},
+        kwargs_legacy={"data": df_hist, "x": "bucket", "y": "count", "use_container_width": True},
+    )
 
 with g2:
-    # Top 10 gaps
+    st.subheader("Top gaps (10)")
     gap_counts = Counter(g for r in filtered for g in r["gaps"])
     top10_gaps = gap_counts.most_common(10)
-    df_gaps = pd.DataFrame({
-        "gap":   [g for g, _ in top10_gaps],
-        "count": [c for _, c in top10_gaps]
-    })
-    st.bar_chart(df_gaps, x="gap", y="count", use_container_width=True)
+    df_gaps = pd.DataFrame({"gap": [g for g, _ in top10_gaps], "count": [c for _, c in top10_gaps]})
+    _bar_or_fallback(
+        chart_fn=st.bar_chart,
+        kwargs_width={"data": df_gaps, "x": "gap", "y": "count", "width": "stretch"},
+        kwargs_legacy={"data": df_gaps, "x": "gap", "y": "count", "use_container_width": True},
+    )
 
+st.divider()
 
-# ---------- Table ----------
+# ---------------- Candidate Cards (quick scan) ----------------
 st.subheader("Candidates")
-st.write(f"พบผู้สมัคร: **{len(filtered)}** ราย")
-table_rows = []
-for r in filtered:
-    table_rows.append({
-        "file": r["file"],
-        "fit_score": r["fit_score"],
-        "headline": r["headline"],
-        "skills": stringify_list(r["skills"]),
-        "gaps": stringify_list(r["gaps"]),
-    })
+st.caption("Click a row below for full JSON or use Compare to see side-by-side.")
+
+def render_card(r, key_prefix):
+    card = st.container(border=True)
+    with card:
+        c1, c2 = st.columns([1, 5])
+        c1.markdown(f"### {r['fit_score']}")
+        c1.caption("Fit score")
+        c2.markdown(f"**{r['headline'] or '—'}**")
+        st.caption(f"Skills: {stringify_list(r['skills'])}")
+        with st.expander("Reasons / Gaps", expanded=False):
+            st.write("**Reasons**")
+            st.write("- " + "\n- ".join(r["reasons"]) if r["reasons"] else "—")
+            st.write("**Gaps**")
+            st.write(stringify_list(r["gaps"]))
+        with st.expander("Contacts (redacted)"):
+            st.json(r.get("contacts", {}), expanded=False)
+
+for idx, r in enumerate(filtered[:12]):  # show top 12 cards
+    render_card(r, key_prefix=f"card-{idx}")
+
+st.divider()
+
+# ---------------- Table (exportable) ----------------
+st.subheader("All results (table)")
+table_rows = [{
+    "file": r["file"],
+    "fit_score": r["fit_score"],
+    "headline": r["headline"],
+    "skills": stringify_list(r["skills"]),
+    "gaps": stringify_list(r["gaps"]),
+} for r in filtered]
+
 st.dataframe(table_rows, use_container_width=True)
 
-# Export filtered CSV
 buf = io.StringIO()
 w = csv.writer(buf)
-w.writerow(["file","fit_score","headline","skills","gaps"])
+w.writerow(["file", "fit_score", "headline", "skills", "gaps"])
 for r in filtered:
     w.writerow([r["file"], r["fit_score"], r["headline"], stringify_list(r["skills"]), stringify_list(r["gaps"])])
-st.download_button("⬇️ Export filtered to CSV", buf.getvalue().encode("utf-8"), "ucb_filtered.csv", "text/csv")
+st.download_button("⬇️ Export filtered to CSV", buf.getvalue().encode("utf-8"),
+                   "ucb_filtered.csv", "text/csv", key="dl_csv")
 
-# ---------- Compare two ----------
+st.divider()
+
+# ---------------- Compare Two ----------------
 st.subheader("Compare two candidates")
 left, right = st.columns(2)
 options = [r["file"] for r in filtered]
-c1 = left.selectbox("เลือกคนที่ 1", options, index=0 if options else None, key="pick1")
-c2 = right.selectbox("เลือกคนที่ 2", options, index=1 if len(options)>1 else (0 if options else None), key="pick2")
 
-def render(panel, file):
+c1 = left.selectbox("Candidate A", options, index=0 if options else None, key="pick_A")
+c2 = right.selectbox("Candidate B", options, index=1 if len(options) > 1 else (0 if options else None), key="pick_B")
+
+def render_compare(panel, file, key_prefix):
     if not file:
-        panel.info("ยังไม่ได้เลือกไฟล์"); return
-    r = next((x for x in filtered if x["file"]==file), None)
+        panel.info("Select a candidate")
+        return
+    r = next((x for x in filtered if x["file"] == file), None)
     if not r:
-        panel.warning("ไม่พบไฟล์ในผลกรอง"); return
+        panel.warning("Not in filtered results")
+        return
     d = r["raw"]
 
-    panel.metric("Fit Score", r["fit_score"])
-    panel.write(f"**Headline:** {r['headline']}")
+    # compact summary
+    k1, k2 = panel.columns([1, 6])
+    k1.metric("Fit", r["fit_score"])
+    k2.write(f"**{r['headline'] or '—'}**")
+
+    with panel.expander("Reasons / Gaps"):
+        panel.write("**Reasons**")
+        panel.write("- " + "\n- ".join(d.get("reasons", [])) if d.get("reasons") else "—")
+        panel.write("**Gaps**")
+        panel.write(stringify_list(d.get("gaps", [])))
+
+    with panel.expander("Skills (normalized)"):
+        panel.write(stringify_list(d.get("skills", {}).get("normalized", [])))
+
     with panel.expander("Contacts (redacted)"):
         panel.json(r.get("contacts", {}))
-    with panel.expander("Skills (normalized)"):
-        panel.write(stringify_list(d.get("skills",{}).get("normalized", [])))
-    with panel.expander("Reasons"):
-        rs = d.get("reasons", [])
-        panel.write("\n- " + "\n- ".join(rs) if rs else "—")
-    with panel.expander("Gaps"):
-        panel.write(stringify_list(d.get("gaps", [])))
+
     with panel.expander("Raw JSON"):
         panel.json(d)
 
-    # Delete actions
+    # Danger zone
     with panel.expander("🛑 Danger zone"):
         base = Path(file).stem
         p_ucb = UCB_DIR / f"{base}.json"
         p_parsed = PARSED_DIR / f"{base}.json"
-        if panel.button(f"🗑️ ลบไฟล์ของ {file}", key=f"del-{file}"):
-            ok1 = safe_unlink(p_ucb); ok2 = safe_unlink(p_parsed)
-            panel.success(f"ลบแล้ว: UCB={ok1}, Parsed={ok2}. กด ↻ Refresh cache เพื่ออัปเดตตาราง.")
+        if panel.button(f"Delete files for {file}", key=f"{key_prefix}-del"):
+            ok1 = safe_unlink(p_ucb)
+            ok2 = safe_unlink(p_parsed)
+            panel.success(f"Deleted → UCB={ok1}, Parsed={ok2}. Click Refresh to update.")
 
-render(left, c1)
-render(right, c2)
+render_compare(left, c1, "A")
+render_compare(right, c2, "B")
 
-# ---------- Pilot Metrics (optional, if log exists) ----------
-st.subheader("Pilot metrics (ถ้ามี log)")
-if LOG_FILE.exists():
-    import csv as _csv
-    before, after, thumbs = [], [], Counter()
-    with open(LOG_FILE, encoding="utf-8") as f:
-        r = _csv.DictReader(f)
-        for row in r:
-            (before if row.get("mode")=="before" else after).append(float(row.get("seconds",0)))
-            if row.get("thumb") in ("up","down"): thumbs[row["thumb"]] += 1
-    if before and after:
-        mean_b = sum(before)/len(before)
-        mean_a = sum(after)/len(after)
-        red = (mean_b-mean_a)/mean_b*100 if mean_b else 0
-        m1,m2,m3 = st.columns(3)
-        m1.metric("เฉลี่ยก่อนใช้ (วินาที)", f"{mean_b:.1f}")
-        m2.metric("เฉลี่ยหลังใช้ (วินาที)", f"{mean_a:.1f}")
-        m3.metric("เวลาลดลง", f"{red:.1f}%")
-    st.write(f"Thumbs: 👍 {thumbs.get('up',0)}  |  👎 {thumbs.get('down',0)}")
-else:
-    st.info("ยังไม่มีไฟล์ log (`shared_data/pilot_log.csv`)")
+st.divider()
 
-# ---------- Footer ----------
-st.caption("Tip: แก้ไฟล์แล้วใช้ปุ่ม **↻ Refresh cache** หรือกด R เพื่อ rerun แอป")
+# ---------------- Pilot Metrics (optional) ----------------
+with st.expander("Pilot metrics (optional)"):
+    if LOG_FILE.exists():
+        import csv as _csv
+        before, after, thumbs = [], [], Counter()
+        with open(LOG_FILE, encoding="utf-8") as f:
+            r = _csv.DictReader(f)
+            for row in r:
+                (before if row.get("mode") == "before" else after).append(float(row.get("seconds", 0)))
+                if row.get("thumb") in ("up", "down"):
+                    thumbs[row["thumb"]] += 1
+        if before and after:
+            mean_b = sum(before) / len(before)
+            mean_a = sum(after) / len(after)
+            red = (mean_b - mean_a) / mean_b * 100 if mean_b else 0
+            m1, m2, m3 = st.columns(3)
+            m1.metric("Avg before (s)", f"{mean_b:.1f}")
+            m2.metric("Avg after (s)", f"{mean_a:.1f}")
+            m3.metric("Time reduced", f"{red:.1f}%")
+        st.write(f"Thumbs: 👍 {thumbs.get('up', 0)}  |  👎 {thumbs.get('down', 0)}")
+    else:
+        st.info("No pilot log yet (`shared_data/pilot_log.csv`).")
+
+# ---------------- Footer ----------------
+st.caption("Tip: Use the **Refresh** button in the sidebar to reload fresh files. PII remains masked.")
