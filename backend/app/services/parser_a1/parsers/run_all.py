@@ -1,10 +1,10 @@
-# backend/app/services/A_backend/app/parsers/run_all.py
+# backend/app/services/parser_a1/parsers/run_all.py
 import argparse, subprocess, sys, json, csv, statistics as stats, time
 from pathlib import Path
 
 # --- ชี้รากโปรเจกต์ (repo root) ให้ถูกต้อง ---
-# โครงสร้าง: backend/app/services/A_backend/app/parsers/run_all.py  -> ขึ้นไป 6 ระดับถึงราก
-ROOT = Path(__file__).resolve().parents[5]
+# โครงสร้าง: backend/app/services/parser_a1/parsers/run_all.py  -> ขึ้นไป 6 ระดับถึงราก
+ROOT = Path(__file__).resolve().parents[6]
 
 # โฟลเดอร์อินพุต/เอาต์พุตหลักอิงจากรากโปรเจกต์
 DEFAULT_IN = ROOT / "samples"
