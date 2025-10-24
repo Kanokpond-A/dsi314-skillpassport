@@ -1,7 +1,7 @@
 import os, json, argparse, re, yaml
 from collections import defaultdict
 from typing import List, Dict
-from skills_normalizer import normalize_skills  # ต้องอยู่โฟลเดอร์เดียวกัน
+from .skills_normalizer import normalize_skills  # ต้องอยู่โฟลเดอร์เดียวกัน
 
 # ---- ตั้งค่า JD ตัวอย่าง (ค่าเริ่มต้น ถ้าไม่ส่ง --jd เข้ามา) ----
 JOB_REQ = {
@@ -83,6 +83,148 @@ def build_evidence(parsed: dict, norm_skills: List[str]) -> Dict[str, List[str]]
     for k in list(ev.keys()):
         ev[k] = ev[k][:4]
     return dict(ev)
+
+# (1) นี่คือเครื่องมือที่เราจะใช้ from .skills_normalizer import normalize_skills
+# (2) นี่คือสิ่งที่คุณ "ต้องการ" (เช่น JD ของตำแหน่งงาน)
+# (คุณอาจจะย้ายไปไว้ไฟล์อื่น หรือรับมาจาก API ก็ได้ แต่นี่คือตัวอย่าง)
+JOB_REQUIREMENTS = {
+    "required": ["Python", "SQL", "FastAPI", "Docker"],
+    "weights": [0.35, 0.25, 0.2, 0.2],
+    "keywords": ["Agile", "Git"],
+    "min_exp": 2 # (ปี)
+}
+
+# (3) นี่คือฟังก์ชันที่ routes.py เรียกใช้
+def calculate_ucb_score(parsed_data: dict, redact_pii: bool = True):
+    """
+    คำนวณคะแนน UCB จากข้อมูล parsed_data ที่ได้จาก structure_builder
+    """
+    
+    # -----------------------------------------------------------
+    # (A) ส่วนที่ 1: เตรียมข้อมูล (Input)
+    # -----------------------------------------------------------
+    raw_skills_list = parsed_data.get("skills_raw", [])
+    experiences = parsed_data.get("experiences", [])
+    contacts = parsed_data.get("contacts", {})
+    name_and_roles = [parsed_data.get("name", "")] + [e.get("role", "") for e in experiences]
+
+    # -----------------------------------------------------------
+    # (B) ส่วนที่ 2: คำนวณ "คะแนนจริง" (Process) 
+    # -----------------------------------------------------------
+    
+    # (B.1) ใช้ "normalize_skills"
+    print(f"[Scoring] Normalizing skills...")
+    clean_skills = normalize_skills(raw_skills_list)
+    print(f"[Scoring] Clean skills found: {clean_skills}")
+
+    # (B.2) คำนวณคะแนน Skills (สำหรับ Breakdown และ Summary)
+    req_skills = JOB_REQUIREMENTS.get("required", [])
+    req_weights = JOB_REQUIREMENTS.get("weights", [])
+    
+    real_breakdown = []
+    matched_skills_list = []
+    missing_skills_list = []
+    skills_score_percent = 0.0 # (ค่าเริ่มต้นสำหรับ Skills Match)
+    matched_weight = 0.0
+
+    if req_skills and len(req_skills) == len(req_weights):
+        total_weight = sum(req_weights)
+
+        for skill, weight in zip(req_skills, req_weights):
+            if skill in clean_skills:
+                # (!!!) นี่คือ Bug ที่แก้ไขแล้ว (!!!)
+                matched_weight += weight 
+                
+                # (1) สำหรับ Summary
+                matched_skills_list.append(skill) 
+                
+                # (2) สำหรับ Breakdown
+                real_breakdown.append({ 
+                    "skill": skill,
+                    "level": "พบ", 
+                    "weight": weight
+                })
+            else:
+                # (1) สำหรับ Summary
+                missing_skills_list.append(skill) 
+
+                # (2) สำหรับ Breakdown
+                real_breakdown.append({ 
+                    "skill": skill,
+                    "level": "ไม่พบ", 
+                    "weight": weight
+                })
+        
+        # คำนวณ % Skills (หลังจาก Loop)
+        if total_weight > 0:
+            skills_score_percent = matched_weight / total_weight
+
+    # (B.3) คำนวณคะแนนส่วนอื่นๆ (สำหรับกราฟ)
+    # (ใช้ฟังก์ชันจริงที่อยู่ด้านบนของไฟล์ ไม่ใช้ค่า Hardcode)
+    
+    # คำนวณ % ประสบการณ์ (0.0 - 1.0)
+    exp_score_percent = min(estimate_years(experiences) / 3.0, 1.0) # (เช่น ถ้ามี 3 exp = 1.0)
+    
+    # คำนวณ % ชื่อตำแหน่ง (0.0 - 1.0)
+    title_score_percent = score_title(name_and_roles)
+    
+    # คำนวณ % ข้อมูลติดต่อ (0.0 - 1.0)
+    contact_score_percent = score_contacts(contacts)
+    
+    # (B.4) คำนวณคะแนนรวม (Final Score)
+    # (ใช้คะแนนจากกราฟ 4 ส่วนมาคำนวณ)
+    all_scores = [skills_score_percent, exp_score_percent, title_score_percent, contact_score_percent]
+    real_final_score = (sum(all_scores) / len(all_scores)) * 100
+
+    # (B.5) สรุประดับ (Level)
+    real_level = "Needs Improvement"
+    if real_final_score >= 85:
+        real_level = "Excellent Match"
+    elif real_final_score >= 70:
+        real_level = "Good Match"
+
+    # -----------------------------------------------------------
+    # (C) ส่วนที่ 3: แพ็กผลลัพธ์ (Output)
+    # -----------------------------------------------------------
+    
+    # (C.1) สร้าง "summary" (ที่ JS ต้องการ)
+    # (ลบตัวที่ซ้ำซ้อนออก)
+    real_summary = {
+        "matched_skills": matched_skills_list,
+        "missing_skills": missing_skills_list,
+        "matched_percent": round(skills_score_percent * 100, 1)
+    }
+    
+    # (C.2) สร้าง "score_components" ที่ถูกต้องสำหรับกราฟ
+    # (ลบตัวที่ซ้ำซ้อนออก)
+    real_score_components = {
+        "Skills Match": skills_score_percent,   # <--- Key ต้องตรงกับ JS
+        "Experience": exp_score_percent,      # <--- Key ต้องตรงกับ JS
+        "Title Match": title_score_percent,   # <--- Key ต้องตรงกับ JS
+        "Contact Info": contact_score_percent   # <--- Key ต้องตรงกับ JS
+    }
+    
+    # (C.3) สร้าง hr_view_data (สุดท้าย)
+    # (ลบตัวที่ซ้ำซ้อนออก)
+    hr_view_data = {
+        "score": round(real_final_score, 0),    # <-- (B.4)
+        "level": real_level,                    # <-- (B.5)
+        "summary": real_summary,                # <-- (C.1)
+        "breakdown": real_breakdown,            # <-- (B.2)
+        "notes": [],                          
+        "score_components": real_score_components # <-- (C.2)
+    }
+
+    # (D) ส่วนที่ 4: คืนค่า
+    
+    if redact_pii:
+        # (คุณสามารถเพิ่มโค้ดลบ PII ที่นี่ได้)
+        pass
+
+    print(f"[Scoring] Output Score: {real_final_score}")
+    return {
+        "hr_view": hr_view_data
+    }
 
 # ---------------- main ----------------
 def main():

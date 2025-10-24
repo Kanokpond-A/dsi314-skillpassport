@@ -4,12 +4,12 @@
 }
 
 body {
-    font-family: 'Inter', 'Sarabun', sans-serif;
+    font-family: 'Inter','Prompt', 'Sarabun', sans-serif;
     margin: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #f8fafc; /* slate-50 */
+    background-color: #ffffff; /* slate-50 */
     color: #334155; /* slate-700 */
 }
 
@@ -45,11 +45,17 @@ button {
 
 /* ===== Header & Navigation ===== */
 header {
-    background-color: #ffffff;
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
+    background-color: #88ace9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); /* shadow-sm */
     position: sticky;
     top: 0;
     z-index: 50;
+    position: sticky;
+}
+
+header.scrolled {
+  background: #f9f4e6;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 nav {
@@ -113,17 +119,23 @@ main {
 /* ===== File Upload Area ===== */
 #file-upload-area {
     border: 2px dashed #cbd5e1; /* border-slate-300 */
-    border-radius: 0.75rem; /* rounded-xl */
     padding: 2rem;
     text-align: center;
     cursor: pointer;
     margin-bottom: 1.5rem; /* mb-6 */
     transition: all 0.3s;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+
 }
 
 #file-upload-area:hover {
     border-color: #6366f1; /* hover:border-indigo-500 */
     background-color: #eef2ff; /* hover:bg-indigo-50 */
+    box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
 }
 
 .file-upload-content {
@@ -472,7 +484,7 @@ footer {
     background-color: transparent;
 }
 
-.level-n/a,
+.level-n/a 
 .score-n/a {
     color: #64748b; /* slate-500 */
     background-color: #f1f5f9; /* slate-100 */
@@ -511,4 +523,73 @@ footer {
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+}
+
+.chart-container {
+    position: relative; /* จำเป็นสำหรับ Chart.js responsive */
+    height: 200px; /* กำหนดความสูงเริ่มต้น (ปรับได้) */
+    width: 100%;   /* กว้างเต็มพื้นที่ */
+    margin-top: 1rem;
+}
+
+/* ซ่อน Section ถ้าไม่มีข้อมูล (ถูกควบคุมโดย JS) */
+.chart-section[style*="display: none"] {
+     display: none !important;
+}
+
+.chart-container {
+    position: relative;
+    height: 450px; 
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.section-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+:root {
+  --primary: #5C6BF4;
+  --bg-light: #f9fbfd;
+}
+h2, h3, .label-primary { color: var(--primary); }
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+  padding: 10px 20px;
+}
+
+.breakdown-item {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.2s;
+}
+.breakdown-item:hover {
+  background: #eef2ff;
+  transform: translateY(-2px);
+}
+
+.btn-download {
+  background: linear-gradient(135deg, #00C49A, #00E6B8);
+  border: none;
+  color: white;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0, 196, 154, 0.3);
+  transition: 0.3s;
+}
+.btn-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 196, 154, 0.4);
 }

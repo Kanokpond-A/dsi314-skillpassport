@@ -1,0 +1,226 @@
+/* ===== General & Reset ===== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Sarabun', sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8fafc; /* slate-50 */
+    color: #334155; /* slate-700 */
+}
+
+a {
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    font-family: 'Inter', 'Sarabun', sans-serif;
+}
+
+/* ===== Utility ===== */
+.container {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.hidden {
+    display: none;
+}
+/* ===== Header & Navigation ===== */
+header {
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+}
+
+.logo a {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 700; /* font-bold */
+    color: #1e293b; /* slate-800 */
+}
+
+.logo a:hover {
+    color: #4f46e5; /* hover:text-indigo-600 */
+}
+
+/* ===== Footer ===== */
+footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0; /* border-slate-200 */
+    margin-top: 3rem; /* mt-12 */
+}
+
+.footer-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem; /* py-8 px-6 */
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem; /* gap-8 */
+    text-align: center;
+}
+
+.footer-section h4 {
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.footer-section p {
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+.footer-section ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* space-y-2 */
+}
+
+.footer-section li a {
+    color: #64748b;
+}
+
+.footer-section li a:hover {
+    color: #4f46e5;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem; /* space-x-4 */
+}
+
+.social-links a {
+    color: #64748b;
+}
+
+.social-links a:hover {
+    color: #4f46e5;
+}
+
+.social-links svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.footer-bottom {
+    border-top: 1px solid #e2e8f0;
+    margin-top: 2rem; /* mt-8 */
+    padding-top: 1.5rem; /* pt-6 */
+    text-align: center;
+}
+
+.footer-bottom p {
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+/* warehouse.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add styles specific to the warehouse page here */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #111827; /* bg-gray-900 */
+    color: #D1D5DB; /* text-gray-300 */
+}
+
+/* Style scrollbars for better dark mode appearance */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #374151; /* bg-gray-700 */
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: #4B5563; /* bg-gray-600 */
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #6B7280; /* bg-gray-500 */
+}
+
+/* Ensure select dropdown arrows are visible in dark mode */
+select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    appearance: none; /* Add this to ensure custom arrow is used */
+    -webkit-appearance: none; /* For Safari */
+    -moz-appearance: none; /* For Firefox */
+}
+
+/* Style for the compare details sections */
+.compare-details h4 {
+    @apply text-base font-semibold text-white mb-1;
+}
+.compare-details ul {
+    @apply list-disc list-inside space-y-1;
+}
+.compare-details pre {
+    @apply inline-block text-xs bg-gray-900 p-2 rounded font-mono max-w-full overflow-x-auto whitespace-pre-wrap break-words;
+}
+
+/* Danger zone button */
+.delete-button {
+     @apply mt-2 text-xs bg-red-600 hover:bg-red-700 text-white font-medium py-1 px-3 rounded-md transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+/* Add some max height and scroll to the table container */
+#results-table-body {
+    /* Max height might not be needed directly on tbody if container scrolls */
+    /* max-height: 24rem; */
+    /* overflow-y: auto; */
+}
+/* Container for the table for scrolling */
+.overflow-x-auto.rounded-md.border.border-gray-700 {
+    max-height: 24rem; /* max-h-96 */
+    overflow-y: auto; /* Enable vertical scroll on the container */
+}
+
+/* Ensure table header sticks */
+.sticky.top-0 {
+    position: sticky;
+    top: 0;
+    z-index: 10; /* Ensure it's above table content */
+}
+

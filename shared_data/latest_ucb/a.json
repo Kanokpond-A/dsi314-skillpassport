@@ -8,8 +8,8 @@
     ]
   },
   "contacts": {
-    "email": "•••",
-    "phone": "•••",
+    "email": "i.reynolds@email.com",
+    "phone": "123) 456-7890",
     "location": ""
   },
   "fit_score": 27,
@@ -26,6 +26,6 @@
   "meta": {
     "generated_at": null,
     "schema_version": "1.1.0",
-    "jd_source": "config/jd_profiles/data-analyst.yml"
+    "jd_source": null
   }
 }

@@ -2,7 +2,41 @@ import argparse
 import json
 from pathlib import Path
 import pytesseract
-from pdf2image import convert_from_path
+from pdf2image import convert_from_path, convert_from_bytes
+
+def extract_text_from_pdf_bytes(file_bytes, lang="eng"):
+    """
+    สกัดข้อความจาก PDF ที่เป็น bytes (สำหรับใช้ใน API)
+    """
+    try:
+        # 1. แปลง bytes ให้เป็นรูปภาพ
+        print(f"[+] (API) Converting PDF bytes to images...")
+        images = convert_from_bytes(file_bytes)
+
+        # 2. วนลูปทีละภาพเพื่อสกัดข้อความ (เหมือนใน main)
+        pages_content = []
+        for i, image in enumerate(images):
+            print(f"[+] (API) Reading text from page {i + 1}/{len(images)}...")
+            text = pytesseract.image_to_string(image, lang=lang)
+            pages_content.append({
+                "page_num": i + 1,
+                "text": text
+            })
+
+        # 3. สร้างโครงสร้าง JSON ผลลัพธ์ (เหมือนใน main)
+        output_data = {
+            "source_file": "uploaded_file", # (API ไม่รู้ชื่อไฟล์ แต่ไม่เป็นไร)
+            "page_count": len(pages_content),
+            "pages": pages_content
+        }
+        
+        print(f"[OK] (API) Successfully extracted text from bytes.")
+        return output_data # 👈 คืนค่าเป็น dict กลับไป
+
+    except Exception as e:
+        print(f"[-] (API) An error occurred during PDF (bytes) processing: {e}")
+        # โยน Error กลับไปให้ routes.py จัดการ
+        raise e
 
 def main():
     """

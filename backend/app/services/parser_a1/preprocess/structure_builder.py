@@ -114,6 +114,43 @@ def extract_skills(text):
             seen.add(k); out.append(t)
     return out
 
+def build_structured_resume(raw_data: dict) -> dict:
+    """
+    สร้างโครงสร้าง Resume (JSON) จากข้อมูลข้อความดิบ (raw_data) ที่ได้จาก parser
+    (raw_data คือ dict ที่มี key "pages" ซึ่งเป็น list of text)
+    """
+    try:
+        # 1. รวมข้อความจากทุกหน้าให้เป็นข้อความยาว ๆ ก้อนเดียว
+        print(f"[+] (API) Combining text from {len(raw_data.get('pages', []))} pages...")
+        all_text = "\n\n".join([page.get('text', '') for page in raw_data.get('pages', [])])
+        
+        # 2. ทำความสะอาดข้อความ
+        text = norm_text(all_text)
+
+        # 3. ค้นหา Sections (Experience, Education, Skills)
+        print(f"[+] (API) Locating sections...")
+        sections = locate_sections(text)
+
+        # 4. ดึงข้อมูลแต่ละส่วน
+        print(f"[+] (API) Extracting details (contacts, exp, edu, skills)...")
+        parsed_data = {
+            "source_file": raw_data.get("source_file",""),
+            "name": first_name_line(text),
+            "full_name": first_name_line(text), # (เพิ่ม full_name)
+            "contacts": contacts(text),
+            "education": extract_education(sections.get("education","")),
+            "experiences": extract_experiences(sections.get("experience","")),
+            "skills_raw": extract_skills(sections.get("skills","")), # (ใช้ skills_raw ก่อน)
+            "skills": [], # (เดี๋ยว routes.py ค่อย normalize ทีหลัง)
+        }
+        
+        print(f"[OK] (API) Successfully built structured resume.")
+        return parsed_data # 👈 คืนค่าเป็น dict กลับไป
+
+    except Exception as e:
+        print(f"[-] (API) An error occurred during structure building: {e}")
+        raise e
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--in", dest="inp", required=True)    # RAW JSON จาก parser
