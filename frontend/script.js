@@ -85,6 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
         resultContainer.innerHTML = '';
         errorContainer.innerHTML = '';
 
+        document.getElementById('ucb-transformation-title').classList.add('hidden');
+
         if (scoreChartInstance) {
             scoreChartInstance.destroy();
             scoreChartInstance = null;
@@ -151,15 +153,26 @@ document.addEventListener('DOMContentLoaded', () => {
         resultContainer.style.display = 'block';
 
         let breakdownHtml = '<p class="result-text">ไม่มีข้อมูล Breakdown</p>';
-        if (data.breakdown && data.breakdown.length > 0) {
-            const sortedBreakdown = [...data.breakdown].sort((a, b) => (a.skill || '').localeCompare(b.skill || ''));
-            breakdownHtml = sortedBreakdown.map(item => `
-                <div class="result-breakdown-item">
-                    <span class="item-skill">${item.skill || 'N/A'}</span>
-                    <span class="item-level level-${String(item.level || 'n/a').toLowerCase().replace(' ', '-')}">${item.level || 'N/A'}</span>
-                </div>
-            `).join('');
-        }
+    if (data.breakdown && data.breakdown.length > 0) {
+        const sortedBreakdown = [...data.breakdown].sort((a, b) => (a.skill || '').localeCompare(b.skill || ''));
+
+        // สร้าง HTML ใหม่สำหรับ Breakdown (แบบมี Badge)
+        breakdownHtml = sortedBreakdown.map(item => {
+            const levelText = item.level || 'N/A';
+
+            // ตรวจสอบว่า "ไม่พบ" หรือ "ต้องปรับปรุง" เพื่อแสดง "miss"
+            const statusText = (levelText === 'N/A' || levelText === 'Needs Improvement') ? 'miss' : 'found';
+            // ใช้ class ใหม่สำหรับ Badge
+            const badgeClass = (statusText === 'miss') ? 'badge-miss' : 'badge-found';
+
+            return `
+            <div class="clean-breakdown-item">
+                <span>${item.skill || 'N/A'}</span>
+                <span class="badge ${badgeClass}">${statusText}</span>
+            </div>
+            `;
+        }).join('');
+    }
 
         let summaryHtml = '<p class="result-text">ไม่มีข้อมูลสรุปผล</p>';
         if (data.summary && typeof data.summary === 'object') {
@@ -173,20 +186,73 @@ document.addEventListener('DOMContentLoaded', () => {
              `;
         }
 
-        const html = `
-            <div class="result-card">
-                <div> <h2 class="result-title">${data.name || 'ไม่พบชื่อ'}</h2> <p class="result-subtitle">สรุปข้อมูลจาก: ${sourceFileName}</p> </div>
-                <div class="result-summary-grid">
-                    <div class="summary-box"> <span class="summary-title">Score</span> <span class="summary-value score-${String(data.level || 'n/a').toLowerCase().replace(' ', '-')}">${data.score === 0 ? 0 : (data.score || 'N/A')}</span> </div>
-                    <div class="summary-box"> <span class="summary-title">Level</span> <span class="summary-value">${data.level || 'N/A'}</span> </div>
-                </div>
-                <div class="result-section"> <h3 class="result-section-title">สรุปผล (Summary)</h3> ${summaryHtml} </div>
-                <div class="result-section chart-section"> <h3 class="result-section-title">ส่วนประกอบคะแนน (Score Components)</h3> <div class="chart-container"> <canvas id="scoreComponentChart"></canvas> </div> <p id="chart-no-data" class="chart-error hidden">ไม่มีข้อมูลสำหรับสร้างกราฟส่วนประกอบคะแนน</p> </div>
-                <div class="result-section"> <h3 class="result-section-title">Breakdown</h3> <div class="result-breakdown-list"> ${breakdownHtml} </div> </div>
-                <div class="result-actions"> <button id="download-pdf-button" class="download-button"> ดาวน์โหลด UCB (PDF) </button> <p id="pdf-error-message" class="pdf-error"></p> </div>
+        // เราจะสร้าง HTML ส่วนท้ายการ์ด (Footer) แยกไว้
+    const cardFooterHtml = `
+        <div class="card-footer">
+            <p class="card-footer-source">
+                สรุปข้อมูลจาก: ${sourceFileName}
+            </p>
+            <div class="card-footer-action">
+                <button id="download-pdf-button" class="download-button-clean">
+                    ดาวน์โหลด
+                </button>
+                <p id="pdf-error-message" class="pdf-error"></p>
             </div>
-        `;
+        </div>
+    `;
+
+    // สร้าง HTML หลัก
+    const html = `
+        <div class="section-card">
+            <div class="result-header">
+                <h2 class="result-title">${data.name || 'ไม่พบชื่อ'}</h2>
+            </div>
+
+            <div class="result-main-layout">
+
+                <div class="result-left-column">
+
+                    <div class="score-level-container">
+                        <div class="score-level-box">
+                            <span class="clean-title">Score</span>
+                            <span class="clean-value score-${String(data.level || 'n/a').toLowerCase().replace(' ', '-')}">${data.score === 0 ? 0 : (data.score || 'N/A')}</span>
+                        </div>
+                        <div class="score-level-box">
+                            <span class="clean-title">Level</span>
+                            <span class="clean-value">${data.level || 'N/A'}</span>
+                        </div>
+                    </div>
+
+                    <div class="result-section">
+                        <h3 class="result-section-title">Breakdown</h3>
+                        <div class="clean-breakdown-list">
+                            ${breakdownHtml}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-right-column">
+                    <div class="result-section">
+                        <h3 class="result-section-title">Summary</h3>
+                        ${summaryHtml} 
+                    </div>
+
+                    <div class="result-section chart-section">
+                        <h3 class="result-section-title">Score Components</h3>
+                        <div class="chart-container-wrapper"> 
+                            <div class="chart-container">
+                                <canvas id="scoreComponentChart"></canvas>
+                            </div>
+                            <p id="chart-no-data" class="chart-error hidden">ไม่มีข้อมูลสำหรับสร้างกราฟ</p>
+                        </div>
+                    </div>
+                </div>
+            </div> ${cardFooterHtml}
+
+        </div> `;
         resultContainer.innerHTML = html;
+
+        document.getElementById('ucb-transformation-title').classList.remove('hidden');
 
         // --- ผูก Event Listener ---
         const downloadBtn = document.getElementById('download-pdf-button');
@@ -360,19 +426,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderError(message) {
         hideAllStates();
         errorContainer.style.display = 'block';
+
+        document.getElementById('ucb-transformation-title').classList.remove('hidden');
+
         errorContainer.innerHTML = `<div class="error-box"><p class="error-title">เกิดข้อผิดพลาด</p><p>${message}</p></div>`;
     }
 });
-
-window.addEventListener('scroll', () => {
-  const header = document.querySelector('header');
-  if (window.scrollY > 10) header.classList.add('scrolled');
-  else header.classList.remove('scrolled');
-});
-
-const data = {
-  // Recharts example
-  stroke: '#5C6BF4',
-  fill: 'rgba(92,107,244,0.2)',
-  dot: { r: 4, fill: '#5C6BF4' }
-};

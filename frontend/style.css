@@ -3,6 +3,32 @@
     box-sizing: border-box;
 }
 
+.top-bar {
+    height: 30px;
+    background-color: #1e293b; /* เปลี่ยนเป็นสีเทาเข้ม (ดูหรูกว่าสีส้ม) */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem; /* ลดขนาดฟอนต์ */
+    font-weight: 500;
+
+    position: sticky;
+    top: 0;
+    z-index: 51; /* (ตั้ง z-index ให้สูงกว่า header) */
+}
+
+/* สไตล์ลิงก์ "click" ใน top-bar */
+.top-bar a {
+    color: #a5b4fc; /* สีม่วงอ่อน (indigo-300) */
+    text-decoration: underline;
+    margin-left: 0.5rem;
+    font-weight: 600;
+}
+.top-bar a:hover {
+    color: #ffffff;
+}
+
 body {
     font-family: 'Inter','Prompt', 'Sarabun', sans-serif;
     margin: 0;
@@ -10,7 +36,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     background-color: #ffffff; /* slate-50 */
-    color: #334155; /* slate-700 */
+    color: #000000; /* slate-700 */
 }
 
 a {
@@ -27,7 +53,7 @@ ul {
 button {
     cursor: pointer;
     border: none;
-    font-family: 'Inter', 'Sarabun', sans-serif;
+    font-family: 'Inter','Prompt', 'Sarabun', sans-serif;
 }
 
 /* ===== Utility ===== */
@@ -43,20 +69,18 @@ button {
     display: none;
 }
 
-/* ===== Header & Navigation ===== */
+/* ===== Header & Navigation (ปรับปรุงใหม่) ===== */
 header {
-    background-color: #88ace9;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); /* shadow-sm */
-    position: sticky;
-    top: 0;
+    /* เปลี่ยนจากสีเทาเป็นสีขาว */
+    background-color: #ffffff; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* เพิ่มเงา */
+
+    position: sticky; 
+    top: 30px; /* (เกาะต่อจาก .top-bar) */
     z-index: 50;
-    position: sticky;
 }
 
-header.scrolled {
-  background: #f9f4e6;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
+/* (ลบ .scrolled ที่ซ้ำซ้อนออก) */
 
 nav {
     display: flex;
@@ -68,13 +92,52 @@ nav {
 }
 
 .logo a {
+    font-size: 1.5rem; 
+    font-weight: 700; 
+    color: #1e293b; /* สีเทาเข้ม */
+}
+
+.logo a:hover {
+    color: #4f46e5; /* สี Indigo */
+}
+
+/* 🎨 นี่คือสไตล์ของลิงก์เมนู (ใหม่) */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* ลดระยะห่างเล็กน้อย */
+}
+
+.nav-links a {
+    font-size: 0.9rem; /* ปรับขนาดฟอนต์ */
+    font-weight: 600; /* ทำให้หนาขึ้น */
+    color: #475569; /* สีเทากลาง (ไม่ใช่สีม่วง default) */
+    padding: 0.75rem 1rem; /* เพิ่ม padding ให้อยู่ตรงกลาง */
+    border-radius: 0.5rem; /* ทำให้ขอบมน */
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent; /* ซ่อนเส้นขอบล่างไว้ก่อน */
+}
+
+.nav-links a:hover {
+    background-color: #f1f5f9; /* สีเทาอ่อน (slate-100) */
+    color: #334155; /* สีเทาเข้มขึ้น */
+}
+
+/* 📍 นี่คือสไตล์ของหน้าที่ "Active" (ใหม่) */
+.nav-links a.active {
+    color: #4f46e5; /* สี Indigo (สีหลัก) */
+    /* เพิ่มเส้นขอบล่างเพื่อเน้น */
+    border-bottom: 3px solid #402924; 
+}
+
+.logo a {
     font-size: 1.5rem; /* text-2xl */
     font-weight: 700; /* font-bold */
     color: #1e293b; /* slate-800 */
 }
 
 .logo a:hover {
-    color: #4f46e5; /* hover:text-indigo-600 */
+    color: #402924; /* hover:text-indigo-600 */
 }
 
 /* ===== Main Content ===== */
@@ -82,7 +145,6 @@ main {
     flex-grow: 1;
 }
 
-/* นี่คือ <main> อันแรกที่มี container */
 .main-container {
     max-width: 1280px;
     margin: 0 auto;
@@ -91,29 +153,21 @@ main {
 
 .app {
     text-align: center;
-    max-width: 896px; /* max-w-4xl */
+    max-width: 100%; /* max-w-4xl */
     margin: 0 auto;
 }
 
 .app h1 {
     font-size: 2.25rem; /* text-4xl */
     font-weight: 700;
-    color: #1e293b;
+    color: #1e293b; /* slate-800 */
     margin-bottom: 1rem;
 }
 
 .app .subtitle {
-    color: #475569; /* slate-600 */
+    color: #94a3b8; /* slate-600 */
     font-size: 1.125rem; /* text-lg */
     margin-bottom: 2.5rem; /* mb-10 */
-}
-
-.card {
-    background-color: #ffffff;
-    padding: 2rem; /* p-8 */
-    border-radius: 1rem; /* rounded-2xl */
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
-    width: 100%;
 }
 
 /* ===== File Upload Area ===== */
@@ -122,13 +176,15 @@ main {
     padding: 2rem;
     text-align: center;
     cursor: pointer;
-    margin-bottom: 1.5rem; /* mb-6 */
     transition: all 0.3s;
     background: white;
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
-
+    min-height: 250px; 
+    width: 100%;
+    max-width: 500px; /* (ปรับขนาดความกว้างกรอบเส้นประที่นี่) */
+    margin: 0 auto 1.5rem auto;
 }
 
 #file-upload-area:hover {
@@ -209,11 +265,21 @@ main {
     font-weight: 700;
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
-    transition: background-color 0.3s;
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.2s ease-out;
 }
 
 #clear-button:hover {
     background-color: #cbd5e1; /* hover:bg-slate-300 */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+#clear-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    background-color: #c0cad5;
 }
 
 #output-container {
@@ -222,7 +288,6 @@ main {
 }
 
 #loading-state {
-    /* Starts hidden by .hidden class */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -253,9 +318,225 @@ main {
     font-weight: 500;
 }
 
+
+/* ======================================= */
+/* === UCB Result Card V3 (Clean) Styles === */
+/* ======================================= */
+
+/* นี่คือ "การ์ด" ที่หุ้มผลลัพธ์ทั้งหมด (สร้างโดย JS) */
+.section-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.result-header .result-title {
+    margin: 0;
+    font-size: 1.875rem; /* 30px */
+    font-weight: 700;
+    color: #1e293b; /* slate-800 */
+}
+
+/* Layout 2-Column หลัก */
+.result-main-layout {
+    display: grid;
+    grid-template-columns: 1fr; /* Mobile: 1 คอลัมน์ */
+    gap: 2.5rem; /* ระยะห่างระหว่าง ซ้าย-ขวา */
+    margin-top: 1.5rem;
+}
+
+/* Desktop: 2 คอลัมน์ */
+@media (min-width: 768px) {
+    .result-main-layout {
+        /* อัตราส่วน 40% / 60% */
+        grid-template-columns: 2fr 3fr; 
+    }
+}
+
+.result-left-column,
+.result-right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem; /* ระยะห่างระหว่าง Section ภายในคอลัมน์ */
+}
+
+/* 1. สไตล์หัวข้อ Section (Summary, Breakdown, etc.) */
+.result-section-title {
+    font-size: 1.125rem; /* 18px */
+    font-weight: 600;
+    color: #334155; /* slate-700 */
+    margin-top: 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9; /* slate-100 */
+    padding-bottom: 0.5rem;
+}
+
+.result-text {
+    color: #475569; /* slate-600 */
+    line-height: 1.6;
+    font-size: 0.875rem; /* 14px */
+    margin-bottom: 0.5rem;
+}
+.result-text strong {
+    color: #334155; /* slate-700 */
+    font-weight: 600;
+}
+
+/* 2. สไตล์ใหม่สำหรับ Score/Level */
+.score-level-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem; /* เว้นระยะก่อน Breakdown */
+}
+
+.clean-title {
+    display: block;
+    font-size: 0.875rem; /* 14px */
+    color: #64748b; /* slate-500 */
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+.clean-value {
+    display: block;
+    font-size: 1.5rem; /* 24px */
+    font-weight: 600;
+    color: #1e293b; /* slate-800 */
+}
+
+/* --- (FIXED) Consolidated V3 Score/Level Colors --- */
+/* (script.js สร้าง class: .score-excellent, .score-needs-improvement, .score-n/a) */
+.clean-value.score-excellent { 
+    color: #16a34a; 
+}
+.clean-value.score-strong { 
+    color: #059669; 
+}
+.clean-value.score-moderate { 
+    color: #d97706; 
+}
+.clean-value.score-needs-improvement { /* (แก้จาก 'needs improvement') */
+    color: #dc2626; 
+}
+.clean-value.score-n\/a { /* (ต้อง escape เครื่องหมาย /) */
+    color: #64748b; 
+}
+
+
+/* 3. สไตล์ใหม่สำหรับ Breakdown (Clean) */
+.clean-breakdown-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; /* ระยะห่างระหว่าง item */
+}
+.clean-breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8fafc; /* slate-50 (สีเทาอ่อน) */
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem; /* 8px */
+    border: 1px solid #f1f5f9; /* slate-100 */
+}
+.clean-breakdown-item span:first-child {
+    font-weight: 500;
+    color: #334155; /* slate-700 */
+}
+
+/* สไตล์ Badge (miss/found) */
+.badge {
+    font-size: 0.75rem; /* 12px */
+    font-weight: 600;
+    padding: 0.25rem 0.625rem; /* 4px 10px */
+    border-radius: 9999px; /* pill shape */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.badge-miss {
+    background-color: #fee2e2; /* red-100 */
+    color: #dc2626; /* red-600 */
+}
+.badge-found {
+    background-color: #dcfce7; /* green-100 */
+    color: #16a34a; /* green-600 */
+}
+
+/* 4. สไตล์ใหม่สำหรับ Chart Wrapper */
+.chart-container-wrapper {
+    background-color: #f8fafc; /* slate-50 */
+    border: 1px solid #f1f5f9; /* slate-100 */
+    border-radius: 0.75rem; /* 12px */
+    padding: 1rem;
+    min-height: 320px; /* กำหนดความสูงให้กล่อง */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* ปรับขนาด Chart Container เดิม */
+.chart-container {
+    height: 300px; /* (ปรับขนาดตามความเหมาะสม) */
+    width: 100%;
+    margin-top: 0; /* ลบ margin เดิม */
+    position: relative;
+}
+
+/* ซ่อน Section ถ้าไม่มีข้อมูล (ถูกควบคุมโดย JS) */
+.chart-section[style*="display: none"] {
+     display: none !important;
+}
+
+/* 5. สไตล์ใหม่สำหรับ Card Footer (Source + Download) */
+.card-footer {
+    border-top: 1px solid #e2e8f0; /* slate-200 */
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap; /* เผื่อจอมือถือ */
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+.card-footer-source {
+    font-size: 0.875rem; /* 14px */
+    color: #64748b; /* slate-500 */
+    margin: 0;
+}
+.card-footer-action {
+    text-align: right;
+}
+.download-button-clean {
+    background-color: #16a34a; /* green-600 */
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.625rem 1.25rem; /* 10px 20px */
+    border-radius: 0.5rem; /* 8px */
+    transition: all 0.3s;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    border: none;
+    cursor: pointer;
+}
+.download-button-clean:hover {
+    background-color: #15803d; /* green-700 */
+    transform: translateY(-2px);
+}
+.download-button-clean:disabled {
+    background-color: #9ca3af; /* gray-400 */
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+.pdf-error { 
+    color: #dc2626; /* red-600 */
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
 /* ===== Footer ===== */
 footer {
-    background-color: #ffffff;
+    background-color: #1e293b;
     border-top: 1px solid #e2e8f0; /* border-slate-200 */
     margin-top: 3rem; /* mt-12 */
 }
@@ -275,7 +556,7 @@ footer {
 
 .footer-section h4 {
     font-weight: 700;
-    color: #1e293b;
+    color: #ebebeb;
     margin-bottom: 1rem;
 }
 
@@ -350,10 +631,6 @@ footer {
         gap: 2rem; /* space-x-8 */
     }
 
-    .mobile-menu-button {
-        display: none;
-    }
-
     .app h1 {
         font-size: 3rem; /* md:text-5xl */
     }
@@ -366,230 +643,4 @@ footer {
     .social-links {
         justify-content: flex-start;
     }
-}
-
-/* ===== 
-  (วางต่อท้าย style.css)
-  เพิ่มสไตล์สำหรับหน้าผลลัพธ์ (Result) จาก FastAPI
-===== */
-
-/* ใช้ Grid แสดง Score และ Level */
-.result-summary-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
-
-.summary-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    background-color: #f8fafc; /* slate-50 */
-    border-radius: 0.5rem;
-    border: 1px solid #e2e8f0; /* slate-200 */
-}
-
-.summary-title {
-    font-size: 0.875rem;
-    color: #64748b; /* slate-500 */
-    margin-bottom: 0.25rem;
-    font-weight: 500;
-}
-
-.summary-value {
-    font-size: 1.875rem;
-    font-weight: 700;
-    color: #1e293b; /* slate-800 */
-}
-
-/* ข้อความสรุปผลธรรมดา */
-.result-text {
-    color: #475569; /* slate-600 */
-    line-height: 1.6;
-}
-
-/* รายการ Breakdown */
-.result-breakdown-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
-}
-
-.result-breakdown-item {
-    display: flex;
-    justify-content: space-between; /* Skill อยู่ซ้าย, Level อยู่ขวา */
-    align-items: center;
-    padding: 0.75rem;
-    background-color: #f8fafc; /* slate-50 */
-    border-radius: 0.375rem;
-    border: 1px solid #f1f5f9; /* slate-100 */
-}
-
-.item-skill {
-    font-weight: 500;
-    color: #334155; /* slate-700 */
-}
-
-/* ป้ายสถานะ Level (แบบ Badge) */
-.item-level {
-    font-size: 0.875rem;
-    font-weight: 600;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px; /* full pill */
-}
-
-/* สีสำหรับ Level และ Score */
-.level-excellent,
-.score-excellent {
-    color: #15803d; /* green-700 */
-    background-color: #dcfce7; /* green-100 */
-}
-.summary-value.score-excellent {
-    color: #16a34a; /* green-600 */
-    background-color: transparent;
-}
-
-.level-strong,
-.score-strong {
-    color: #059669; /* emerald-600 */
-    background-color: #d1fae5; /* emerald-100 */
-}
-.summary-value.score-strong {
-    color: #059669;
-    background-color: transparent;
-}
-
-.level-moderate,
-.score-moderate {
-    color: #d97706; /* amber-600 */
-    background-color: #fef3c7; /* amber-100 */
-}
-.summary-value.score-moderate {
-    color: #d97706;
-    background-color: transparent;
-}
-
-.level-needs improvement,
-.score-needs improvement {
-    color: #dc2626; /* red-600 */
-    background-color: #fee2e2; /* red-100 */
-}
-.summary-value.score-needs improvement {
-    color: #dc2626;
-    background-color: transparent;
-}
-
-.level-n/a 
-.score-n/a {
-    color: #64748b; /* slate-500 */
-    background-color: #f1f5f9; /* slate-100 */
-}
-.summary-value.score-n/a {
-    color: #64748b;
-    background-color: transparent;
-}
-
-/* Container ของปุ่มในหน้าผลลัพธ์ */
-.result-actions {
-    border-top: 1px solid #e2e8f0; /* slate-200 */
-    padding-top: 1.5rem;
-    margin-top: 1.5rem;
-    text-align: center;
-}
-
-.download-button {
-    background-color: #16a34a; /* สีเขียว */
-    color: #ffffff;
-    font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    transition: all 0.3s;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-}
-
-.download-button:hover {
-    background-color: #15803d;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-}
-
-.download-button:disabled {
-    background-color: #9ca3af; /* gray-400 */
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-.chart-container {
-    position: relative; /* จำเป็นสำหรับ Chart.js responsive */
-    height: 200px; /* กำหนดความสูงเริ่มต้น (ปรับได้) */
-    width: 100%;   /* กว้างเต็มพื้นที่ */
-    margin-top: 1rem;
-}
-
-/* ซ่อน Section ถ้าไม่มีข้อมูล (ถูกควบคุมโดย JS) */
-.chart-section[style*="display: none"] {
-     display: none !important;
-}
-
-.chart-container {
-    position: relative;
-    height: 450px; 
-    width: 100%;
-    margin-top: 1rem;
-}
-
-.section-card {
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-  padding: 2rem;
-  margin-bottom: 2rem;
-}
-
-:root {
-  --primary: #5C6BF4;
-  --bg-light: #f9fbfd;
-}
-h2, h3, .label-primary { color: var(--primary); }
-.btn-primary {
-  background: var(--primary);
-  color: white;
-  border-radius: 8px;
-  padding: 10px 20px;
-}
-
-.breakdown-item {
-  background: #f8fafc;
-  border-radius: 12px;
-  padding: 1rem 1.5rem;
-  margin-bottom: 0.75rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: 0.2s;
-}
-.breakdown-item:hover {
-  background: #eef2ff;
-  transform: translateY(-2px);
-}
-
-.btn-download {
-  background: linear-gradient(135deg, #00C49A, #00E6B8);
-  border: none;
-  color: white;
-  border-radius: 10px;
-  padding: 12px 24px;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0, 196, 154, 0.3);
-  transition: 0.3s;
-}
-.btn-download:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 196, 154, 0.4);
 }

@@ -1,17 +1,26 @@
 <!DOCTYPE html>
-<html lang="th" class="h-full bg-gray-900 text-gray-300">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Candidate Warehouse</title>
-    <!-- Tailwind CSS via CDN -->
+    
+    <title>Candidate Warehouse</title> 
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Link to Warehouse specific CSS (ยืนยันว่าลิงก์ถูกต้อง) -->
-    <link rel="stylesheet" href="warehouse.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="h-full font-inter">
+<body>
+
+    <div class="top-bar">
+        <span>Land more your skills for upgrade your skill-passport <a href="#">click</a></span>
+    </div>
 
     <header>
         <nav>
@@ -20,36 +29,31 @@
             </div>
             <ul class="nav-links">
                 <li><a href="dashboard.html">UCB-payload</a></li>
-                <li><a href="warehouse.html">warehouse</a></li>
+                <li><a href="warehouse.html" class="active">warehouse</a></li>
                 <li><a href="#">อัปโหลดไฟล์</a></li> 
+            </ul>
         </nav>
     </header>
 
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex" style="min-height: calc(100vh - 170px); background-color: #f1f5f9;"> <aside class="w-72 bg-white p-6 space-y-6 shadow-lg" style="overflow-y: auto;">
+            <h2 class="text-xl font-semibold text-slate-800">ตัวกรอง/ค้นหา/เรียง</h2>
 
-        <!-- Sidebar (Filters) -->
-        <aside class="w-72 bg-gray-800 p-6 space-y-6 overflow-y-auto flex flex-col">
-            <h2 class="text-xl font-semibold text-white">ตัวกรอง/ค้นหา/เรียง</h2>
-
-            <!-- Search Box -->
             <div>
-                <label for="search-box" class="block text-sm font-medium text-gray-400 mb-1">ค้นหา (ชื่อไฟล์/Headline/Skills/Gaps)</label>
-                <input type="text" id="search-box" class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-200" placeholder="เช่น Python, data-analyst...">
+                <label for="search-box" class="block text-sm font-medium text-slate-600 mb-1">ค้นหา (ชื่อไฟล์/Headline/Skills/Gaps)</label>
+                <input type="text" id="search-box" class="block w-full bg-slate-50 border-slate-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-slate-900" placeholder="เช่น Python, data-analyst...">
             </div>
 
-            <!-- Score Range -->
             <div>
-                <label for="score-range-min" class="block text-sm font-medium text-gray-400 mb-1">ช่วงคะแนน (<span id="score-range-label">0-100</span>)</label>
+                <label for="score-range-min" class="block text-sm font-medium text-slate-600 mb-1">ช่วงคะแนน (<span id="score-range-label">0-100</span>)</label>
                 <div class="flex space-x-2">
-                     <input type="number" id="score-range-min" min="0" max="100" value="0" class="block w-1/2 bg-gray-700 border-gray-600 rounded-md shadow-sm sm:text-sm text-gray-200" placeholder="Min">
-                     <input type="number" id="score-range-max" min="0" max="100" value="100" class="block w-1/2 bg-gray-700 border-gray-600 rounded-md shadow-sm sm:text-sm text-gray-200" placeholder="Max">
+                     <input type="number" id="score-range-min" min="0" max="100" value="0" class="block w-1/2 bg-slate-50 border-slate-300 rounded-md shadow-sm sm:text-sm text-slate-900" placeholder="Min">
+                     <input type="number" id="score-range-max" min="0" max="100" value="100" class="block w-1/2 bg-slate-50 border-slate-300 rounded-md shadow-sm sm:text-sm text-slate-900" placeholder="Max">
                 </div>
             </div>
 
-            <!-- Sort By -->
             <div>
-                <label for="sort-by" class="block text-sm font-medium text-gray-400 mb-1">เรียงตาม</label>
-                <select id="sort-by" class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-200">
+                <label for="sort-by" class="block text-sm font-medium text-slate-600 mb-1">เรียงตาม</label>
+                <select id="sort-by" class="block w-full bg-slate-50 border-slate-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-slate-900">
                     <option value="score_desc">Fit Score (มาก → น้อย)</option>
                     <option value="score_asc">Fit Score (น้อย → มาก)</option>
                     <option value="file_asc">File Name (A → Z)</option>
@@ -59,102 +63,78 @@
                 </select>
             </div>
 
-            <!-- Refresh Button -->
             <button id="refresh-button" class="w-full mt-4 flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-md font-semibold shadow-sm transition-colors hover:bg-indigo-700">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9M4 12v5h.582m15.356 2A8.001 8.001 0 004.582 21M20 12a8 8 0 01-8 8A8 8 0 014 12a8 8 0 018-8 8 8 0 018 8z"></path></svg>
                 รีเฟรชข้อมูล (Refresh)
             </button>
-
-             <p class="text-xs text-gray-500 mt-2">กดรีเฟรชเพื่อโหลดข้อมูลล่าสุดหลังจากใช้ตัวกรอง</p>
-
-            <!-- Spacer -->
+             <p class="text-xs text-slate-500 mt-2">กดรีเฟรชเพื่อโหลดข้อมูลล่าสุดหลังจากใช้ตัวกรอง</p>
             <div class="flex-grow"></div>
-
-            <!-- Navigation back to UCB (Optional) -->
              <div>
-                <a href="index.html" class="text-sm text-indigo-400 hover:text-indigo-300">&larr; กลับไปหน้า UCB Upload</a>
+                <a href="dashboard.html" class="text-sm text-indigo-500 hover:text-indigo-600">&larr; กลับไปหน้า UCB Upload</a>
              </div>
-
         </aside>
 
-        <!-- Main Content Area -->
         <main class="flex-1 overflow-y-auto p-6 md:p-8">
             <div class="max-w-7xl mx-auto">
 
-                <h1 class="text-3xl font-bold text-white mb-6">Candidate Warehouse</h1>
-
-                <!-- Message Container -->
+                <h1 class="text-3xl font-bold text-slate-900 mb-6">Candidate Warehouse</h1>
                 <div id="message-container" class="my-4" style="display: none;"></div>
-
-                <!-- Loading Indicator -->
                 <div id="loading-indicator" class="text-center py-10" style="display: none;">
-                    <p class="text-lg font-medium text-gray-400">กำลังโหลดข้อมูล...</p>
-                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <p class="text-lg font-medium text-slate-500">กำลังโหลดข้อมูล...</p>
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-700 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </div>
 
-                <!-- (A) All Results Table -->
                  <div class="mb-8">
                      <div class="flex justify-between items-center mb-2">
-                        <h2 class="text-xl font-semibold text-white">All Results (<span id="results-count">0</span>)</h2>
+                        <h2 class="text-xl font-semibold text-slate-900">All Results (<span id="results-count">0</span>)</h2>
                          <button id="export-csv-button" class="text-sm bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-3 rounded-md transition duration-150 ease-in-out disabled:opacity-50" disabled>
                              Export to CSV
                          </button>
                      </div>
-                     <div class="overflow-x-auto rounded-md border border-gray-700 max-h-96">
-                         <table class="min-w-full divide-y divide-gray-700">
-                             <thead class="bg-gray-700 sticky top-0">
+                     <div class="overflow-x-auto rounded-md border border-slate-300 bg-white max-h-96">
+                         <table class="min-w-full divide-y divide-slate-200">
+                             <thead class="bg-slate-100 sticky top-0">
                                  <tr>
-                                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">File</th>
-                                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Fit Score</th>
-                                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Headline</th>
-                                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Skills</th>
-                                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Gaps</th>
+                                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">File</th>
+                                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Fit Score</th>
+                                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Headline</th>
+                                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Skills</th>
+                                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Gaps</th>
                                  </tr>
                              </thead>
-                             <tbody id="results-table-body" class="bg-gray-800 divide-y divide-gray-700">
-                                 <!-- Table rows will be injected here -->
-                                 <tr><td colspan="5" class="px-4 py-3 text-sm text-gray-500 text-center">No results to display.</td></tr>
+                             <tbody id="results-table-body" class="bg-white divide-y divide-slate-200">
+                                 <tr><td colspan="5" class="px-4 py-3 text-sm text-slate-500 text-center">No results to display.</td></tr>
                              </tbody>
                          </table>
                      </div>
                  </div>
 
-
-                 <!-- (B) Compare Candidates -->
-                 <div class="bg-gray-800 p-4 rounded-lg shadow border border-gray-700">
-                    <h2 class="text-xl font-semibold text-white mb-4">เปรียบเทียบ 2 ผู้สมัคร (Side-by-Side)</h2>
+                 <div class="bg-white p-4 rounded-lg shadow border border-slate-300">
+                    <h2 class="text-xl font-semibold text-slate-900 mb-4">เปรียบเทียบ 2 ผู้สมัคร (Side-by-Side)</h2>
                      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Candidate A -->
                         <div>
-                            <label for="compare-candidate-a" class="block text-sm font-medium text-gray-400 mb-1">Candidate A</label>
-                            <select id="compare-candidate-a" class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-200">
+                            <label for="compare-candidate-a" class="block text-sm font-medium text-slate-600 mb-1">Candidate A</label>
+                            <select id="compare-candidate-a" class="block w-full bg-slate-50 border-slate-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-slate-900">
                                 <option value="">-- เลือก Candidate A --</option>
-                                <!-- Options populated by JS -->
                             </select>
-                            <div id="compare-a-details" class="mt-4 space-y-3 text-sm border-t border-gray-700 pt-4">
-                                <!-- Details injected by JS -->
-                                <p class="text-gray-500">เลือก Candidate เพื่อดูรายละเอียด</p>
+                            <div id="compare-a-details" class="mt-4 space-y-3 text-sm border-t border-slate-200 pt-4">
+                                <p class="text-slate-500">เลือก Candidate เพื่อดูรายละเอียด</p>
                             </div>
                         </div>
-                        <!-- Candidate B -->
                         <div>
-                            <label for="compare-candidate-b" class="block text-sm font-medium text-gray-400 mb-1">Candidate B</label>
-                            <select id="compare-candidate-b" class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-200">
+                            <label for="compare-candidate-b" class="block text-sm font-medium text-slate-600 mb-1">Candidate B</label>
+                            <select id="compare-candidate-b" class="block w-full bg-slate-50 border-slate-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-slate-900">
                                  <option value="">-- เลือก Candidate B --</option>
-                                <!-- Options populated by JS -->
                             </select>
-                            <div id="compare-b-details" class="mt-4 space-y-3 text-sm border-t border-gray-700 pt-4">
-                                <!-- Details injected by JS -->
-                                <p class="text-gray-500">เลือก Candidate เพื่อดูรายละเอียด</p>
+                            <div id="compare-b-details" class="mt-4 space-y-3 text-sm border-t border-slate-200 pt-4">
+                                <p class="text-slate-500">เลือก Candidate เพื่อดูรายละเอียด</p>
                             </div>
                         </div>
                      </div>
                  </div>
-
-            </div> <!-- End max-w-7xl -->
+            </div>
         </main>
-
-    </div> <!-- End flex wrapper -->
+    </div>
 
     <footer>
         <div class="footer-container">
@@ -193,8 +173,7 @@
         </div>
     </footer>
 
-    <!-- Link to Warehouse specific JavaScript file -->
     <script src="warehouse.js" defer></script>
+
 </body>
 </html>
-

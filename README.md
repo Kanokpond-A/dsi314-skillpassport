@@ -4,7 +4,7 @@
 ### Quick Run (W3) — Scoring → UCB
 
 ```bash
-python ./backend/app/services/parser_a1/normalize_scoring/scoring.py --in shared_data/latest_parsed/a.json --out shared_data/latest_ucb/a.json
+python -m backend.app.services.parser_a1.normalize_scoring.scoring --in shared_data/latest_parsed/a.json --out shared_data/latest_ucb/a.json
 pytest -q
 ```
 
