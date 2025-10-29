@@ -4,7 +4,8 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from .api.v1.routes import router as v1_router
 
-from api.v2.routes import router as v2_router
+from .api.v2.routes import router as v2_router
+
 
 from .core.logging import get_logger, request_id_ctx
 from uuid import uuid4
