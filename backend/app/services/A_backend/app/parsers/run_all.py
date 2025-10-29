@@ -1,5 +1,4 @@
 # backend/app/services/A_backend/app/parsers/run_all.py
-
 import argparse, subprocess, sys, json, csv, statistics as stats, time, datetime
 from pathlib import Path
 
@@ -85,6 +84,9 @@ def main():
                     help="write summary CSV + metrics JSON after run")
     ap.add_argument("--validate", action="store_true",
                     help="validate parsed JSON against parsed_resume.schema.json")
+    # ✅ add pass-threshold flag
+    ap.add_argument("--pass-threshold", type=int, default=70,
+                    help="threshold for pass-rate in report (default: 70)")
     args = ap.parse_args()
 
     in_dir = Path(args.in_dir)
