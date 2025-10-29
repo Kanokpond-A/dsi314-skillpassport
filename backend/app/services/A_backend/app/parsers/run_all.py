@@ -1,35 +1,44 @@
 # backend/app/services/A_backend/app/parsers/run_all.py
+
 import argparse, subprocess, sys, json, csv, statistics as stats, time, datetime
 from pathlib import Path
 
-# --- Resolve repo root ---
-# File is at: backend/app/services/A_backend/app/parsers/run_all.py
-# -> go up 6 levels to reach repo root
-ROOT = Path(__file__).resolve().parents[6]
+# ------------------------------------------------------------------
+# Path layout
+# This file lives at: backend/app/services/A_backend/app/parsers/run_all.py
+# ------------------------------------------------------------------
+ROOT = Path(__file__).resolve().parents[6]  # repo root
 
-# --- I/O directories (relative to repo root) ---
+# I/O dirs (under repo root)
 DEFAULT_IN = ROOT / "samples"
 PARSED_DIR = ROOT / "shared_data/latest_parsed"
 UCB_DIR    = ROOT / "shared_data/latest_ucb"
-TMP_DIR    = ROOT / "shared_data/examples"
+TMP_DIR    = ROOT / "shared_data/examples"   # raw temporaries per-file
 
-# --- A_backend module base ---
-BASE = ROOT / "backend/app/services/A_backend"
+# A_backend modules
+BASE           = ROOT / "backend/app/services/A_backend"
 PDF_PARSER     = BASE / "parsers/pdf_parser.py"
 DOCX_PARSER    = BASE / "parsers/docx_parser.py"
 STRUCT_BUILDER = BASE / "preprocess/structure_builder.py"
 SCORING        = BASE / "normalize_scoring/scoring.py"
-SCHEMA_PATH    = ROOT / "backend/app/schemas/parsed_resume.schema.json"  # v0.2.0
+SCHEMA_ADAPTER = BASE / "tools/schema_adapter.py"
+
+# JSON Schema (v0.2.0)
+SCHEMA_PATH    = BASE / "schemas/parsed_resume.schema.json"
+
 
 def run(cmd):
-    """Run a command; print helpful logs on failure."""
+    """Run a command and raise with helpful logs when failed."""
     print("→", " ".join(map(str, cmd)))
     p = subprocess.run(list(map(str, cmd)), capture_output=True, text=True)
     if p.returncode != 0:
-        if p.stdout: print("STDOUT:\n", p.stdout[:4000])
-        if p.stderr: print("STDERR:\n", p.stderr[:4000])
+        if p.stdout:
+            print("STDOUT:\n", p.stdout[:4000])
+        if p.stderr:
+            print("STDERR:\n", p.stderr[:4000])
         raise subprocess.CalledProcessError(p.returncode, cmd, p.stdout, p.stderr)
     return p
+
 
 def collect_files(indir: Path, include_docx: bool):
     files = list(sorted(indir.glob("*.pdf")))
@@ -37,13 +46,14 @@ def collect_files(indir: Path, include_docx: bool):
         files += list(sorted(indir.glob("*.docx")))
     return files
 
+
 def validate_parsed_json(parsed_path: Path, schema_path: Path) -> bool:
     """Validate parsed JSON against schema if jsonschema is available; otherwise noop."""
     try:
-        import jsonschema  # type: ignore
+        from jsonschema import validate  # type: ignore
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
         data   = json.loads(parsed_path.read_text(encoding="utf-8"))
-        jsonschema.validate(instance=data, schema=schema)
+        validate(instance=data, schema=schema)
         return True
     except ModuleNotFoundError:
         print("⚠️  jsonschema not installed; skipping schema validation.")
@@ -52,16 +62,17 @@ def validate_parsed_json(parsed_path: Path, schema_path: Path) -> bool:
         print(f"❌ schema validation failed for {parsed_path.name}: {e}")
         return False
 
+
 def main():
     ap = argparse.ArgumentParser(
-        description="Batch: parse (PDF/DOCX) → build (v0.2.0) → score → UCB"
+        description="Batch pipeline: parse (PDF/DOCX) → build → adapt(schema v0.2.0) → validate → score → report"
     )
     ap.add_argument("--in-dir", type=str, default=str(DEFAULT_IN),
                     help="input folder (default: samples/)")
     ap.add_argument("--lang", default="eng",
                     help="tesseract lang for PDFs (e.g., eng or eng+tha)")
     ap.add_argument("--docx", action="store_true",
-                    help="include .docx in batch")
+                    help="include .docx files in batch")
     ap.add_argument("--skip-existing", action="store_true",
                     help="skip when both parsed & ucb already exist")
     ap.add_argument("--redact", dest="redact", action="store_true", default=True,
@@ -72,8 +83,6 @@ def main():
                     help="path to JD config YAML for scoring (optional)")
     ap.add_argument("--report", action="store_true",
                     help="write summary CSV + metrics JSON after run")
-    ap.add_argument("--pass-threshold", type=int, default=70,
-                    help="threshold for pass-rate in report (default: 70)")
     ap.add_argument("--validate", action="store_true",
                     help="validate parsed JSON against parsed_resume.schema.json")
     args = ap.parse_args()
@@ -83,6 +92,7 @@ def main():
         print(f"❌ input folder not found: {in_dir}")
         sys.exit(1)
 
+    # Ensure dirs
     PARSED_DIR.mkdir(parents=True, exist_ok=True)
     UCB_DIR.mkdir(parents=True, exist_ok=True)
     TMP_DIR.mkdir(parents=True, exist_ok=True)
@@ -94,14 +104,15 @@ def main():
         print("⚠️  No files found. Put PDF/DOCX into the input folder and try again.")
         return
 
-    if args.docx and not DOCX_PARSER.exists():
-        print("⚠️  docx_parser.py not found. DOCX files will fail. Expected at:", DOCX_PARSER)
-
-    # Quick existence checks
+    # Existence checks for modules
     for path_needed in (PDF_PARSER, STRUCT_BUILDER, SCORING):
         if not path_needed.exists():
             print(f"❌ required module not found: {path_needed}")
             sys.exit(1)
+    if not SCHEMA_ADAPTER.exists():
+        print(f"⚠️  schema_adapter not found at {SCHEMA_ADAPTER} — will proceed without adapting.")
+    if not SCHEMA_PATH.exists():
+        print(f"⚠️  schema file not found at {SCHEMA_PATH} — validation will be skipped.")
 
     ok, fail = 0, 0
     t0_all = time.time()
@@ -114,7 +125,7 @@ def main():
             print(f"[SKIP] {p.name}")
             continue
 
-        # unique RAW temp per file (avoid stale collisions)
+        # Unique RAW temp per file
         ts = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         raw_tmp = TMP_DIR / f"raw_{p.stem}_{ts}.json"
 
@@ -127,22 +138,23 @@ def main():
                 run([sys.executable, DOCX_PARSER,
                      "--in", p, "--out", raw_tmp])
 
-            # 2) RAW → parsed_resume.json (schema v0.2.0)
+            # 2) RAW → parsed_resume.json (builder)
             run([sys.executable, STRUCT_BUILDER,
                  "--in", raw_tmp, "--out", parsed_path])
 
-            # 2.1) Optional JSON Schema validation
-            if args.validate:
-                if not SCHEMA_PATH.exists():
-                    print(f"⚠️  schema file not found at {SCHEMA_PATH}, skipping validation.")
-                else:
-                    if not validate_parsed_json(parsed_path, SCHEMA_PATH):
-                        print(f"[FAIL] {p.name} (schema invalid)")
-                        fail += 1
-                        # keep the file for inspection but skip scoring
-                        continue
+            # 2.1) Adapt to schema (normalize keys to match parsed_resume.schema.json)
+            if SCHEMA_ADAPTER.exists():
+                run([sys.executable, SCHEMA_ADAPTER, parsed_path, parsed_path])
 
-            # 3) parsed_resume → UCB
+            # 2.2) Optional JSON Schema validation
+            if args.validate and SCHEMA_PATH.exists():
+                if not validate_parsed_json(parsed_path, SCHEMA_PATH):
+                    print(f"[FAIL] {p.name} (schema invalid)")
+                    fail += 1
+                    # keep file for inspection but skip scoring
+                    continue
+
+            # 3) parsed_resume → UCB (scoring)
             scoring_cmd = [sys.executable, SCORING,
                            "--in", parsed_path, "--out", ucb_path]
             if args.redact:
@@ -169,7 +181,7 @@ def main():
     print(f"\nSummary: OK={ok}, FAIL={fail}, total={len(files)}, "
           f"redact={'on' if args.redact else 'off'}, elapsed={elapsed}ms")
 
-    # -------- Report (CSV + metrics.json) at repo root/shared_data --------
+    # -------- Optional Report (CSV + metrics.json) --------
     if args.report:
         try:
             scores = []
@@ -209,7 +221,7 @@ def main():
                 "redact": bool(args.redact),
                 "jd_profile": args.jd or None,
                 "validated": bool(args.validate),
-                "schema_path": str(SCHEMA_PATH) if args.validate else None,
+                "schema_path": str(SCHEMA_PATH) if args.validate and SCHEMA_PATH.exists() else None,
             }
             metrics_path = ROOT / "shared_data/metrics.json"
             json.dump(metrics, open(metrics_path, "w", encoding="utf-8"),
@@ -218,8 +230,10 @@ def main():
         except Exception as e:
             print(f"[REPORT] error: {e}")
 
+
 if __name__ == "__main__":
     main()
+
 
 
 

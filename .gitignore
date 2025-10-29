@@ -21,3 +21,11 @@ build/
 *.docx
 shared_data/tmp/
 .ipynb_checkpoints/
+
+# build artifacts
+shared_data/
+.vscode/
+.venv/
+__pycache__/
+*.pyc
+
