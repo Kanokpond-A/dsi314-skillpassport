@@ -1,10 +1,3 @@
-# === 1. IMPORT เครื่องมือที่จำเป็น ===
-import tempfile
-import subprocess
-import sys
-import os
-import json
-from pathlib import Path  # 👈 (แก้ไข: เพิ่มบรรทัดนี้เข้ามา)
 from fastapi import APIRouter, UploadFile, File
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
@@ -16,22 +9,9 @@ from backend.app.services.analytics.summary import build_summary
 from backend.app.core.privacy import redact_payload
 from fastapi import Query
 
-# === 2. IMPORT ตัวทำความสะอาดสกิล (ใช้ Path ที่ถูกต้อง) ===
-from backend.app.services.parser_a1.normalize_scoring.skills_normalizer import normalize_skills
-
-# === 3. กำหนด Path ไปยัง Root ของโปรเจกต์ ===
-# (สมมติว่า routes.py อยู่ลึก 4 ระดับจาก dsi314-skillpassport)
-ROOT_DIR = Path(__file__).resolve().parents[4]
-
-# === 4. กำหนด Path ไปยังสคริปต์เครื่องมือ (ใช้ Path ที่ถูกต้อง) ===
-PDF_PARSER_SCRIPT = ROOT_DIR / "backend/app/services/parser_a1/parsers/pdf_parser.py"
-STRUCTURE_BUILDER_SCRIPT = ROOT_DIR / "backend/app/services/parser_a1/preprocess/structure_builder.py"
-
-
 router = APIRouter(prefix="/api/v1", tags=["v1"])
 
-
-# ----- 5. Class Models -----
+# ----- models (ย้ายไปไฟล์แยกก็ได้ภายหลัง) -----
 class ParsedResume(BaseModel):
     name: str
     education: list = []
@@ -45,7 +25,6 @@ class UCBPayload(BaseModel):
     gaps: list
     evidence: list
 
-
 # ----- endpoints -----
 @router.get("/health")
 def health():
@@ -53,51 +32,31 @@ def health():
 
 @router.post("/parse-resume")
 async def parse_resume(file: UploadFile | None = File(default=None)):
-    
-    file_bytes = await file.read()
-
-    with tempfile.TemporaryDirectory() as tmpdir:
-        tmp_pdf_path = os.path.join(tmpdir, "uploaded.pdf")
-        tmp_raw_json_path = os.path.join(tmpdir, "raw.json")
-        tmp_parsed_json_path = os.path.join(tmpdir, "parsed.json")
-
-        try:
-            with open(tmp_pdf_path, "wb") as f:
-                f.write(file_bytes)
-
-            subprocess.run(
-                [sys.executable, str(PDF_PARSER_SCRIPT), "--in", tmp_pdf_path, "--out", tmp_raw_json_path, "--lang", "eng"],
-                check=True, capture_output=True, text=True, encoding='utf-8'
-            )
-
-            subprocess.run(
-                [sys.executable, str(STRUCTURE_BUILDER_SCRIPT), "--in", tmp_raw_json_path, "--out", tmp_parsed_json_path],
-                check=True, capture_output=True, text=True, encoding='utf-8'
-            )
-
-            with open(tmp_parsed_json_path, "r", encoding="utf-8") as f:
-                raw_data = json.load(f)
-
-        except subprocess.CalledProcessError as e:
-            print("Stderr:", e.stderr)
-            print("Stdout:", e.stdout)
-            return JSONResponse(status_code=500, content={"error": "Failed to process file", "details": e.stderr})
-        except Exception as e:
-            return JSONResponse(status_code=500, content={"error": str(e)})
-
-    clean_skills = normalize_skills(raw_data.get("skills", []))
-    
-    real_data = {
-        "name": raw_data.get("name"),
-        "education": raw_data.get("education", []),
-        "skills": clean_skills,
-        "evidence": raw_data.get("evidence", [])
+    sample = {
+        "name": "Jane Doe",
+        "education": [{"degree": "B.Eng", "year": 2023}],
+        "skills": ["Python", "FastAPI", "SQL"],
+        "evidence": [{"type": "pdf", "page": 2}]
     }
-    
-    return real_data
+    return JSONResponse(sample)
+
+# @router.post("/score", response_model=UCBPayload)
+# async def score(parsed: ParsedResume):
+#     fit = min(1.0, 0.2 + 0.1 * len(parsed.skills))
+#     gaps = ["Docker"] if "Docker" not in parsed.skills else []
+#     return UCBPayload(
+#         name=parsed.name,
+#         skills=parsed.skills,
+#         fit_score=round(fit, 2),
+#         gaps=gaps,
+#         evidence=parsed.evidence
+#     )
 
 @router.post("/ucb")
 async def ucb_json(parsed: ParsedResume):
+    """
+    Generate UCB (JSON) — สำหรับ HR/UI
+    """
     data = redact_payload(parsed.model_dump())
     result = score_applicant(data.get("skills", []), data.get("evidence", []), ScoringConfig())
     hr = result["hr_view"]
@@ -111,7 +70,7 @@ async def ucb_json(parsed: ParsedResume):
 
 @router.post("/ucb-pdf")
 async def ucb_pdf_endpoint(parsed: ParsedResume):
-    data = redact_payload(parsed.model_dump())
+    data = redact_payload(parsed.model_dump())  # ✅ ซ่อน PII
     result = score_applicant(data.get("skills", []), data.get("evidence", []), ScoringConfig())
     hr = result["hr_view"]
     buf = build_ucb_pdf(data.get("name","Unknown"), hr)
@@ -121,10 +80,56 @@ async def ucb_pdf_endpoint(parsed: ParsedResume):
         headers={"Content-Disposition": f'inline; filename="{data.get("name","Candidate")}_UCB.pdf"'}
     )
 
+# @router.post("/ucb-pdf")
+# async def ucb_pdf(payload: UCBPayload):
+#     pdf = FPDF()
+#     pdf.add_page()
+#     pdf.set_font("Arial", size=14)
+#     pdf.cell(0, 10, txt=f"UCB for: {payload.name}", ln=1)
+#     pdf.cell(0, 10, txt=f"Skills: {', '.join(payload.skills)}", ln=1)
+#     pdf.cell(0, 10, txt=f"Fit score: {payload.fit_score}", ln=1)
+#     if payload.gaps:
+#         pdf.cell(0, 10, txt=f"Gaps: {', '.join(payload.gaps)}", ln=1)
+#     buf = BytesIO()
+#     pdf.output(buf)
+#     buf.seek(0)
+#     return StreamingResponse(
+#         buf,
+#         media_type="application/pdf",
+#         headers={"Content-Disposition": "inline; filename=ucb.pdf"}
+#     )
+
+@router.post("/ucb")
+async def ucb_summary(parsed: ParsedResume):
+    """
+    Generate summarized result for HR
+    """
+    from backend.app.services.scoring.logic import score_applicant
+    result = score_applicant(parsed.skills, parsed.evidence)
+    return result["hr_view"]
+
+@router.post("/ucb-pdf")
+async def ucb_pdf(parsed: ParsedResume):
+    """
+    Generate PDF summary for HR
+    """
+    result = score_applicant(parsed.skills, parsed.evidence)
+    hr_view = result["hr_view"]
+
+    buf = build_ucb_pdf(parsed.name, hr_view)
+    return StreamingResponse(
+        buf,
+        media_type="application/pdf",
+        headers={"Content-Disposition": "inline; filename=ucb.pdf"}
+    )
+
+
+
 @router.post("/score")
 async def score(parsed: ParsedResume):
     result = score_applicant(parsed.skills, parsed.evidence, ScoringConfig())
-    mv = result["machine_view"]
+    mv = result["machine_view"]   # fit_score 0–1 + gaps (เข้ากับระบบเดิม)
+    # ถ้ายังอยากตอบตาม schema เดิม:
     return {
         "name": parsed.name,
         "skills": parsed.skills,
@@ -139,10 +144,10 @@ async def score_hr(parsed: ParsedResume):
     hr = result["hr_view"]
     return {
         "name": parsed.name,
-        "score": hr["score"],
-        "level": hr["level"],
-        "summary": hr["summary"],
-        "breakdown": hr["breakdown"],
+        "score": hr["score"],            # 0–100
+        "level": hr["level"],            # Excellent/Strong/Moderate/Needs improvement
+        "summary": hr["summary"],        # matched %, gaps, evidence bonus
+        "breakdown": hr["breakdown"],    # รายสกิลละเอียด
         "notes": hr["notes"]
     }
 
@@ -152,4 +157,3 @@ def summary(
     limit: int | None = Query(None, ge=1, description="จำกัดจำนวนแถว candidates")
 ):
     return build_summary(refresh=refresh, limit=limit)
-

@@ -16,12 +16,12 @@ class RequestIdFilter(logging.Filter):
 def get_logger(name: str = "ucb"):
     """คืน logger ที่มีฟิลเตอร์ request_id + ฟอร์แมตอ่านง่าย"""
     logger = logging.getLogger(name)
-    if not logger.handlers:
+    if not logger.handlers: #กัน duplicate handler
         handler = logging.StreamHandler()
         fmt = "%(asctime)s %(levelname)s %(name)s [req=%(request_id)s] %(message)s"
         handler.setFormatter(logging.Formatter(fmt))
         handler.addFilter(RequestIdFilter())
         logger.addHandler(handler)
         logger.setLevel(LOG_LEVEL)
-        logger.propagate = False
+        logger.propagate = False #ป้องกัน log ซ้ำ
     return logger

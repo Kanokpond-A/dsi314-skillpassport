@@ -4,6 +4,8 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from .api.v1.routes import router as v1_router
 
+from api.v2.routes import router as v2_router
+
 from .core.logging import get_logger, request_id_ctx
 from uuid import uuid4
 
@@ -29,6 +31,7 @@ app.add_middleware(
 
 # --- เพิ่ม Router หลังจาก Middleware ---
 app.include_router(v1_router)
+app.include_router(v2_router, prefix="/api/v2", tags=["UCB v2"])
 
 # --- ตั้งค่า Logger และ Middleware อื่นๆ ---
 logger = get_logger("ucb.app")
