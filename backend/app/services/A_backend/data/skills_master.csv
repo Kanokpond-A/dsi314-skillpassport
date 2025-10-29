@@ -1,0 +1,209 @@
+alias,canonical,industry
+# --- Tech / Data ---
+python,Python,Tech
+py,Python,Tech
+python3,Python,Tech
+sql,SQL,Tech
+structured query language,SQL,Tech
+excel,Excel,Tech
+microsoft excel,Excel,Tech
+tableau,Tableau,Tech
+power bi,Power BI,Tech
+ms power bi,Power BI,Tech
+looker studio,Looker Studio,Tech
+data studio,Looker Studio,Tech
+airflow,Apache Airflow,Tech
+apache airflow,Apache Airflow,Tech
+dbt,dbt,Tech
+pandas,Pandas,Tech
+numpy,NumPy,Tech
+scikit-learn,Scikit-learn,Tech
+sklearn,Scikit-learn,Tech
+tensorflow,TensorFlow,Tech
+pytorch,PyTorch,Tech
+spark,Apache Spark,Tech
+hadoop,Hadoop,Tech
+git,Git,Tech
+github,Git,Tech
+docker,Docker,Tech
+k8s,Kubernetes,Tech
+kubernetes,Kubernetes,Tech
+linux,Linux,Tech
+bash,Bash,Tech
+shell scripting,Bash,Tech
+aws,AWS,Tech
+amazon web services,AWS,Tech
+gcp,Google Cloud,Tech
+google cloud,Google Cloud,Tech
+azure,Microsoft Azure,Tech
+rest api,REST API,Tech
+api,REST API,Tech
+fastapi,FastAPI,Tech
+flask,Flask,Tech
+django,Django,Tech
+etl,ETL,Tech
+data pipeline,ETL,Tech
+powerquery,Power Query,Tech
+power query,Power Query,Tech
+
+# --- Finance / Accounting ---
+accounting,Accounting,Finance
+บัญชี,Accounting,Finance
+bookkeeping,Bookkeeping,Finance
+ap,Accounts Payable,Finance
+accounts payable,Accounts Payable,Finance
+ar,Accounts Receivable,Finance
+accounts receivable,Accounts Receivable,Finance
+reconciliation,Reconciliation,Finance
+bank recon,Reconciliation,Finance
+financial analysis,Financial Analysis,Finance
+finance analysis,Financial Analysis,Finance
+financial modeling,Financial Modeling,Finance
+budgeting,Budgeting,Finance
+forecasting,Forecasting,Finance
+cost accounting,Cost Accounting,Finance
+audit,Audit,Finance
+internal audit,Audit,Finance
+ifrs,IFRS,Finance
+gaap,GAAP,Finance
+tax,Tax Filing,Finance
+tax filing,Tax Filing,Finance
+vat,VAT,Finance
+withholding tax,Withholding Tax,Finance
+payroll,Payroll,Finance
+treasury,Treasury,Finance
+risk management,Risk Management,Finance
+quickbooks,QuickBooks,Finance
+xero,Xero,Finance
+sap,SAP,Finance
+oracle fusion,Oracle ERP,Finance
+oracle erp,Oracle ERP,Finance
+ms excel,Excel (Finance),Finance
+excel,Excel (Finance),Finance
+
+# --- Hospitality / Hotel ---
+front desk,Front Desk,Hospitality
+reception,Front Desk,Hospitality
+receptionist,Front Desk,Hospitality
+check-in,Check-in,Hospitality
+check out,Check-out,Hospitality
+check-out,Check-out,Hospitality
+reservation,Reservations,Hospitality
+reservations,Reservations,Hospitality
+concierge,Concierge,Hospitality
+customer service,Customer Service,Hospitality
+complaint handling,Complaint Handling,Hospitality
+upselling,Upselling,Hospitality
+pms,PMS,Hospitality
+opera,Opera PMS,Hospitality
+opera pms,Opera PMS,Hospitality
+pos,POS,Hospitality
+cashiering,Cashiering,Hospitality
+cash handling,Cashiering,Hospitality
+night shift,Night Shift,Hospitality
+housekeeping,Housekeeping,Hospitality
+room assignment,Room Assignment,Hospitality
+inventory,Inventory Control,Hospitality
+banquet,Banquet Service,Hospitality
+f&b,F&B Service,Hospitality
+food & beverage,F&B Service,Hospitality
+barista,Barista,Hospitality
+bartender,Bartender,Hospitality
+guest relation,Guest Relations,Hospitality
+guest relations,Guest Relations,Hospitality
+
+# --- Marketing / Growth ---
+seo,SEO,Marketing
+search engine optimization,SEO,Marketing
+sem,SEM,Marketing
+google ads,Google Ads,Marketing
+facebook ads,Facebook Ads,Marketing
+meta ads,Facebook Ads,Marketing
+tiktok ads,TikTok Ads,Marketing
+line oa,LINE OA,Marketing
+content writing,Content Writing,Marketing
+copywriting,Copywriting,Marketing
+email marketing,Email Marketing,Marketing
+crm,CRM,Marketing
+hubspot,HubSpot,Marketing
+salesforce,Salesforce,Marketing
+marketing automation,Marketing Automation,Marketing
+social media,Social Media Management,Marketing
+community management,Community Management,Marketing
+influencer marketing,Influencer Marketing,Marketing
+campaign management,Campaign Management,Marketing
+performance marketing,Performance Marketing,Marketing
+brand,Branding,Marketing
+branding,Branding,Marketing
+pr,Public Relations,Marketing
+event marketing,Event Marketing,Marketing
+ga4,Google Analytics 4,Marketing
+google analytics,Google Analytics 4,Marketing
+looker studio,Looker Studio (Mkt),Marketing
+data studio,Looker Studio (Mkt),Marketing
+a/b testing,A/B Testing,Marketing
+landing page,Landing Pages,Marketing
+wordpress,WordPress,Marketing
+shopify,Shopify,Marketing
+cms,CMS,Marketing
+
+# --- Healthcare ---
+patient care,Patient Care,Healthcare
+ดูแลผู้ป่วย,Patient Care,Healthcare
+vital signs,Vital Signs,Healthcare
+สัญญาณชีพ,Vital Signs,Healthcare
+medical record,Medical Records,Healthcare
+emr,EMR,Healthcare
+ehr,EHR,Healthcare
+phlebotomy,Phlebotomy,Healthcare
+medication administration,Medication Administration,Healthcare
+drug dispensing,Medication Administration,Healthcare
+wound care,Wound Care,Healthcare
+infection control,Infection Control,Healthcare
+triage,Triage,Healthcare
+cpr,CPR,Healthcare
+first aid,First Aid,Healthcare
+ekg,EKG,Healthcare
+ecg,EKG,Healthcare
+laboratory,Laboratory,Healthcare
+lab,Laboratory,Healthcare
+sterilization,Sterilization,Healthcare
+hipaa,HIPAA,Healthcare
+insurance claim,Insurance Claims,Healthcare
+icd-10,ICD-10 Coding,Healthcare
+cpt,CPT Coding,Healthcare
+telemedicine,Telemedicine,Healthcare
+bedside manner,Bedside Manner,Healthcare
+scheduling,Patient Scheduling,Healthcare
+pharmacy dispensing,Pharmacy Dispensing,Healthcare
+ppe,PPE,Healthcare
+
+# --- Education / Teaching ---
+lesson planning,Lesson Planning,Education
+แผนการสอน,Lesson Planning,Education
+classroom management,Classroom Management,Education
+discipline,Classroom Management,Education
+curriculum design,Curriculum Design,Education
+course design,Curriculum Design,Education
+assessment,Assessment,Education
+grading,Grading,Education
+student counseling,Student Counseling,Education
+parent communication,Parent Communication,Education
+online teaching,Online Teaching,Education
+lms,LMS,Education
+google classroom,Google Classroom,Education
+moodle,Moodle,Education
+instructional design,Instructional Design,Education
+differentiated instruction,Differentiated Instruction,Education
+project-based learning,Project-based Learning,Education
+pbl,Project-based Learning,Education
+stem,STEM,Education
+steam,STEM,Education
+early childhood,Early Childhood,Education
+special education,Special Education,Education
+esl,ESL,Education
+english as a second language,ESL,Education
+thai language,Thai Language,Education
+mathematics,Mathematics,Education
+math,Mathematics,Education
+science,Science,Education
