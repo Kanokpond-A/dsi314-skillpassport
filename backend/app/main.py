@@ -1,16 +1,22 @@
+import os
+from uuid import uuid4
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
+
 from .api.v1.routes import router as v1_router
-
 from .api.v2.routes import router as v2_router
-
-
 from .core.logging import get_logger, request_id_ctx
-from uuid import uuid4
+
+from dotenv import load_dotenv
+
+# --- Load .env ก่อนใช้งานทุกอย่างที่อ้างอิง ENV ---
+load_dotenv()  
 
 app = FastAPI(title="UCB Backend", version="0.1.0")
+logger = get_logger("ucb.app")
 
 # --- รายชื่อ Origin ที่เราอนุญาต ---
 origins = [
@@ -32,10 +38,7 @@ app.add_middleware(
 
 # --- เพิ่ม Router หลังจาก Middleware ---
 app.include_router(v1_router)
-app.include_router(v2_router, prefix="/api/v2", tags=["UCB v2"])
-
-# --- ตั้งค่า Logger และ Middleware อื่นๆ ---
-logger = get_logger("ucb.app")
+app.include_router(v2_router)
 
 @app.middleware("http")
 async def add_request_id(request: Request, call_next):
