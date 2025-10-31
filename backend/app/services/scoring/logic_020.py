@@ -156,38 +156,3 @@ def calculate_fit_score(candidate: Dict[str, Any]) -> float:
     total = s_skills + s_exp + s_avail + s_salary + s_edu + s_lang + s_cert
     return round(_clamp_score(total), 2)
 
-# def summarize_candidate(candidate: dict, jd: dict = None) -> dict:
-#     """
-#     รับ dict ของผู้สมัคร แล้วคืน fit_score + evidence snippets
-#     - ใช้ calculate_fit_score() เพื่อคำนวณคะแนน
-#     - ดึงหลักฐานจากเงื่อนไข เช่น skill ตรง, industry ตรง, ฯลฯ
-#     """
-#     score = calculate_fit_score(candidate)
-#     evidence = []
-
-#     # Hard skill match
-#     required_skills = jd.get("required_skills", []) if jd else []
-#     matched_skills = [s for s in candidate.get("skills", []) if s in required_skills]
-#     if matched_skills:
-#         evidence.append(f"มีทักษะ: {', '.join(matched_skills)}")
-
-#     # Industry match
-#     if jd and candidate.get("industry") == jd.get("industry"):
-#         evidence.append(f"มีประสบการณ์ในอุตสาหกรรม {candidate['industry']}")
-
-#     # Availability
-#     if candidate.get("availability") in ["พร้อมเริ่มทันที", "พร้อมเริ่มงาน"]:
-#         evidence.append("พร้อมเริ่มงานทันที")
-
-#     # Certifications
-#     if candidate.get("certifications"):
-#         evidence.append(f"มีใบรับรอง {', '.join(candidate['certifications'])}")
-
-#     return {
-#         "name": candidate.get("name"),
-#         "fit_score": score,
-#         "evidence": evidence,
-#         "expected_salary": candidate.get("expected_salary"),
-#         "availability": candidate.get("availability")
-#     }
-
