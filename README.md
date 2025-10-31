@@ -1,4 +1,4 @@
-## Hello World
+## UCB Project
 
 
 ### Quick Run (W3) — Scoring → UCB
