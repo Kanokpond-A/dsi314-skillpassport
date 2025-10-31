@@ -1,0 +1,69 @@
+{
+  "source_file": "f.pdf",
+  "name": "MAYA PATEL",
+  "contacts": {
+    "email": "m.patel@email.com",
+    "phone": "123) 456-7890",
+    "location": ""
+  },
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "University",
+      "start": "2009",
+      "end": "2013"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "2016",
+      "end": "2019",
+      "bullets": [
+        "Clinical Data Analyst",
+        "Novella Clinical",
+        "2019 - current",
+        "Morrisville, NC",
+        "Managed clinical trial data with 98% accuracy in alignment with",
+        "regulatory requirements.",
+        "Conducted cleaning processes for clinical trial data, reducing",
+        "errors by 13%.",
+        "Generated statistical reports analyzing clinical trial data with",
+        "SAS, which improved the identification of treatment trends by",
+        "27%.",
+        "Performed comparative analysis using SPSS to identify",
+        "correlations in patient populations that led to targeted",
+        "recruitment strategies.",
+        "Clinical Data Coordinator",
+        "UNC Health Care System",
+        "2016 - 2019",
+        "Chapel Hill, NC",
+        "Coordinated the implementation of data analysis plans that",
+        "reduced data processing time for clinical studies by 32%.",
+        "Communicated clinical study progress with cross-functional",
+        "teams to streamline efficiency by 54%.",
+        "Streamlined the creation of data visualization dashboards",
+        "using Medidata Rave, providing real-time insights to",
+        "stakeholders that enhanced data-driven decision-making.",
+        "Contributed to the integration of Medidata CTMS data, which",
+        "improved clinical study progress tracking by 28%.",
+        "Clinical Data Analyst Intern",
+        "PRA Health Sciences",
+        "2013 - 2016",
+        "Raleigh, NC",
+        "Collaborated with cross-functional teams to analyze adverse",
+        "event data and help identify potential safety concerns.",
+        "Assisted in the preparation of clinical study reports, adding",
+        "visualizations to communicate outcomes 72% more clearly.",
+        "Researched innovative data analysis techniques to enhance",
+        "the efficiency of data processes during clinical trials by 26%.",
+        "Supported the implementation of clinical study protocols while",
+        "ensuring 99% compliance with regulatory guidelines."
+      ]
+    }
+  ],
+  "skills": [
+    "Medidata Rave\nOracle Clinical\nOpenClinica\nSAS\nR\nSPSS\nMedidata CTMS\nBioclinica CTMS\nCERTIFICATIONS\nCertified Clinical Data Analyst\n(CCDA)"
+  ]
+}

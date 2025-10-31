@@ -1,0 +1,71 @@
+{
+  "source_file": "p.pdf",
+  "name": "BELLA THOMPSON",
+  "contacts": {
+    "email": "b.thompson@email.com",
+    "phone": "123) 456-7890",
+    "location": ""
+  },
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "",
+      "start": "2015",
+      "end": "2019"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "2019",
+      "end": "2021",
+      "bullets": [
+        "Excel Data Analyst",
+        "Cox Communications",
+        "2021 - current",
+        "Atlanta, GA",
+        "Integrated Microsoft Power BI dashboards with live data feeds,",
+        "boosting real-time data accessibility for 210+ users across multiple",
+        "departments.",
+        "Oversaw inventory levels through VBA (Visual Basic for",
+        "Applications), cutting down surplus inventory costs by $3,852.",
+        "Implemented time series forecasting using IBM SPSS for network",
+        "usage data, resulting in a 17% decrease in peak time congestion",
+        "issues.",
+        "Built Microsoft Excel dashboards for executive reporting to enable",
+        "real-time performance tracking for 14 key performance indicators",
+        "(KPIs).",
+        "Junior Data Analyst",
+        "SunTrust Bank (now Truist)",
+        "2019 - 2021",
+        "Atlanta, GA",
+        "Analyzed transaction data using Microsoft SQL Server to identify",
+        "fraud patterns, contributing to a 29% downtick in fraudulent",
+        "activities.",
+        "Set up AWS CloudWatch monitoring to track and resolve data",
+        "processing issues, shrinking system downtime by 31%.",
+        "Designed MicroStrategy reports for customer feedback analysis,",
+        "discovering service improvement areas that grew Net Promoter",
+        "Score (NPS) by 8 points.",
+        "Supported senior analysts in conducting A/B testing for new",
+        "product launches, increasing conversion rates by 16%.",
+        "Data Analyst Intern",
+        "Intercontinental Exchange (ICE)",
+        "2018 - 2019",
+        "Atlanta, GA",
+        "Used Alteryx to cleanse and normalize data, improving data quality",
+        "for downstream analytics and slashing error rates by 22%.",
+        "Streamlined project management by arranging all data analysis",
+        "tasks in Trello, achieving a 57% rise in task completion rates.",
+        "Organized and prioritized tasks with GitHub Projects, enhancing",
+        "team workflow and project completion rates by 34%.",
+        "Reduced data discrepancy incidents by 68% by implementing a",
+        "robust data validation framework."
+      ]
+    }
+  ],
+  "skills": [
+    "Microsoft Power BI\nIBM SPSS Statistics\nMicrosoft SQL Server\nAlteryx\nVBA (Visual Basic for Applications)\nMicrosoft Excel\nAWS\nMicroStrategy\nGitHub\nTrello"
+  ]
+}

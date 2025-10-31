@@ -1,0 +1,76 @@
+{
+  "source_file": "aa.pdf",
+  "name": "WILLIAM",
+  "contacts": {
+    "email": "w.moore@email.com",
+    "phone": "123) 456-7890",
+    "location": ""
+  },
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "University of Washington",
+      "start": "2014",
+      "end": "2018"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "2019",
+      "end": "2022",
+      "bullets": [
+        "Python Data Analyst",
+        "Uber",
+        "2022 - current",
+        "Seattle, WA",
+        "Spearheaded the development of machine learning models",
+        "using TensorFlow to optimize route recommendations, reducing",
+        "average trip duration by 18%",
+        "Led a team to overhaul data pipelines, migrating from CSV to",
+        "PostgreSQL databases, improving data processing speed by 42%",
+        "Developed predictive maintenance algorithms in Python,",
+        "reducing vehicle downtime by 27% and saving $128k in yearly",
+        "maintenance costs",
+        "Harnessed Jupyter Notebook for exploratory data analysis and",
+        "iterative model development, reducing development time by 3",
+        "hours",
+        "Data Analyst Intern",
+        "Nordstrom",
+        "2019 - 2022",
+        "Seattle, WA",
+        "Collaborated with senior analysts to automate data cleaning",
+        "tasks using Pandas and NumPy, enhancing data quality and",
+        "reliability, saving about 14 hours weekly",
+        "Assisted in the development of predictive maintenance models",
+        "for equipment reliability using Scikit-learn, reducing",
+        "maintenance costs by 9%",
+        "Created interactive dashboards using Plotly for real-time",
+        "monitoring of 11 key performance indicators",
+        "Helped in analyzing sales data using Matplotlib and Seaborn,",
+        "identifying trends and revenue growth opportunities that",
+        "increased monthly sales by $101,972",
+        "Data Entry Clerk",
+        "Boeing",
+        "2018 - 2019",
+        "Seattle, WA",
+        "Processed and cataloged incoming inventory data using Excel",
+        "and proprietary data entry software, maintaining a 99% accuracy",
+        "rate",
+        "Enhanced data entry efficiency by implementing keyboard",
+        "shortcuts and automation tools, reducing data processing time",
+        "by three hours",
+        "Monitored data quality and integrity, implementing corrective",
+        "actions to address discrepancies and inconsistencies, reducing",
+        "data errors by 9%",
+        "Partnered with IT teams to troubleshoot technical issues related",
+        "to data entry software and systems, minimizing downtime",
+        "probability by 2.6 out 10"
+      ]
+    }
+  ],
+  "skills": [
+    "Python\nJupyter Notebook\nPostgreSQL\nPandas\nNumPy\nMatplotlib\nSeaborn\nScikit-learn\nTensorFlow\nPlotly"
+  ]
+}

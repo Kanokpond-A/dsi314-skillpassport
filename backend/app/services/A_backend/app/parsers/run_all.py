@@ -2,20 +2,19 @@
 import argparse, subprocess, sys, json, csv, statistics as stats, time, datetime
 from pathlib import Path
 
-# ------------------------------------------------------------------
-# Path layout
-# This file lives at: backend/app/services/A_backend/app/parsers/run_all.py
-# ------------------------------------------------------------------
-ROOT = Path(__file__).resolve().parents[6]  # repo root
+# --- Resolve repo root ---
+# File is at: backend/app/services/A_backend/app/parsers/run_all.py
+# -> go up 6 levels to reach repo root
+ROOT = Path(__file__).resolve().parents[6]
 
-# I/O dirs (under repo root)
+# --- I/O directories (relative to repo root) ---
 DEFAULT_IN = ROOT / "samples"
 PARSED_DIR = ROOT / "shared_data/latest_parsed"
 UCB_DIR    = ROOT / "shared_data/latest_ucb"
-TMP_DIR    = ROOT / "shared_data/examples"   # raw temporaries per-file
+TMP_DIR    = ROOT / "shared_data/examples"
 
-# A_backend modules
-BASE           = ROOT / "backend/app/services/A_backend"
+# --- A_backend module base ---
+BASE = ROOT / "backend/app/services/A_backend"
 PDF_PARSER     = BASE / "parsers/pdf_parser.py"
 DOCX_PARSER    = BASE / "parsers/docx_parser.py"
 STRUCT_BUILDER = BASE / "preprocess/structure_builder.py"
@@ -23,21 +22,17 @@ SCORING        = BASE / "normalize_scoring/scoring.py"
 SCHEMA_ADAPTER = BASE / "tools/schema_adapter.py"
 
 # JSON Schema (v0.2.0)
-SCHEMA_PATH    = BASE / "schemas/parsed_resume.schema.json"
-
+SCHEMA_PATH    = ROOT / "backend/app/schemas/parsed_resume.schema.json"  # v0.2.0
 
 def run(cmd):
-    """Run a command and raise with helpful logs when failed."""
+    """Run a command; print helpful logs on failure."""
     print("→", " ".join(map(str, cmd)))
     p = subprocess.run(list(map(str, cmd)), capture_output=True, text=True)
     if p.returncode != 0:
-        if p.stdout:
-            print("STDOUT:\n", p.stdout[:4000])
-        if p.stderr:
-            print("STDERR:\n", p.stderr[:4000])
+        if p.stdout: print("STDOUT:\n", p.stdout[:4000])
+        if p.stderr: print("STDERR:\n", p.stderr[:4000])
         raise subprocess.CalledProcessError(p.returncode, cmd, p.stdout, p.stderr)
     return p
-
 
 def collect_files(indir: Path, include_docx: bool):
     files = list(sorted(indir.glob("*.pdf")))
@@ -45,14 +40,13 @@ def collect_files(indir: Path, include_docx: bool):
         files += list(sorted(indir.glob("*.docx")))
     return files
 
-
 def validate_parsed_json(parsed_path: Path, schema_path: Path) -> bool:
     """Validate parsed JSON against schema if jsonschema is available; otherwise noop."""
     try:
-        from jsonschema import validate  # type: ignore
+        import jsonschema  # type: ignore
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
         data   = json.loads(parsed_path.read_text(encoding="utf-8"))
-        validate(instance=data, schema=schema)
+        jsonschema.validate(instance=data, schema=schema)
         return True
     except ModuleNotFoundError:
         print("⚠️  jsonschema not installed; skipping schema validation.")
@@ -232,10 +226,8 @@ def main():
         except Exception as e:
             print(f"[REPORT] error: {e}")
 
-
 if __name__ == "__main__":
     main()
-
 
 
 

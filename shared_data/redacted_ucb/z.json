@@ -1,0 +1,32 @@
+{
+  "candidate_id": "z",
+  "headline": "Candidate — Power BI\nSQL Server Management\nStudio (SSMS)\nMicrosoft SQL Server\nPython\nMicrosoft SSIS\nMicrosoft Azure\nGoogle Data Studio\nSAS\nGit\nCollibra",
+  "skills": {
+    "normalized": [
+      "Python"
+    ],
+    "raw": [
+      "Power BI\nSQL Server Management\nStudio (SSMS)\nMicrosoft SQL Server\nPython\nMicrosoft SSIS\nMicrosoft Azure\nGoogle Data Studio\nSAS\nGit\nCollibra"
+    ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
+  },
+  "fit_score": 37,
+  "reasons": [
+    "matched required/nice skills",
+    "experience blocks ≈ 1",
+    "contacts detected"
+  ],
+  "gaps": [
+    "SQL",
+    "Tableau"
+  ],
+  "evidence": {},
+  "meta": {
+    "generated_at": null,
+    "schema_version": "1.0.0"
+  }
+}

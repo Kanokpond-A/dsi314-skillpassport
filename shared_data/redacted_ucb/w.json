@@ -1,0 +1,36 @@
+{
+  "candidate_id": "w",
+  "headline": "Lead Data Analyst — Databases (MS SQL, SAP); Computer Programming (R, Python); Google Analytics; Machine Learning\nCERTIFICATIONS\nGoogle Data Analytics Professional",
+  "skills": {
+    "normalized": [
+      "SQL",
+      "SAP); Computer Programming (R",
+      "Python"
+    ],
+    "raw": [
+      "Databases (MS SQL",
+      "SAP); Computer Programming (R",
+      "Python); Google Analytics; Machine Learning\nCERTIFICATIONS\nGoogle Data Analytics Professional"
+    ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
+  },
+  "fit_score": 68,
+  "reasons": [
+    "matched required/nice skills",
+    "experience blocks ≈ 1",
+    "role keywords matched",
+    "contacts detected"
+  ],
+  "gaps": [
+    "Tableau"
+  ],
+  "evidence": {},
+  "meta": {
+    "generated_at": null,
+    "schema_version": "1.0.0"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "candidate_id": "y",
+  "headline": "Candidate — PivotTables\nSQL Server Management\nStudio\nSELECT Queries\nAzure SQL Data Warehouse\nPandas\nggplot2\nDAX\nTableau\nAzure ML Studio\nSharePoint",
+  "skills": {
+    "normalized": [
+      "Tableau"
+    ],
+    "raw": [
+      "PivotTables\nSQL Server Management\nStudio\nSELECT Queries\nAzure SQL Data Warehouse\nPandas\nggplot2\nDAX\nTableau\nAzure ML Studio\nSharePoint"
+    ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
+  },
+  "fit_score": 37,
+  "reasons": [
+    "matched required/nice skills",
+    "experience blocks ≈ 1",
+    "contacts detected"
+  ],
+  "gaps": [
+    "Python",
+    "SQL"
+  ],
+  "evidence": {
+    "Tableau": [
+      "skills[0]",
+      "experiences[0].bullets[13]"
+    ]
+  },
+  "meta": {
+    "generated_at": null,
+    "schema_version": "1.1.0",
+    "jd_source": "config/jd_profiles/data-analyst.yml"
+  }
+}
