@@ -1,0 +1,407 @@
+# jd_templates.yml — Universal JD presets (multi-industry, multi-level)
+# ใช้ anchors (&) + aliases (*) เพื่อรวม skill bundles ได้สะดวก
+# A2 ของคุณจะอ่าน field:  required_skills  เป็นหลัก
+# ส่วน nice_to_have / certifications / tools ใช้ประกอบผลลัพธ์ (optional)
+
+version: 1.0
+
+# ------------------------------------------------------------------
+# 1) SKILL BUNDLES (แก้/เพิ่มที่เดียว ใช้ได้ทุกตำแหน่ง)
+# ------------------------------------------------------------------
+skills_bundles:
+
+  soft_core: &soft_core
+    - communication
+    - teamwork
+    - problem solving
+    - time management
+    - adaptability
+
+  office_core: &office_core
+    - excel
+    - powerpoint
+    - word
+    - google sheets
+
+  data_core: &data_core
+    - python
+    - sql
+    - statistics
+    - data analysis
+    - pandas
+    - visualization
+    - dashboard
+
+  data_tools_bi: &data_tools_bi
+    - power bi
+    - tableau
+    - looker
+
+  ml_core: &ml_core
+    - machine learning
+    - scikit-learn
+    - model evaluation
+
+  backend_core: &backend_core
+    - python
+    - fastapi
+    - rest api
+    - database
+    - git
+
+  frontend_core: &frontend_core
+    - html
+    - css
+    - javascript
+    - react
+
+  cloud_aws: &cloud_aws
+    - aws
+    - s3
+    - ec2
+    - iam
+
+  cloud_gcp: &cloud_gcp
+    - gcp
+    - bigquery
+    - compute engine
+
+  de_core: &de_core
+    - etl
+    - airflow
+    - dbt
+    - spark
+    - pyspark
+
+  qa_core: &qa_core
+    - software testing
+    - test cases
+    - automation
+    - selenium
+
+  devops_core: &devops_core
+    - docker
+    - kubernetes
+    - ci/cd
+
+  marketing_core: &marketing_core
+    - seo
+    - sem
+    - social media
+    - campaign management
+    - content
+
+  sales_core: &sales_core
+    - crm
+    - lead generation
+    - negotiation
+
+  finance_core: &finance_core
+    - accounting
+    - bookkeeping
+    - financial reporting
+    - tax
+
+  hr_core: &hr_core
+    - recruitment
+    - onboarding
+    - payroll
+    - employee relations
+
+  ops_core: &ops_core
+    - operations
+    - process improvement
+    - inventory
+    - scheduling
+
+  cs_core: &cs_core
+    - customer service
+    - complaint handling
+    - call center
+    - ticketing
+
+  design_core: &design_core
+    - figma
+    - wireframe
+    - prototyping
+    - user research
+
+  healthcare_core: &healthcare_core
+    - patient care
+    - vital signs
+    - medical records
+
+  education_core: &education_core
+    - lesson planning
+    - classroom management
+    - assessment
+
+  hospitality_core: &hospitality_core
+    - front desk
+    - reservation
+    - pos
+    - pms
+
+  logistics_core: &logistics_core
+    - logistics
+    - warehouse
+    - picking
+    - wms
+
+  retail_core: &retail_core
+    - retail operations
+    - cashier
+    - merchandising
+
+  manufacturing_core: &manufacturing_core
+    - production
+    - quality control
+    - 5s
+    - safety
+
+  legal_core: &legal_core
+    - contract review
+    - compliance
+    - legal research
+
+  construction_core: &construction_core
+    - project management
+    - autocad
+    - quantity survey
+
+# ------------------------------------------------------------------
+# 2) GENERIC / INDUSTRY-GENERIC PROFILES
+# ------------------------------------------------------------------
+generic:
+  name: generic
+  required_skills:
+    - *soft_core
+  nice_to_have: *office_core
+
+generic_admin:
+  name: generic_admin
+  required_skills:
+    - *office_core
+    - *soft_core
+
+generic_it:
+  name: generic_it
+  required_skills:
+    - *backend_core
+    - *soft_core
+
+generic_customer_service:
+  name: generic_customer_service
+  required_skills:
+    - *cs_core
+    - *soft_core
+
+# ------------------------------------------------------------------
+# 3) FAMILY + LEVEL PROFILES (เลือกใช้ตามตำแหน่ง)
+# ------------------------------------------------------------------
+
+# --- DATA / ANALYTICS ---
+data_analyst_junior:
+  name: data_analyst_junior
+  required_skills:
+    - *data_core
+    - *data_tools_bi
+    - excel
+  nice_to_have:
+    - *soft_core
+
+data_analyst_senior:
+  name: data_analyst_senior
+  required_skills:
+    - *data_core
+    - *data_tools_bi
+    - sql optimization
+    - stakeholder management
+  nice_to_have:
+    - *ml_core
+
+data_scientist_mid:
+  name: data_scientist_mid
+  required_skills:
+    - *data_core
+    - *ml_core
+    - feature engineering
+  nice_to_have:
+    - *cloud_aws
+    - *data_tools_bi
+
+data_engineer_mid:
+  name: data_engineer_mid
+  required_skills:
+    - *de_core
+    - *backend_core
+    - sql
+  nice_to_have:
+    - *cloud_aws
+    - *devops_core
+
+# --- SOFTWARE / IT ---
+backend_engineer_junior:
+  name: backend_engineer_junior
+  required_skills:
+    - *backend_core
+  nice_to_have:
+    - *devops_core
+    - *cloud_aws
+
+frontend_engineer_junior:
+  name: frontend_engineer_junior
+  required_skills:
+    - *frontend_core
+  nice_to_have:
+    - ux basics
+
+qa_engineer:
+  name: qa_engineer
+  required_skills:
+    - *qa_core
+    - *soft_core
+
+devops_engineer:
+  name: devops_engineer
+  required_skills:
+    - *devops_core
+    - scripting
+  nice_to_have:
+    - *cloud_aws
+    - *cloud_gcp
+
+# --- PRODUCT / DESIGN ---
+product_manager:
+  name: product_manager
+  required_skills:
+    - roadmap
+    - stakeholder management
+    - analytics
+    - *soft_core
+
+uiux_designer:
+  name: uiux_designer
+  required_skills:
+    - *design_core
+  nice_to_have:
+    - accessibility
+
+# --- MARKETING / SALES ---
+digital_marketer:
+  name: digital_marketer
+  required_skills:
+    - *marketing_core
+    - analytics
+    - crm
+
+sales_executive:
+  name: sales_executive
+  required_skills:
+    - *sales_core
+    - *soft_core
+
+# --- FINANCE / HR / OPERATIONS ---
+accountant:
+  name: accountant
+  required_skills:
+    - *finance_core
+    - *office_core
+
+hr_generalist:
+  name: hr_generalist
+  required_skills:
+    - *hr_core
+    - *soft_core
+
+operations_supervisor:
+  name: operations_supervisor
+  required_skills:
+    - *ops_core
+    - *office_core
+
+# --- CUSTOMER SERVICE / HOSPITALITY / RETAIL ---
+customer_service_rep:
+  name: customer_service_rep
+  required_skills:
+    - *cs_core
+    - *soft_core
+
+hotel_front_officer:
+  name: hotel_front_officer
+  required_skills:
+    - *hospitality_core
+    - english
+
+retail_store_supervisor:
+  name: retail_store_supervisor
+  required_skills:
+    - *retail_core
+    - *soft_core
+    - scheduling
+
+# --- LOGISTICS / MANUFACTURING / CONSTRUCTION ---
+logistics_coordinator:
+  name: logistics_coordinator
+  required_skills:
+    - *logistics_core
+    - excel
+
+production_engineer:
+  name: production_engineer
+  required_skills:
+    - *manufacturing_core
+    - problem solving
+
+site_engineer:
+  name: site_engineer
+  required_skills:
+    - *construction_core
+    - safety
+
+# --- HEALTHCARE / EDUCATION / LEGAL ---
+registered_nurse:
+  name: registered_nurse
+  required_skills:
+    - *healthcare_core
+    - empathy
+
+teacher_general:
+  name: teacher_general
+  required_skills:
+    - *education_core
+    - communication
+
+legal_officer:
+  name: legal_officer
+  required_skills:
+    - *legal_core
+    - documentation
+
+# ------------------------------------------------------------------
+# 4) MAPPINGS / ALIASES (ช่วย HR เลือกง่ายขึ้น — optional)
+# ------------------------------------------------------------------
+aliases:
+  "data analyst": data_analyst_junior
+  "senior data analyst": data_analyst_senior
+  "ds mid": data_scientist_mid
+  "de mid": data_engineer_mid
+  "backend": backend_engineer_junior
+  "frontend": frontend_engineer_junior
+  "qa": qa_engineer
+  "pm": product_manager
+  "ux": uiux_designer
+  "marketer": digital_marketer
+  "sales": sales_executive
+  "accounting": accountant
+  "hr": hr_generalist
+  "ops": operations_supervisor
+  "csr": customer_service_rep
+  "front desk": hotel_front_officer
+  "retail supervisor": retail_store_supervisor
+  "logistics": logistics_coordinator
+  "production": production_engineer
+  "site": site_engineer
+  "nurse": registered_nurse
+  "teacher": teacher_general
+  "legal": legal_officer
