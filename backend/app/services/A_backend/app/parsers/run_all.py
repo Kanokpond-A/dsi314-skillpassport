@@ -28,7 +28,7 @@ SCHEMA_PATH    = BASE / "schemas/parsed_resume.schema.json"
 
 def run(cmd):
     """Run a command and raise with helpful logs when failed."""
-    print("→", " ".join(map(str, cmd)))
+    print(">", " ".join(map(str, cmd)))
     p = subprocess.run(list(map(str, cmd)), capture_output=True, text=True)
     if p.returncode != 0:
         if p.stdout:
