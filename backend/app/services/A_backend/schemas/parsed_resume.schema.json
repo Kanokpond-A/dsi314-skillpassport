@@ -1,19 +1,58 @@
-{ "$id": "https://example.com/schemas/parsed_resume.schema.json",
+{
+  "$id": "https://example.com/schemas/parsed_resume.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "type":"object",
-  "required":["source_file","name","contacts","education","experiences","skills"],
-  "additionalProperties":false,
-  "properties":{
-    "source_file":{"type":"string"},
-    "name":{"type":"string"},
-    "contacts":{"type":"object","required":["email","phone","location"],
-      "additionalProperties":true,
-      "properties":{"email":{"type":"string"},"phone":{"type":"string"},"location":{"type":"string"}}},
-    "education":{"type":"array","items":{"type":"object","additionalProperties":true,
-      "properties":{"degree":{"type":"string"},"institution":{"type":"string"},"start":{"type":"string"},"end":{"type":"string"}}}},
-    "experiences":{"type":"array","items":{"type":"object","additionalProperties":true,
-      "properties":{"company":{"type":"string"},"role":{"type":"string"},"start":{"type":"string"},"end":{"type":"string"},
-        "bullets":{"type":"array","items":{"type":"string"}}}}},
-    "skills":{"type":"array","items":{"type":"string"}}
+  "title": "Parsed Resume (structure_builder v0.2.1 compatible)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "contacts", "skills", "education", "experiences"],
+  "properties": {
+    "source_file": { "type": "string" },
+    "name": { "type": "string", "maxLength": 150 },
+    "contacts": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "location": { "type": "string" }
+      }
+    },
+    "industry": { "type": "string" },
+    "education": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "degree": { "type": "string" },
+          "institution": { "type": "string" },
+          "start": { "type": "string" },
+          "end": { "type": "string" }
+        }
+      }
+    },
+    "experiences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "company": { "type": "string" },
+          "role": { "type": "string" },
+          "start": { "type": "string" },
+          "end": { "type": "string" },
+          "bullets": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
   }
 }
+
+

@@ -1,0 +1,388 @@
+alias,canonical,industry
+# --- Tech / Data ---
+python,Python,Tech
+py,Python,Tech
+python3,Python,Tech
+pandas,Pandas,Tech
+numpy,NumPy,Tech
+scikit-learn,Scikit-learn,Tech
+sklearn,Scikit-learn,Tech
+tensorflow,TensorFlow,Tech
+tf,TensorFlow,Tech
+pytorch,PyTorch,Tech
+jupyter,Jupyter Notebook,Tech
+jupyter notebook,Jupyter Notebook,Tech
+notebook,Jupyter Notebook,Tech
+sql,SQL,Tech
+structured query language,SQL,Tech
+mysql,MySQL,Tech
+mariadb,MySQL,Tech
+postgresql,PostgreSQL,Tech
+postgres,PostgreSQL,Tech
+mssql,SQL Server,Tech
+sql server,SQL Server,Tech
+t-sql,T-SQL,Tech
+tsql,T-SQL,Tech
+pl/sql,PL/SQL,Tech
+plsql,PL/SQL,Tech
+bigquery,BigQuery,Tech
+snowflake,Snowflake,Tech
+redshift,Amazon Redshift,Tech
+databricks,Databricks,Tech
+spark,Apache Spark,Tech
+apache spark,Apache Spark,Tech
+hadoop,Hadoop,Tech
+hive,Apache Hive,Tech
+airflow,Apache Airflow,Tech
+apache airflow,Apache Airflow,Tech
+dbt,dbt,Tech
+etl,ETL,Tech
+data pipeline,ETL,Tech
+elt,ETL,Tech
+kafka,Apache Kafka,Tech
+excel,Excel,Tech
+microsoft excel,Excel,Tech
+ms excel,Excel,Tech
+vba,VBA,Tech
+power query,Power Query,Tech
+powerquery,Power Query,Tech
+google sheets,Google Sheets,Tech
+spreadsheet,Google Sheets,Tech
+looker studio,Looker Studio,Tech
+data studio,Looker Studio,Tech
+tableau,Tableau,Tech
+power bi,Power BI,Tech
+ms power bi,Power BI,Tech
+dax,DAX,Tech
+m language,Power Query M,Tech
+power query m,Power Query M,Tech
+statistics,Statistics,Tech
+statistical analysis,Statistics,Tech
+hypothesis testing,Statistics,Tech
+regression,Regression,Tech
+time series,Time Series,Tech
+machine learning,Machine Learning,Tech
+ml,Machine Learning,Tech
+deep learning,Deep Learning,Tech
+nlp,NLP,Tech
+natural language processing,NLP,Tech
+computer vision,Computer Vision,Tech
+feature engineering,Feature Engineering,Tech
+model deployment,Model Deployment,Tech
+mlops,MLOps,Tech
+docker,Docker,Tech
+k8s,Kubernetes,Tech
+kubernetes,Kubernetes,Tech
+linux,Linux,Tech
+bash,Bash,Tech
+shell scripting,Bash,Tech
+zsh,Bash,Tech
+git,Git,Tech
+github,Git,Tech
+gitlab,Git,Tech
+bitbucket,Git,Tech
+ci/cd,CI/CD,Tech
+jenkins,Jenkins,Tech
+github actions,GitHub Actions,Tech
+aws,AWS,Tech
+amazon web services,AWS,Tech
+ec2,AWS,Tech
+s3,AWS,Tech
+lambda,AWS Lambda,Tech
+athena,Amazon Athena,Tech
+glue,AWS Glue,Tech
+gcp,Google Cloud,Tech
+google cloud,Google Cloud,Tech
+bigtable,Google Cloud Bigtable,Tech
+dataproc,Dataproc,Tech
+dataflow,Dataflow,Tech
+azure,Microsoft Azure,Tech
+synapse,Azure Synapse,Tech
+databricks azure,Databricks,Tech
+rest api,REST API,Tech
+api,REST API,Tech
+postman,Postman,Tech
+fastapi,FastAPI,Tech
+flask,Flask,Tech
+django,Django,Tech
+streamlit,Streamlit,Tech
+dash,Plotly Dash,Tech
+plotly,Plotly,Tech
+matplotlib,Matplotlib,Tech
+seaborn,Seaborn,Tech
+scipy,SciPy,Tech
+excel (finance),Excel (Finance),Tech
+html,HTML,Tech
+css,CSS,Tech
+javascript,JavaScript,Tech
+js,JavaScript,Tech
+typescript,TypeScript,Tech
+react,React,Tech
+next.js,Next.js,Tech
+nextjs,Next.js,Tech
+node,Node.js,Tech
+node.js,Node.js,Tech
+express,Express.js,Tech
+java,Java,Tech
+spring,Spring Framework,Tech
+spring boot,Spring Boot,Tech
+c#,C#,Tech
+dotnet,.NET,Tech
+.net,.NET,Tech
+php,PHP,Tech
+laravel,Laravel,Tech
+go,Go,Tech
+golang,Go,Tech
+rust,Rust,Tech
+ruby,Ruby,Tech
+rails,Ruby on Rails,Tech
+swift,Swift,Tech
+kotlin,Kotlin,Tech
+android,Android,Tech
+ios,iOS,Tech
+figma,Figma,Tech
+photoshop,Adobe Photoshop,Tech
+illustrator,Adobe Illustrator,Tech
+premiere,Adobe Premiere Pro,Tech
+microsoft office,Microsoft Office,Tech
+powerpoint,Microsoft PowerPoint,Tech
+word,Microsoft Word,Tech
+communication,Communication,Tech
+presentation,Presentation,Tech
+storytelling,Storytelling,Tech
+data analysis,Data Analysis,Tech
+data analytics,Data Analysis,Tech
+business intelligence,Business Intelligence,Tech
+data visualization,Data Visualization,Tech
+วิทยาการข้อมูล,Data Science,Tech
+นักวิเคราะห์ข้อมูล,Data Analysis,Tech
+การวิเคราะห์ข้อมูล,Data Analysis,Tech
+แบบจำลองเชิงสถิติ,Statistics,Tech
+
+# --- Finance / Accounting ---
+accounting,Accounting,Finance
+บัญชี,Accounting,Finance
+บัญชีการเงิน,Accounting,Finance
+bookkeeping,Bookkeeping,Finance
+ap,Accounts Payable,Finance
+accounts payable,Accounts Payable,Finance
+ar,Accounts Receivable,Finance
+accounts receivable,Accounts Receivable,Finance
+reconciliation,Reconciliation,Finance
+bank recon,Reconciliation,Finance
+closing,Financial Closing,Finance
+financial closing,Financial Closing,Finance
+financial analysis,Financial Analysis,Finance
+finance analysis,Financial Analysis,Finance
+financial modeling,Financial Modeling,Finance
+valuation,Valuation,Finance
+budgeting,Budgeting,Finance
+งบประมาณ,Budgeting,Finance
+forecasting,Forecasting,Finance
+ประมาณการ,Forecasting,Finance
+cost accounting,Cost Accounting,Finance
+audit,Audit,Finance
+internal audit,Audit,Finance
+ifrs,IFRS,Finance
+gaap,GAAP,Finance
+tax,Tax Filing,Finance
+tax filing,Tax Filing,Finance
+ภาษีอากร,Tax Filing,Finance
+ภาษีมูลค่าเพิ่ม,VAT,Finance
+vat,VAT,Finance
+withholding tax,Withholding Tax,Finance
+ภาษีหัก ณ ที่จ่าย,Withholding Tax,Finance
+ใบกำกับภาษี,Tax Invoice,Finance
+payroll,Payroll,Finance
+treasury,Treasury,Finance
+risk management,Risk Management,Finance
+cash flow,Cash Flow Management,Finance
+quickbooks,QuickBooks,Finance
+xero,Xero,Finance
+sap,SAP,Finance
+sap fico,SAP FICO,Finance
+oracle fusion,Oracle ERP,Finance
+oracle erp,Oracle ERP,Finance
+ms excel,Excel (Finance),Finance
+excel,Excel (Finance),Finance
+power bi,Power BI (Finance),Finance
+tableau,Tableau (Finance),Finance
+
+# --- Hospitality / Hotel ---
+front desk,Front Desk,Hospitality
+reception,Front Desk,Hospitality
+receptionist,Front Desk,Hospitality
+check-in,Check-in,Hospitality
+check in,Check-in,Hospitality
+check out,Check-out,Hospitality
+check-out,Check-out,Hospitality
+reservation,Reservations,Hospitality
+reservations,Reservations,Hospitality
+booking,Reservations,Hospitality
+concierge,Concierge,Hospitality
+customer service,Customer Service,Hospitality
+complaint handling,Complaint Handling,Hospitality
+upsell,Upselling,Hospitality
+upselling,Upselling,Hospitality
+pms,PMS,Hospitality
+opera,Opera PMS,Hospitality
+opera pms,Opera PMS,Hospitality
+pos,POS,Hospitality
+cashiering,Cashiering,Hospitality
+cash handling,Cashiering,Hospitality
+night shift,Night Shift,Hospitality
+housekeeping,Housekeeping,Hospitality
+room assignment,Room Assignment,Hospitality
+inventory,Inventory Control,Hospitality
+inventory control,Inventory Control,Hospitality
+banquet,Banquet Service,Hospitality
+f&b,F&B Service,Hospitality
+food & beverage,F&B Service,Hospitality
+barista,Barista,Hospitality
+bartender,Bartender,Hospitality
+guest relation,Guest Relations,Hospitality
+guest relations,Guest Relations,Hospitality
+ota,Online Travel Agencies,Hospitality
+agoda,Online Travel Agencies,Hospitality
+booking.com,Online Travel Agencies,Hospitality
+channel manager,Channel Manager,Hospitality
+revenue management,Revenue Management,Hospitality
+yield management,Yield Management,Hospitality
+sop,Hotel SOP,Hospitality
+
+# --- Marketing / Growth ---
+seo,SEO,Marketing
+search engine optimization,SEO,Marketing
+sem,SEM,Marketing
+google ads,Google Ads,Marketing
+adwords,Google Ads,Marketing
+facebook ads,Facebook Ads,Marketing
+meta ads,Facebook Ads,Marketing
+tiktok ads,TikTok Ads,Marketing
+line oa,LINE OA,Marketing
+line official account,LINE OA,Marketing
+content writing,Content Writing,Marketing
+copywriting,Copywriting,Marketing
+email marketing,Email Marketing,Marketing
+crm,CRM,Marketing
+hubspot,HubSpot,Marketing
+salesforce,Salesforce,Marketing
+marketing automation,Marketing Automation,Marketing
+social media,Social Media Management,Marketing
+community management,Community Management,Marketing
+influencer marketing,Influencer Marketing,Marketing
+campaign management,Campaign Management,Marketing
+performance marketing,Performance Marketing,Marketing
+brand,Branding,Marketing
+branding,Branding,Marketing
+pr,Public Relations,Marketing
+public relations,Public Relations,Marketing
+event marketing,Event Marketing,Marketing
+ga4,Google Analytics 4,Marketing
+google analytics,Google Analytics 4,Marketing
+analytics 4,Google Analytics 4,Marketing
+gtm,Google Tag Manager,Marketing
+tag manager,Google Tag Manager,Marketing
+utm,UTM Tracking,Marketing
+conversion rate optimization,CRO,Marketing
+cro,CRO,Marketing
+ctr,CTR,Marketing
+cpc,CPC,Marketing
+cpm,CPM,Marketing
+roas,ROAS,Marketing
+cpa,CPA,Marketing
+lookalike audience,Lookalike Audiences,Marketing
+remarketing,Remarketing,Marketing
+retargeting,Remarketing,Marketing
+looker studio,Looker Studio (Mkt),Marketing
+data studio,Looker Studio (Mkt),Marketing
+a/b testing,A/B Testing,Marketing
+ab testing,A/B Testing,Marketing
+landing page,Landing Pages,Marketing
+wordpress,WordPress,Marketing
+shopify,Shopify,Marketing
+wix,Wix,Marketing
+figma,Figma,Marketing
+canva,Canva,Marketing
+cms,CMS,Marketing
+meta business suite,Meta Business Suite,Marketing
+business manager,Meta Business Suite,Marketing
+ad manager,Meta Ads Manager,Marketing
+pixel,Meta Pixel,Marketing
+
+# --- Healthcare ---
+patient care,Patient Care,Healthcare
+ดูแลผู้ป่วย,Patient Care,Healthcare
+vital signs,Vital Signs,Healthcare
+สัญญาณชีพ,Vital Signs,Healthcare
+medical record,Medical Records,Healthcare
+medical records,Medical Records,Healthcare
+เวชระเบียน,Medical Records,Healthcare
+opd,OPD,Healthcare
+ipd,IPD,Healthcare
+emr,EMR,Healthcare
+ehr,EHR,Healthcare
+phlebotomy,Phlebotomy,Healthcare
+medication administration,Medication Administration,Healthcare
+drug dispensing,Medication Administration,Healthcare
+การให้ยา,Medication Administration,Healthcare
+wound care,Wound Care,Healthcare
+infection control,Infection Control,Healthcare
+triage,Triage,Healthcare
+cpr,CPR,Healthcare
+first aid,First Aid,Healthcare
+ekg,EKG,Healthcare
+ecg,EKG,Healthcare
+laboratory,Laboratory,Healthcare
+lab,Laboratory,Healthcare
+sterilization,Sterilization,Healthcare
+hipaa,HIPAA,Healthcare
+insurance claim,Insurance Claims,Healthcare
+insurance claims,Insurance Claims,Healthcare
+icd-10,ICD-10 Coding,Healthcare
+icd10,ICD-10 Coding,Healthcare
+cpt,CPT Coding,Healthcare
+telemedicine,Telemedicine,Healthcare
+bedside manner,Bedside Manner,Healthcare
+scheduling,Patient Scheduling,Healthcare
+pharmacy dispensing,Pharmacy Dispensing,Healthcare
+ppe,PPE,Healthcare
+scrub nurse,Scrub Nurse,Healthcare
+circulating nurse,Circulating Nurse,Healthcare
+anesthesia assistant,Anesthesia Assistance,Healthcare
+
+# --- Education / Teaching ---
+lesson planning,Lesson Planning,Education
+แผนการสอน,Lesson Planning,Education
+classroom management,Classroom Management,Education
+วินัยในชั้นเรียน,Classroom Management,Education
+discipline,Classroom Management,Education
+curriculum design,Curriculum Design,Education
+course design,Curriculum Design,Education
+assessment,Assessment,Education
+grading,Grading,Education
+student counseling,Student Counseling,Education
+แนะแนว,Student Counseling,Education
+parent communication,Parent Communication,Education
+online teaching,Online Teaching,Education
+remote teaching,Online Teaching,Education
+lms,LMS,Education
+google classroom,Google Classroom,Education
+moodle,Moodle,Education
+instructional design,Instructional Design,Education
+differentiated instruction,Differentiated Instruction,Education
+project-based learning,Project-based Learning,Education
+pbl,Project-based Learning,Education
+stem,STEM,Education
+steam,STEM,Education
+early childhood,Early Childhood,Education
+special education,Special Education,Education
+esl,ESL,Education
+english as a second language,ESL,Education
+thai language,Thai Language,Education
+mathematics,Mathematics,Education
+math,Mathematics,Education
+science,Science,Education
+homeroom,Homeroom,Education
+worksheet design,Worksheet Design,Education
+rubric,Rubrics,Education
