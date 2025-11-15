@@ -2,18 +2,24 @@ title: Data Engineer
 title_keywords:
   - data engineer
   - platform engineer
-must_skills:
+
+required:
   - Python
   - SQL
   - Airflow
-nice_skills:
+  - Hadoop
+  - ETL
+
+nice_to_have:
   - Spark
   - Kafka
   - Docker
   - Terraform
   - DBT
+  - Redshift
+  - AWS
+  - TensorFlow
+
 weights:
-  skills: 0.4
-  exp: 0.3
-  title: 0.2
-  contacts: 0.1
+  required: 60
+  nice: 40

@@ -1,0 +1,22 @@
+title: Data Scientist
+title_keywords:
+- data scientist
+- machine learning
+- ai scientist
+required:
+- Python
+- SQL
+- Machine Learning
+- Statistics
+- Scikit-learn
+nice_to_have:
+- TensorFlow
+- PyTorch
+- Spark
+- Tableau
+- AWS
+- GCP
+- Airflow
+weights:
+  required: 60
+  nice: 40

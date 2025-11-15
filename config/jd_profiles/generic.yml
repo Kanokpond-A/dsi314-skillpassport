@@ -1,0 +1,19 @@
+title: "Generic Profile (Fallback)"
+# นี่คือ JD สำรอง ถ้าผู้ใช้ไม่เลือก JD
+# ระบบจะเทียบทักษะพื้นฐาน (Soft Skills + Office)
+
+required:
+  - Communication
+  - Teamwork
+  - Problem Solving
+  - Time Management
+
+nice_to_have:
+  - Excel
+  - PowerPoint
+  - Word
+  - Google Sheets
+
+weights:
+  required: 60
+  nice: 40

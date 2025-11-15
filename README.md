@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 ## Hello World
+=======
+## UCB Project
+
+>>>>>>> c75a669ab18dc68e4b9a47a6806540dfa21710bf
 
 ### Quick Run (W3) — Scoring → UCB
 
@@ -27,7 +32,7 @@ pytest -q
 
 ```bash
 pip install streamlit
-streamlit run frontend/streamlit_app.py
+streamlit run frontend/2_Dashboard_Explorer.py
 ```
 
 ### Quick Run (W5) — Pilot & Metrics
