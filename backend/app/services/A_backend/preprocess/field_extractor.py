@@ -395,6 +395,3 @@ __all__ = [
     "extract_availability",
     "extract_location",
 ]
-
-
-
