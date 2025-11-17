@@ -4,7 +4,7 @@ from pathlib import Path
 
 # --- ชี้รากโปรเจกต์ (repo root) ให้ถูกต้อง ---
 # โครงสร้าง: backend/app/services/parser_a1/parsers/run_all.py  -> ขึ้นไป 6 ระดับถึงราก
-ROOT = Path(__file__).resolve().parents[6]
+ROOT = Path(__file__).resolve().parents[5]
 
 # โฟลเดอร์อินพุต/เอาต์พุตหลักอิงจากรากโปรเจกต์
 DEFAULT_IN = ROOT / "samples"
@@ -21,11 +21,11 @@ SCORING        = BASE / "normalize_scoring/scoring.py"
 
 def run(cmd):
     """รันคำสั่งและโชว์ stdout/stderr เมื่อพัง เพื่อดีบักง่าย"""
+<<<<<<< HEAD
+    print("->", " ".join(map(str, cmd)))
+=======
     print("→", " ".join(map(str, cmd)))
     p = subprocess.run(list(map(str, cmd)), capture_output=True, text=True, encoding='utf-8')
-    if p.returncode != 0:
-        if p.stdout: print("STDOUT:\n", p.stdout[:2000])
-        if p.stderr: print("STDERR:\n", p.stderr[:2000])
         raise subprocess.CalledProcessError(p.returncode, cmd, p.stdout, p.stderr)
     return p
 
@@ -37,7 +37,11 @@ def collect_files(indir: Path, include_docx: bool):
 
 def main():
     ap = argparse.ArgumentParser(
+<<<<<<< HEAD
+        description="Batch: parse (PDF/DOCX) -> build -> score -> UCB"
+=======
         description="Batch: parse (PDF/DOCX) → build → score → UCB"
+>>>>>>> main
     )
     ap.add_argument("--in-dir", type=str, default=str(DEFAULT_IN),
                     help="input folder (default: samples/)")
@@ -111,7 +115,11 @@ def main():
                 scoring_cmd += ["--jd", args.jd]
             run(scoring_cmd)
 
+<<<<<<< HEAD
+            print(f"[OK] {p.name} -> {ucb_path}")
+=======
             print(f"[OK] {p.name} → {ucb_path}")
+>>>>>>> main
             ok += 1
 
         except subprocess.CalledProcessError:

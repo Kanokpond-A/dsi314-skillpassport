@@ -28,7 +28,7 @@ pytest -q
 
 ```bash
 pip install streamlit
-streamlit run frontend/streamlit_app.py
+streamlit run frontend/2_Dashboard_Explorer.py
 ```
 
 ### Quick Run (W5) — Pilot & Metrics
@@ -82,7 +82,7 @@ python tools/metrics.py
 
 ## How to (re)generate
 
-# 1) สร้าง parsed (ต่อไฟล์) แล้วรวม
+# 1 สร้าง parsed (ต่อไฟล์) แล้วรวม
 
 python backend/app/services/A_backend/preprocess/structure_builder.py --in samples/any_raw.json --out shared_data/latest_parsed/any.json
 python backend/app/services/A_backend/preprocess/aggregate_export.py --in shared_data/latest_parsed --out shared_data/parsed_resume.json
@@ -117,4 +117,15 @@ python backend/app/services/A_backend/parsers/run_all.py --in samples --out-dir 
 python backend/app/services/A_backend/preprocess/aggregate_export.py \
   --in shared_data/latest_parsed \
   --out shared_data/parsed_resume.json
+```
+
+# frontend run terminal
+
+1.
+```bash
+streamlit run frontend/2_Dashboard_Explorer.py
+```
+2.
+```bash
+uvicorn backend.app.main:app --reload
 ```
