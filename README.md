@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-## Hello World
-=======
 ## UCB Project
 
->>>>>>> c75a669ab18dc68e4b9a47a6806540dfa21710bf
 
 ### Quick Run (W3) — Scoring → UCB
 
