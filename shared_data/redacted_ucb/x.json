@@ -1,0 +1,32 @@
+{
+  "candidate_id": "x",
+  "headline": "Cummins Inc. — Domo\nSTATA\nMongoDB\nIBM Cognos\nTrifacta\nMarketo",
+  "skills": {
+    "normalized": [
+      "Domo\nSTATA\nMongoDB\nIBM Cognos\nTrifacta\nMarketo"
+    ],
+    "raw": [
+      "Domo\nSTATA\nMongoDB\nIBM Cognos\nTrifacta\nMarketo"
+    ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
+  },
+  "fit_score": 27,
+  "reasons": [
+    "experience blocks ≈ 1",
+    "contacts detected"
+  ],
+  "gaps": [
+    "Python",
+    "SQL",
+    "Tableau"
+  ],
+  "evidence": {},
+  "meta": {
+    "generated_at": null,
+    "schema_version": "1.0.0"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "source_file": "s.pdf",
+  "name": "CONTACT",
+  "contacts": {
+    "email": "c.vale@email.com",
+    "phone": "123) 456-7890",
+    "location": ""
+  },
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "University of Washington",
+      "start": "2012",
+      "end": "2016"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "2018",
+      "end": "2022",
+      "bullets": [
+        "Freelance Data Analyst",
+        "T-Mobile",
+        "2022 - current / Bellevue, WA",
+        "Extracted and analyzed 1M+ customer records in MySQL,",
+        "delivering insights to improve retention strategies",
+        "Automated 13 reports in Microsoft Excel per week",
+        "Crafted R scripts for predictive modeling, reducing",
+        "customer churn forecasts by analyzing over 500,231 records",
+        "Cleaned 2M+ rows of messy data using OpenRefine,",
+        "enhancing the accuracy of product performance reports",
+        "Data Analyst Consultant",
+        "Nordstrom",
+        "2018 - 2022 / Seattle, WA",
+        "Managed and queried 4TB of sales data in Snowflake,",
+        "supporting real-time analytics for 23 teams",
+        "Established Power BI dashboards to track 309 product",
+        "sales metrics, which facilitated real-time decision-making",
+        "Programmed data transformation in Python, slashing",
+        "manual data prep time for 36 reports by 51%",
+        "Integrated AWS services to streamline data flow, reducing",
+        "processing time by 23% for key reports",
+        "Data Analyst",
+        "Tableau Software",
+        "2016 - 2018 / Seattle, WA",
+        "Created complex MySQL queries for three client",
+        "dashboards, optimizing data extraction for 103K users",
+        "Computerized 13 Excel reports, saving 22 hours per week for",
+        "business teams across departments",
+        "Refined and transformed 1M+ rows of data using Python to",
+        "improve Tableau visualizations",
+        "Harnesses Apache Nifi for data flow management,",
+        "enhancing efficiency and expediting ingestion by 33%",
+        "Freelance Data Analyst",
+        "CORBIN VALE"
+      ]
+    }
+  ],
+  "skills": [
+    "MySQL\nMicrosoft Excel\nR\nOpenRefine\nSnowflake\nPower BI\nPython\nAWS\nApache Nifi"
+  ]
+}

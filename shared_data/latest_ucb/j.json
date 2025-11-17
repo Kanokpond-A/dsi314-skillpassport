@@ -1,0 +1,31 @@
+{
+  "candidate_id": "j",
+  "headline": "Candidate — for journalism to contribute to the company's position as a trusted\nsource of information.",
+  "skills": {
+    "normalized": [],
+    "raw": [
+      "for journalism to contribute to the company's position as a trusted\nsource of information."
+    ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
+  },
+  "fit_score": 27,
+  "reasons": [
+    "experience blocks ≈ 1",
+    "contacts detected"
+  ],
+  "gaps": [
+    "Python",
+    "SQL",
+    "Tableau"
+  ],
+  "evidence": {},
+  "meta": {
+    "generated_at": null,
+    "schema_version": "1.1.0",
+    "jd_source": "config/jd_profiles/data-analyst.yml"
+  }
+}

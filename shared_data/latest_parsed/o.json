@@ -1,0 +1,59 @@
+{
+  "source_file": "o.pdf",
+  "name": "CHARLA SWAIN",
+  "contacts": {
+    "email": "charla_swain@email.com",
+    "phone": "123) 456-7890",
+    "location": ""
+  },
+  "education": [
+    {
+      "degree": "Bachelor",
+      "institution": "University of California",
+      "start": "2010",
+      "end": "2014"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "Risk Adjustment Data Analyst Intern",
+        "Blue Shield of California",
+        "2014 - current / Oakland, CA",
+        "Developed 6 methods to support the access, storage, and reporting",
+        "of data sets that result from project initiatives",
+        "Visualized and communicated the insights, patterns, and trends from",
+        "complex data sets",
+        "Performed data scrubbing, troubleshooting, quality checking, and",
+        "usability analysis to identify 24 anomalies",
+        "Developed knowledge of the top 33 KPIs related to Medicare Risk",
+        "Adjustment and Hierarchical Condition Categories (HCCs)",
+        "PROJECTS",
+        "Toxic Mushroom Website - Biology Course Project",
+        "Created a website to provide a singular resource for identifying and",
+        "learning about toxic mushrooms",
+        "Pulled data from a 2021 mushroom study to craft a 6,800-line JSON",
+        "file to accompany data from the 1980s and provide a D3.js chart",
+        "Designed an interactive Sunburst chart using observables and D3.js",
+        "Led a team of 3 engineers to complete 10 Git Pull Requests",
+        "Drafted and wrote documentation of code complete with Machine",
+        "Learning charts and hyperlinks to the web pages and data resources",
+        "Stock Analysis - Internship",
+        "Utilized stock market KPIs to determine the state of the tech sector of",
+        "the stock market",
+        "Maintained a working knowledge of Data ETL, visualization, API",
+        "frameworks, and statistical methods in Python",
+        "Cleaned data and accessed JSON endpoints for 15+ companies",
+        "Conducted a regression analysis to determine the correlation",
+        "between the NASDAQ's price-to-earning ratio to revenue growth"
+      ]
+    }
+  ],
+  "skills": [
+    "with a detail-driven data team like Amazon's."
+  ]
+}

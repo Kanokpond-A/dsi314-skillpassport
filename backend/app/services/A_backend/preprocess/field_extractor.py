@@ -88,16 +88,16 @@ LOCATION_HINTS = [
     # EN cities/provinces (top TH)
     "bangkok", "nonthaburi", "pathum thani", "samut prakan", "chonburi",
     "chiang mai", "phuket", "khon kaen", "nakhon ratchasima",
+<<<<<<< HEAD
     "rayong", "songkhla", "surat thani", # <-- (เพิ่ม)
     # TH
-    "กรุงเทพ", "กรุงเทพมหานคร", "นนทบุรี", "ปทุมธานี", "สมุทรปราการ",
     "ชลบุรี", "เชียงใหม่", "ภูเก็ต", "ขอนแก่น", "นครราชสีมา",
     "ระยอง", "สงขลา", "สุราษฎร์ธานี", # <-- (เพิ่ม)
 ]
 # ▲▲▲ (สิ้นสุดการแก้ไข) ▲▲▲
-
-CURRENCY_RX = r"(?:฿|THB|บาท|baht|\$|USD)"
-NUM_RX = r"(?:\d{1,3}(?:[,\s]\d{3})+|\d+)"
+=======
+    # TH
+    "กรุงเทพ", "กรุงเทพมหานคร", "นนทบุรี", "ปทุมธานี", "สมุทรปราการ",
 RANGE_RX = rf"{NUM_RX}\s*(?:-|to|–|—|ถึง)\s*{NUM_RX}"
 
 MONTHS = {
@@ -291,12 +291,19 @@ def extract_expected_salary(text: str) -> Optional[str]:
     """
     ดึงเงินเดือน (range/ตัวเลข + สกุลเงิน) แล้ว normalize เป็นสตริงสั้น ๆ
     """
+<<<<<<< HEAD
     # ▼▼▼ (แก้ไข) "สอน" ระบบ V1 ให้รู้จักคำเพิ่ม (จำลอง V2 anchors.yml) ▼▼▼
     rx = re.compile(
         rf"(?:expected salary|salary expectation|compensation|wage|เงินเดือนที่คาดหวัง|เงินเดือนที่ต้องการ)\s*[:\-]?\s*((?:{RANGE_RX}|{NUM_RX})\s*(?:{CURRENCY_RX})?)",
         re.I,
     )
     # ▲▲▲ (สิ้นสุดการแก้ไข) ▲▲▲
+=======
+    rx = re.compile(
+        rf"(?:expected salary|salary expectation|เงินเดือนที่คาดหวัง|เงินเดือนที่ต้องการ)\s*[:\-]?\s*((?:{RANGE_RX}|{NUM_RX})\s*(?:{CURRENCY_RX})?)",
+        re.I,
+    )
+>>>>>>> main
     g = _first_group(rx, text)
     if not g:
         rx2 = re.compile(rf"(?:salary|เงินเดือน).{{0,24}}(({RANGE_RX}|{NUM_RX})\s*(?:{CURRENCY_RX})?)", re.I)
@@ -401,3 +408,9 @@ __all__ = [
     "extract_availability",
     "extract_location",
 ]
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> main

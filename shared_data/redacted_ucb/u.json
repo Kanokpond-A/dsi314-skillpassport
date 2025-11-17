@@ -1,0 +1,32 @@
+{
+  "candidate_id": "u",
+  "headline": "Candidate — Workday\nTableau\nMicrosoft Excel\nR \nPower BI\nGreenhouse\nCulture Amp\n15Five\nVisier\nZapier",
+  "skills": {
+    "normalized": [
+      "Tableau"
+    ],
+    "raw": [
+      "Workday\nTableau\nMicrosoft Excel\nR \nPower BI\nGreenhouse\nCulture Amp\n15Five\nVisier\nZapier"
+    ]
+  },
+  "contacts": {
+    "email": "•••",
+    "phone": "•••",
+    "location": ""
+  },
+  "fit_score": 37,
+  "reasons": [
+    "matched required/nice skills",
+    "experience blocks ≈ 1",
+    "contacts detected"
+  ],
+  "gaps": [
+    "Python",
+    "SQL"
+  ],
+  "evidence": {},
+  "meta": {
+    "generated_at": null,
+    "schema_version": "1.0.0"
+  }
+}

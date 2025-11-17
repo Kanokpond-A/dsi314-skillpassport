@@ -1,0 +1,69 @@
+{
+  "source_file": "c.pdf",
+  "name": "MATT ADAMS",
+  "contacts": {
+    "email": "matt.adams@email.com",
+    "phone": "123) 456-7890",
+    "location": ""
+  },
+  "education": [
+    {
+      "degree": "",
+      "institution": "University of Southern",
+      "start": "",
+      "end": ""
+    }
+  ],
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "start": "",
+      "end": "",
+      "bullets": [
+        "Data Analyst",
+        "Salesforce",
+        "June 2017 - current",
+        "San Francisco, CA",
+        "Created dynamic, data-driven visualizations with Amazon",
+        "QuickSight to improve understanding of complex data",
+        "Used Amazon Redshift to manage large datasets and",
+        "boosted data processing efficiency by 31%",
+        "Implemented Apache NiFi for real-time data streaming,",
+        "enabling quicker decision-making and improving",
+        "operational efficiency by 17%",
+        "Increased targeted marketing effectiveness by 37% by",
+        "developing customer segmentation models with",
+        "TensorFlow",
+        "Data Analyst",
+        "Uber",
+        "May 2013 - May 2017",
+        "San Francisco, CA",
+        "Managed NoSQL databases using Couchbase and improved",
+        "data query performance by 29%",
+        "Automated data extraction and loading tasks using Amazon",
+        "Glue, saving 15+ hours of manual work per week",
+        "Reduced system downtime by 9% by working with IT teams",
+        "to troubleshoot and resolve data-related issues",
+        "Ensured compliance with data security and privacy",
+        "regulations, maintaining the trust of millions of users",
+        "Data Analyst Intern",
+        "Riot Games",
+        "September 2011 - March 2013",
+        "Los Angeles, CA",
+        "Developed and maintained data documentation to improve",
+        "data understanding and usage within the team",
+        "Participated in the development of machine learning",
+        "algorithms to optimize in-game experiences, leading to a",
+        "13% increase in player satisfaction",
+        "Helped develop A/B testing plans that contributed to a 27%",
+        "improvement in feature implementation effectiveness",
+        "Assisted in the analysis of in-game purchase data, providing",
+        "valuable insights for pricing strategies"
+      ]
+    }
+  ],
+  "skills": [
+    "Amazon Redshift\nAmazon Glue\nAmazon EMR\nAmazon QuickSight\nTensorFlow\nCouchbase\nApache NiFi\nCERTIFICATIONS\nAWS Certified Data Analytics\nCAREER OBJECTIVE"
+  ]
+}
