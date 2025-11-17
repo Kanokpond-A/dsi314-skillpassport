@@ -1,5 +1,4 @@
 alias,canonical,industry
-# --- Tech / Data ---
 python,Python,Tech
 py,Python,Tech
 python3,Python,Tech
@@ -38,7 +37,7 @@ apache airflow,Apache Airflow,Tech
 dbt,dbt,Tech
 etl,ETL,Tech
 data pipeline,ETL,Tech
-elt,ETL,Tech
+MongoDB,SQL Server,Tech
 kafka,Apache Kafka,Tech
 excel,Excel,Tech
 microsoft excel,Excel,Tech
@@ -158,8 +157,6 @@ data visualization,Data Visualization,Tech
 นักวิเคราะห์ข้อมูล,Data Analysis,Tech
 การวิเคราะห์ข้อมูล,Data Analysis,Tech
 แบบจำลองเชิงสถิติ,Statistics,Tech
-
-# --- Finance / Accounting ---
 accounting,Accounting,Finance
 บัญชี,Accounting,Finance
 บัญชีการเงิน,Accounting,Finance
@@ -207,8 +204,6 @@ ms excel,Excel (Finance),Finance
 excel,Excel (Finance),Finance
 power bi,Power BI (Finance),Finance
 tableau,Tableau (Finance),Finance
-
-# --- Hospitality / Hotel ---
 front desk,Front Desk,Hospitality
 reception,Front Desk,Hospitality
 receptionist,Front Desk,Hospitality
@@ -249,8 +244,6 @@ channel manager,Channel Manager,Hospitality
 revenue management,Revenue Management,Hospitality
 yield management,Yield Management,Hospitality
 sop,Hotel SOP,Hospitality
-
-# --- Marketing / Growth ---
 seo,SEO,Marketing
 search engine optimization,SEO,Marketing
 sem,SEM,Marketing
@@ -309,8 +302,6 @@ meta business suite,Meta Business Suite,Marketing
 business manager,Meta Business Suite,Marketing
 ad manager,Meta Ads Manager,Marketing
 pixel,Meta Pixel,Marketing
-
-# --- Healthcare ---
 patient care,Patient Care,Healthcare
 ดูแลผู้ป่วย,Patient Care,Healthcare
 vital signs,Vital Signs,Healthcare
@@ -350,8 +341,6 @@ ppe,PPE,Healthcare
 scrub nurse,Scrub Nurse,Healthcare
 circulating nurse,Circulating Nurse,Healthcare
 anesthesia assistant,Anesthesia Assistance,Healthcare
-
-# --- Education / Teaching ---
 lesson planning,Lesson Planning,Education
 แผนการสอน,Lesson Planning,Education
 classroom management,Classroom Management,Education
@@ -386,3 +375,5 @@ science,Science,Education
 homeroom,Homeroom,Education
 worksheet design,Worksheet Design,Education
 rubric,Rubrics,Education
+ETL,ETL,Tech
+TensorFlow,TensorFlow,Tech

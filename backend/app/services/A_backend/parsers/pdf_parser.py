@@ -62,7 +62,7 @@ def main():
     with open(out, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     text_len = len((data.get("text") or "").strip())
-    print(f"[OK] PDF parsed → {out} (pages={data['pages']} ocr_used={data['ocr_used']} text_len={text_len})")
+    print(f"[OK] PDF parsed -> {out} (pages={data['pages']} ocr_used={data['ocr_used']} text_len={text_len})")
 
 if __name__ == "__main__":
     main()

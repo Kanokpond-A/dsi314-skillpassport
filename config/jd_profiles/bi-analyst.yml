@@ -3,18 +3,19 @@ title_keywords:
   - bi analyst
   - business intelligence
   - analytics
-must_skills:
+
+required:
   - SQL
   - Tableau
   - Excel
-nice_skills:
+
+nice_to_have:
   - Power BI
   - Looker
   - Python
   - DAX
   - ETL
+
 weights:
-  skills: 0.45
-  exp: 0.2
-  title: 0.25
-  contacts: 0.1
+  required: 60
+  nice: 40

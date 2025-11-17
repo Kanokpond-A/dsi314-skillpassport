@@ -68,3 +68,11 @@
 2025-10-30 14:59:41,351 INFO ucb.app [req=7efbcf41-9933-474b-9234-f3da2a13d95c] Completed GET /api/v2/candidates -> 200
 2025-10-30 14:59:48,276 INFO ucb.app [req=0e827440-6a09-4f4d-800f-eb1f4db05f43] Incoming GET /api/v2/candidates
 2025-10-30 14:59:48,311 INFO ucb.app [req=0e827440-6a09-4f4d-800f-eb1f4db05f43] Completed GET /api/v2/candidates -> 200
+2025-11-17 20:49:57,720 INFO ucb.app [req=f8bed6c6-8393-4d06-92e4-d3f6170c4c80] Incoming GET /
+2025-11-17 20:49:57,732 INFO ucb.app [req=f8bed6c6-8393-4d06-92e4-d3f6170c4c80] Completed GET / -> 200
+2025-11-17 20:49:58,390 INFO ucb.app [req=709d83f7-f534-450f-8c99-8c289feae411] Incoming GET /favicon.ico
+2025-11-17 20:49:58,391 INFO ucb.app [req=709d83f7-f534-450f-8c99-8c289feae411] Completed GET /favicon.ico -> 404
+2025-11-17 20:50:02,423 INFO ucb.app [req=c9378bf6-52da-4179-8bef-2c6b5249cfca] Incoming GET /docs
+2025-11-17 20:50:02,423 INFO ucb.app [req=c9378bf6-52da-4179-8bef-2c6b5249cfca] Completed GET /docs -> 200
+2025-11-17 20:50:02,867 INFO ucb.app [req=42efa8bc-f761-47d6-b577-69fcdb0e1b7d] Incoming GET /openapi.json
+2025-11-17 20:50:02,930 INFO ucb.app [req=42efa8bc-f761-47d6-b577-69fcdb0e1b7d] Completed GET /openapi.json -> 200

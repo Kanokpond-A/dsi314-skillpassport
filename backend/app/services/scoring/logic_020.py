@@ -119,8 +119,18 @@ def _score_language(candidate: Dict[str, Any]) -> float:
     langs = candidate.get("languages", [])
     score = 0.0
     for lang in langs:
-        name = lang.get("name", "").lower()
-        level = str(lang.get("level", "")).lower()
+        
+        # ▼▼▼ [ เพิ่มโค้ดป้องกันการแครช ] ▼▼▼
+        name = ""
+        level = ""
+        if isinstance(lang, dict):
+            name = lang.get("name", "").lower()
+            level = str(lang.get("level", "")).lower()
+        elif isinstance(lang, str):
+            name = lang.lower()
+            level = "intermediate" # หรือค่า default ที่คุณต้องการ
+        # ▲▲▲ [ สิ้นสุดโค้ดแก้ไข ] ▲▲▲
+
         if name in ["english", "อังกฤษ"]:
             if "native" in level or "professional" in level:
                 score += 100.0

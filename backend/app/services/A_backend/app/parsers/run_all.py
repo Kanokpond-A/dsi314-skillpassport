@@ -26,7 +26,8 @@ SCHEMA_PATH    = ROOT / "backend/app/schemas/parsed_resume.schema.json"  # v0.2.
 
 def run(cmd):
     """Run a command; print helpful logs on failure."""
-    print("→", " ".join(map(str, cmd)))
+    # (นี่คือเวอร์ชัน Git ที่แก้ไขบั๊ก UnicodeEncodeError แล้ว)
+    print(">", " ".join(map(str, cmd)))
     p = subprocess.run(list(map(str, cmd)), capture_output=True, text=True)
     if p.returncode != 0:
         if p.stdout: print("STDOUT:\n", p.stdout[:4000])
@@ -122,7 +123,7 @@ def main():
             continue
 
         # Unique RAW temp per file
-        ts = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        ts = datetime.datetime.now().strftime("%Y%M%d-%H%M%S")
         raw_tmp = TMP_DIR / f"raw_{p.stem}_{ts}.json"
 
         try:
@@ -226,9 +227,7 @@ def main():
         except Exception as e:
             print(f"[REPORT] error: {e}")
 
+
 if __name__ == "__main__":
     main()
-
-
-
 

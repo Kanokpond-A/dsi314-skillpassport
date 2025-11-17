@@ -505,7 +505,7 @@ def main():
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     json.dump(parsed, open(out_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-    print(f"[OK] built parsed_resume.json (len={len(text)}) → {out_path}")
+    print(f"[OK] built parsed_resume.json (len={len(text)}) -> {out_path}")
 
     # optional extras
     try:
@@ -522,7 +522,7 @@ def main():
                 extras = dict(extras_obj.__dict__) if hasattr(extras_obj, "__dict__") else {}
             extras_path = out_path.parent / f"_extras_{out_path.stem}.json"
             json.dump(extras, open(extras_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-            print(f"[OK] wrote extras → {extras_path}")
+            print(f"[OK] wrote extras -> {extras_path}")
         else:
             print("[WARN] field_extractor not available; skip extras")
     except Exception as e:
