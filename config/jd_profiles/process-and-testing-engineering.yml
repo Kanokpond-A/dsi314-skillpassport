@@ -1,0 +1,13 @@
+title: Process and Testing Engineering
+title_keywords:
+- new role
+required:
+- Python
+- c
+- c++
+nice_to_have:
+- Excel
+- Teamwork
+weights:
+  required: 70
+  nice: 30
