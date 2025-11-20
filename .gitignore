@@ -32,9 +32,6 @@ __pycache__/
 
 # build artifacts
 shared_data/
-<<<<<<< HEAD
 
 venv/
 streamlit_jd.json
-=======
->>>>>>> main
