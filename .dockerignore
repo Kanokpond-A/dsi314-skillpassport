@@ -1,0 +1,12 @@
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.log
+.git
+.gitignore
+.idea
+.vscode
+.env
+.shared_data_tmp
