@@ -6,7 +6,6 @@ from pydantic import BaseModel
 from io import BytesIO
 from fpdf import FPDF
 from backend.app.services.scoring import score_applicant, ScoringConfig
-from backend.app.services.report.pdf_report import build_ucb_pdf
 from backend.app.services.analytics.summary import build_summary
 from backend.app.core.privacy import redact_payload
 from fastapi import Query
@@ -70,17 +69,17 @@ async def ucb_json(parsed: ParsedResume):
         "breakdown": hr["breakdown"],
     }
 
-@router.post("/ucb-pdf")
-async def ucb_pdf_endpoint(parsed: ParsedResume):
-    data = redact_payload(parsed.model_dump())  # ✅ ซ่อน PII
-    result = score_applicant(data.get("skills", []), data.get("evidence", []), ScoringConfig())
-    hr = result["hr_view"]
-    buf = build_ucb_pdf(data.get("name","Unknown"), hr)
-    return StreamingResponse(
-        buf,
-        media_type="application/pdf",
-        headers={"Content-Disposition": f'inline; filename="{data.get("name","Candidate")}_UCB.pdf"'}
-    )
+# @router.post("/ucb-pdf")
+# async def ucb_pdf_endpoint(parsed: ParsedResume):
+#     data = redact_payload(parsed.model_dump())  # ✅ ซ่อน PII
+#     result = score_applicant(data.get("skills", []), data.get("evidence", []), ScoringConfig())
+#     hr = result["hr_view"]
+#     buf = build_ucb_pdf(data.get("name","Unknown"), hr)
+#     return StreamingResponse(
+#         buf,
+#         media_type="application/pdf",
+#         headers={"Content-Disposition": f'inline; filename="{data.get("name","Candidate")}_UCB.pdf"'}
+#     )
 
 # @router.post("/ucb-pdf")
 # async def ucb_pdf(payload: UCBPayload):
@@ -110,20 +109,20 @@ async def ucb_summary(parsed: ParsedResume):
     result = score_applicant(parsed.skills, parsed.evidence)
     return result["hr_view"]
 
-@router.post("/ucb-pdf")
-async def ucb_pdf(parsed: ParsedResume):
-    """
-    Generate PDF summary for HR
-    """
-    result = score_applicant(parsed.skills, parsed.evidence)
-    hr_view = result["hr_view"]
+# @router.post("/ucb-pdf")
+# async def ucb_pdf(parsed: ParsedResume):
+#     """
+#     Generate PDF summary for HR
+#     """
+#     result = score_applicant(parsed.skills, parsed.evidence)
+#     hr_view = result["hr_view"]
 
-    buf = build_ucb_pdf(parsed.name, hr_view)
-    return StreamingResponse(
-        buf,
-        media_type="application/pdf",
-        headers={"Content-Disposition": "inline; filename=ucb.pdf"}
-    )
+#     buf = build_ucb_pdf(parsed.name, hr_view)
+#     return StreamingResponse(
+#         buf,
+#         media_type="application/pdf",
+#         headers={"Content-Disposition": "inline; filename=ucb.pdf"}
+#     )
 
 
 
