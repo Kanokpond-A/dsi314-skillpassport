@@ -129,3 +129,30 @@ streamlit run frontend/2_Dashboard_Explorer.py
 ```bash
 uvicorn backend.app.main:app --reload
 ```
+
+# docker
+
+map port:
+
+API → localhost:8000
+
+Streamlit → localhost:8501
+
+```bash
+# 1) build + run ทั้งสอง service
+docker compose up --build
+```
+```bash
+docker compose up
+```
+รันเบื้องหลัง
+```bash
+docker compose up -d
+```
+ดูข้างใน container
+```bash
+docker exec -it skillpassport-api bash
+
+docker exec -it skillpassport-dashboard bash
+
+```
