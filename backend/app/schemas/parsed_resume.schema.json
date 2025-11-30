@@ -1,19 +1,60 @@
-{ "$id": "https://example.com/schemas/parsed_resume.schema.json",
+{
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "type":"object",
-  "required":["source_file","name","contacts","education","experiences","skills"],
-  "additionalProperties":false,
-  "properties":{
-    "source_file":{"type":"string"},
-    "name":{"type":"string"},
-    "contacts":{"type":"object","required":["email","phone","location"],
-      "additionalProperties":true,
-      "properties":{"email":{"type":"string"},"phone":{"type":"string"},"location":{"type":"string"}}},
-    "education":{"type":"array","items":{"type":"object","additionalProperties":true,
-      "properties":{"degree":{"type":"string"},"institution":{"type":"string"},"start":{"type":"string"},"end":{"type":"string"}}}},
-    "experiences":{"type":"array","items":{"type":"object","additionalProperties":true,
-      "properties":{"company":{"type":"string"},"role":{"type":"string"},"start":{"type":"string"},"end":{"type":"string"},
-        "bullets":{"type":"array","items":{"type":"string"}}}}},
-    "skills":{"type":"array","items":{"type":"string"}}
-  }
+  "title": "Gemini Parsed Resume",
+  "type": "object",
+  "properties": {
+    "candidate_info": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" }
+      }
+    },
+    "education": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "degree": { "type": "string" },
+          "university": { "type": "string" },
+          "year": { "type": "string" }
+        }
+      }
+    },
+    "work_experience": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "company": { "type": "string" },
+          "role": { "type": "string" },
+          "duration_years": { "type": "number" },
+          "is_tech_company": { "type": "boolean" },
+          "metrics_found": { 
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "skills": {
+      "type": "object",
+      "properties": {
+        "hard_skills": { "type": "array", "items": { "type": "string" } },
+        "soft_skills": { "type": "array", "items": { "type": "string" } },
+        "tools": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "properties": {
+        "years_of_experience": { "type": "number" },
+        "job_hopping_risk": { "type": "string" },
+        "career_growth": { "type": "string" },
+        "summary": { "type": "string" }
+      }
+    }
+  },
+  "required": ["candidate_info", "skills", "analysis"]
 }

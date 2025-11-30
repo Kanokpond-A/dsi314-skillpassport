@@ -14,6 +14,7 @@ services:
       - ./samples:/app/samples
     environment:
       - ENV=dev
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
 
   dashboard:
     build: .
