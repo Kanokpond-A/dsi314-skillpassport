@@ -84,3 +84,19 @@ def parse_job_description_with_gemini(jd_text):
         return json.loads(cleaned_text)
     except:
         return {"required_skills": [], "min_experience_years": 0}
+
+def get_standard_skills_for_role(role_name):
+    """
+    ถาม AI ว่าอาชีพนี้ควรมีสกิลอะไรบ้าง (แทนการใช้ไฟล์ YAML)
+    """
+    try:
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        prompt = f"""
+        List the top 10 most important technical skills required for a "{role_name}" role in 2025.
+        Return JSON: {{ "required_skills": ["Skill1", "Skill2", ...] }}
+        """
+        response = model.generate_content(prompt)
+        # ... (clean json logic) ...
+        return json.loads(cleaned_text)
+    except:
+        return {"required_skills": []}

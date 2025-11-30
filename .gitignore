@@ -21,6 +21,10 @@ build/
 *.docx
 shared_data/tmp/
 .ipynb_checkpoints/
+*.log
+*.csv
+*.db
+.DS_Store
 
 # build artifacts
 shared_data/

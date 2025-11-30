@@ -1,14 +1,23 @@
-fastapi
-uvicorn[standard]
-pydantic>=2
-jsonschema
-pandas
-pymupdf
-python-docx
-pytesseract
-Pillow
-pythainlp
-pytest
-fpdf2
-python-multipart>=0.0.9
-httpx
+--- Core Framework ---
+
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.6.0
+python-multipart>=0.0.9  # จำเป็นมากสำหรับการ Upload ไฟล์
+
+--- Environment & Config ---
+
+python-dotenv>=1.0.1     # อ่านไฟล์ .env
+
+--- AI Integration (The Brain) ---
+
+google-generativeai>=0.4.0  # พระเอกของเรา (Gemini)
+
+--- Utilities ---
+
+httpx>=0.27.0            # ใช้สำหรับยิง API หรือ Test
+requests>=2.31.0         # เผื่อไว้ใช้ทั่วไป
+
+--- Testing (Optional - เก็บไว้เผื่ออาจารย์ถามหา Test) ---
+
+pytest>=8.0.0
