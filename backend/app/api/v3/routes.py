@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from backend.app.services.parsers.gemini_parser import parse_with_gemini
-from backend.app.services.parsers.scoring.scoring import (
+from backend.app.services.scoring.scoring import (
     calculate_universal_score,
     get_default_weights,
 )
