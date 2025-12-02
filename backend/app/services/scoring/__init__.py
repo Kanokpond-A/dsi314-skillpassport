@@ -1,2 +1,1 @@
-from .logic import ScoringConfig, score_applicant
-__all__ = ["ScoringConfig", "score_applicant"]
+from .scoring import calculate_universal_score, get_default_weights
