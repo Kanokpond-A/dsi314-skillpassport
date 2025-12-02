@@ -6,8 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
-from .api.v1.routes import router as v1_router
-from .api.v2.routes import router as v2_router
+# from .api.v1.routes import router as v1_router
+# from .api.v2.routes import router as v2_router
+from .api.v3.routes import router as v3_router
 from .core.logging import get_logger, request_id_ctx
 
 from dotenv import load_dotenv
@@ -37,8 +38,9 @@ app.add_middleware(
 )
 
 # --- เพิ่ม Router หลังจาก Middleware ---
-app.include_router(v1_router)
-app.include_router(v2_router)
+# app.include_router(v1_router)
+# app.include_router(v2_router)
+app.include_router(v3_router)
 
 @app.middleware("http")
 async def add_request_id(request: Request, call_next):

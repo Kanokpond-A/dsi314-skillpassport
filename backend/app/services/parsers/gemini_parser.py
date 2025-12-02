@@ -6,6 +6,24 @@ import logging
 # ดึง Key จาก Docker Environment
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
+def _clean_json_text(raw_text: str) -> str:
+    """
+    รับ text จาก Gemini แล้วตัด ```json ... ``` ออก
+    คืนเป็นสตริง JSON ล้วน ๆ
+    """
+    text = raw_text.strip()
+
+    # ตัด code fence พวก ```json ... ```
+    if text.startswith("```json"):
+        text = text[len("```json"):].strip()
+    if text.startswith("```"):
+        text = text[len("```"):].strip()
+    if text.endswith("```"):
+        text = text[:-3].strip()
+
+    return text
+
+
 def parse_with_gemini(file_bytes, mime_type="application/pdf"):
     try:
         model = genai.GenerativeModel('gemini-1.5-flash')
@@ -56,11 +74,10 @@ def parse_with_gemini(file_bytes, mime_type="application/pdf"):
         ])
 
         # Clean JSON Cleanup
-        raw_text = response.text.strip()
-        if raw_text.startswith("```json"):
-            raw_text = raw_text.replace("```json", "").replace("```", "")
+        raw_text = response.text or ""
+        cleaned_text = _clean_json_text(raw_text)
         
-        parsed_data = json.loads(raw_text)
+        parsed_data = json.loads(cleaned_text)
         
         return parsed_data
 
@@ -81,8 +98,11 @@ def parse_job_description_with_gemini(jd_text):
         
         response = model.generate_content(prompt)
         # ... (Clean JSON logic เหมือนเดิม) ...
+        raw_text = response.text or ""
+        cleaned_text = _clean_json_text(raw_text)
         return json.loads(cleaned_text)
-    except:
+    except Exception as e:
+        logging.error(f"Gemini JD Parsing Error: {e}")
         return {"required_skills": [], "min_experience_years": 0}
 
 def get_standard_skills_for_role(role_name):
@@ -97,6 +117,10 @@ def get_standard_skills_for_role(role_name):
         """
         response = model.generate_content(prompt)
         # ... (clean json logic) ...
+        raw_text = response.text or ""
+        cleaned_text = _clean_json_text(raw_text)
+
         return json.loads(cleaned_text)
-    except:
+    except Exception as e:
+        logging.error(f"Gemini Role Skills Error: {e}")
         return {"required_skills": []}

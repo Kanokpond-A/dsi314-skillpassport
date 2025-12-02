@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from io import BytesIO
 from fpdf import FPDF
 from backend.app.services.scoring import score_applicant, ScoringConfig
-from backend.app.services.analytics.summary import build_summary
+# from backend.app.services.analytics.summary import build_summary
 from backend.app.core.privacy import redact_payload
 from fastapi import Query
 
@@ -152,9 +152,9 @@ async def score_hr(parsed: ParsedResume):
         "notes": hr["notes"]
     }
 
-@router.get("/summary")
-def summary(
-    refresh: bool = Query(False, description="true = คำนวณใหม่, false = ใช้ cache"),
-    limit: int | None = Query(None, ge=1, description="จำกัดจำนวนแถว candidates")
-):
-    return build_summary(refresh=refresh, limit=limit)
+# @router.get("/summary")
+# def summary(
+#     refresh: bool = Query(False, description="true = คำนวณใหม่, false = ใช้ cache"),
+#     limit: int | None = Query(None, ge=1, description="จำกัดจำนวนแถว candidates")
+# ):
+#     return build_summary(refresh=refresh, limit=limit)
