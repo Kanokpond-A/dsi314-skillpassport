@@ -21,3 +21,5 @@ requests>=2.31.0         # เผื่อไว้ใช้ทั่วไป
 --- Testing (Optional - เก็บไว้เผื่ออาจารย์ถามหา Test) ---
 
 pytest>=8.0.0
+
+google-generativeai

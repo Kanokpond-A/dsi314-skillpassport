@@ -73,38 +73,36 @@ def get_all_candidates():
     
     conn.close()
     return results
-```
 
----
 
 ### 🔗 วิธีเชื่อมต่อ (บอก A2 ให้ทำตามนี้)
 
-ให้ A2 (คนทำ API) แก้ไฟล์ `main.py` หรือ `api` นิดเดียวครับ:
+# ให้ A2 (คนทำ API) แก้ไฟล์ `main.py` หรือ `api` นิดเดียวครับ:
 
-**1. ตอนเริ่มแอป (Startup):**
-```python
-from backend.app.core.simple_db import init_db
+# **1. ตอนเริ่มแอป (Startup):**
+# ```python
+# from backend.app.core.simple_db import init_db
 
-# สั่งสร้างไฟล์ Database ตอนเปิด Server
-init_db()
-```
+# # สั่งสร้างไฟล์ Database ตอนเปิด Server
+# init_db()
+# ```
 
-**2. ตอนจบ Process Analyze (หลังจาก Gemini + Scoring เสร็จ):**
-```python
-from backend.app.core.simple_db import insert_candidate
+# **2. ตอนจบ Process Analyze (หลังจาก Gemini + Scoring เสร็จ):**
+# ```python
+# from backend.app.core.simple_db import insert_candidate
 
-# ... (โค้ด analyze เดิม) ...
+# # ... (โค้ด analyze เดิม) ...
 
-# บันทึกลง DB
-insert_candidate(file.filename, parsed_data, score_result)
+# # บันทึกลง DB
+# insert_candidate(file.filename, parsed_data, score_result)
 
-return { ... }
-```
+# return { ... }
+# ```
 
-**3. เพิ่ม API เส้นใหม่สำหรับ Dashboard:**
-```python
-from backend.app.core.simple_db import get_all_candidates
+# **3. เพิ่ม API เส้นใหม่สำหรับ Dashboard:**
+# ```python
+# from backend.app.core.simple_db import get_all_candidates
 
-@router.get("/dashboard-data")
-def get_dashboard():
-    return get_all_candidates()
+# @router.get("/dashboard-data")
+# def get_dashboard():
+#     return get_all_candidates()
