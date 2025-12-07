@@ -124,3 +124,47 @@ def get_standard_skills_for_role(role_name):
     except Exception as e:
         logging.error(f"Gemini Role Skills Error: {e}")
         return {"required_skills": []}
+    
+def match_resume_with_jd(resume_json, jd_text):
+    try:
+        model = genai.GenerativeModel('gemini-1.5-flash')
+
+        prompt = f"""
+        You are an unbiased senior technical recruiter.
+
+        RULES:
+        - Do NOT consider gender, name, age, or university rank.
+        - Focus ONLY on skills, experience, project complexity.
+        - Compare Resume vs Job Description.
+
+        Resume JSON:
+        {json.dumps(resume_json)}
+
+        JD:
+        {jd_text}
+
+        Return ONLY JSON:
+        {
+           "skill_match": {
+              "essential_match_pct": 0,
+              "nice_to_have_match_pct": 0,
+              "missing_skills": []
+           },
+           "experience_match": {
+              "level_match": 0,
+              "relevant_years": 0,
+              "project_complexity_match": 0
+           },
+           "final_ai_match_score": 0
+        }
+        """
+
+        response = model.generate_content(prompt)
+
+        raw = response.text or ""
+        cleaned = _clean_json_text(raw)
+        return json.loads(cleaned)
+
+    except Exception as e:
+        logging.error(f"A2 Matching Error: {e}")
+        return None
