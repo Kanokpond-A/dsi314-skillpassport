@@ -1,8 +1,8 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from backend.app.services.parsers.gemini_parser import parse_with_gemini
+from backend.app.services.parsers.gemini_parser import parse_with_gemini, match_resume_with_jd 
 from backend.app.services.scoring.scoring import (
     calculate_universal_score,
-    get_default_weights,
+    get_default_weights
 )
 
 router = APIRouter(prefix="/api/v3")
@@ -27,4 +27,24 @@ async def ucb_from_pdf(file: UploadFile = File(...)):
     return {
         "parsed_resume": parsed_resume,
         "score": score_result
+    }
+
+@router.post("/ucb/ai-match")
+async def ai_match_resume(file: UploadFile = File(...), jd: str = ""):
+    if file.content_type != "application/pdf":
+        raise HTTPException(status_code=400, detail="Only PDF files are supported")
+
+    file_bytes = await file.read()
+
+    # A1 → Parse Resume
+    parsed_resume = parse_with_gemini(file_bytes)
+    if not parsed_resume:
+        raise HTTPException(status_code=500, detail="Gemini parsing failed.")
+
+    # A2 → AI Matching
+    ai_match = match_resume_with_jd(parsed_resume, jd)
+
+    return {
+        "parsed_resume": parsed_resume,
+        "ai_match": ai_match
     }
