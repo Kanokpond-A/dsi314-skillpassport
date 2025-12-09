@@ -12,6 +12,8 @@ from .api.v3.routes import router as v3_router
 from .core.logging import get_logger, request_id_ctx
 
 from dotenv import load_dotenv
+from backend.app.services.models import Candidate, ResumeAnalysis
+from backend.app.services.database import Base
 
 # --- Load .env ก่อนใช้งานทุกอย่างที่อ้างอิง ENV ---
 load_dotenv()  
@@ -55,6 +57,15 @@ async def add_request_id(request: Request, call_next):
     finally:
         request_id_ctx.reset(token)
 
+app.add_middleware(
+    CORSMiddleware,
+    # เปลี่ยนเป็น ["*"] เพื่ออนุญาตทุกที่ (แก้ปัญหา Origin 'null' จากการเปิดไฟล์ตรงๆ)
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # --- Exception Handlers ---
 @app.exception_handler(RequestValidationError)
 async def validation_handler(request: Request, exc: RequestValidationError):
@@ -80,3 +91,11 @@ async def internal_handler(request: Request, exc: Exception):
 def read_root():
     return {"message": "Welcome to UCB API"}
 
+# === 🔍 DEBUG: Print all registered routes ===
+print("🛣️  Registered Routes:")
+for route in app.routes:
+    if hasattr(route, "path"):
+        print(f"   - {route.path}")
+    elif hasattr(route, "path_format"):
+        print(f"   - {route.path_format}")
+print("========================================")

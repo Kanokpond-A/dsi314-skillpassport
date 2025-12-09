@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentMatch Pro: Real AI</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <i data-lucide="layout-grid" class="logo-icon"></i>
+                <span>TalentMatch <span class="badge-pro">AI</span></span>
+            </div>
+        </div>
+
+        <div class="sidebar-content">
+            
+            <div class="panel-section">
+                <div class="section-title toggle-btn" onclick="toggleJobContext()">
+                    <span><i data-lucide="briefcase"></i> 1. Job Context</span>
+                    <i data-lucide="chevron-down"></i>
+                </div>
+                
+                <div class="hidden-content" id="job-context-panel" style="display:block;">
+                    
+                    <div style="display:flex; gap:8px; margin-bottom: 12px;">
+                        <select id="job-select" class="input-sm" style="flex:1;" onchange="loadJobDescription()">
+                            <option value="">-- Select Profile --</option>
+                        </select>
+                        <button onclick="showNewJobForm()" class="input-sm" style="width:36px; padding:0; display:flex; align-items:center; justify-content:center; cursor:pointer;" title="Create New Job">
+                            <i data-lucide="plus" style="width:16px;"></i>
+                        </button>
+                    </div>
+
+                    <div id="job-editor-area" style="display: none; border-top:1px dashed #e2e8f0; padding-top:12px;">
+                        
+                        <div style="margin-bottom: 8px;">
+                            <input type="text" id="job-title-input" class="input-sm" placeholder="Job Title (e.g. Data Engineer)">
+                        </div>
+
+                        <div style="margin-bottom: 8px;">
+                            <textarea id="job-desc-input" rows="5" class="input-sm" placeholder="Paste full requirements here..."></textarea>
+                        </div>
+
+                        <button onclick="saveJobProfile()" style="width:100%; padding:8px; background:#eff6ff; color:#3b82f6; border:1px solid #bfdbfe; border-radius:6px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; font-size:0.85rem;">
+                            <i data-lucide="save" style="width:14px;"></i> Save Profile
+                        </button>
+                        
+                        <div style="text-align:center; margin-top:8px;">
+                            <span onclick="hideJobForm()" style="font-size:0.75rem; color:#94a3b8; cursor:pointer; text-decoration:underline;">Close / Cancel</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="upload-zone-compact" id="drop-area">
+                    <div class="icon-box"><i data-lucide="plus"></i></div>
+                    <div class="text-box">
+                        <strong>Upload Candidates</strong>
+                        <span>PDF only</span>
+                    </div>
+                </div>
+                <input type="file" id="file-input" accept=".pdf" multiple style="display: none;">
+            </div>
+
+            <div class="panel-section">
+                <div class="section-header">
+                    <span class="title"><i data-lucide="filter"></i> Filter</span>
+                    <span class="reset-link" onclick="resetFilters()">Reset</span>
+                </div>
+                <div class="search-box">
+                    <i data-lucide="search" size="14"></i>
+                    <input type="text" id="search-input" placeholder="Search name, skills...">
+                </div>
+                <div class="filter-row">
+                    <label>Score > <span id="score-val">0%</span></label>
+                    <input type="range" class="range-slider" id="score-slider" min="0" max="100" value="0">
+                </div>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="panel-section results-section">
+                <div class="section-header">
+                    <span class="title" id="results-count-label"><i data-lucide="users"></i> Results (0)</span>
+                </div>
+                
+                <div class="candidate-list" id="candidate-list">
+                    </div>
+            </div>
+
+        </div>
+    </aside>
+
+
+    <main class="main-content">
+        <header class="top-bar">
+            <h1>Candidate Comparison</h1>
+            <div class="actions">
+                <button class="btn-outline"><i data-lucide="download"></i> Export</button>
+            </div>
+        </header>
+
+        <div class="comparison-container" id="comparison-container">
+            
+            <div class="add-compare-card" id="placeholder-card">
+                <i data-lucide="layers" size="48"></i>
+                <p>Upload resumes or select from list<br>to compare candidates</p>
+            </div>
+
+            </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
