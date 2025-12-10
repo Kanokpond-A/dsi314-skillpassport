@@ -82,7 +82,7 @@ async def add_request_id(request: Request, call_next):
 app.add_middleware(
     CORSMiddleware,
     # เปลี่ยนเป็น ["*"] เพื่ออนุญาตทุกที่ (แก้ปัญหา Origin 'null' จากการเปิดไฟล์ตรงๆ) -> เปลี่ยนเป็น origins เพราะสะดวกตอน Dev แต่อันตรายตอน Deploy จริง การใช้ allow_origins=["*"] ทำให้เว็บไหนก็ได้ยิง API มาหาเรา ซึ่งไม่ปลอดภัยเมื่อขึ้น Production
-    allow_origins = origins,
+    allow_origins = ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

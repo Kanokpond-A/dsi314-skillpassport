@@ -2,9 +2,12 @@ from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Depends
 from sqlalchemy.orm import Session
 from typing import List
 
+import os
+from pathlib import Path
+
 # Import ไฟล์ database ที่เราเพิ่งสร้าง
 from backend.app.services.database import get_db, CandidateDB
-from backend.app.services.parsers.gemini_parser import parse_with_gemini, analyze_match_with_gemini
+from backend.app.services.parsers.gemini_parser import parse_with_gemini, analyze_match_with_gemini, calculate_match_score
 from backend.app.services.scoring.scoring import calculate_universal_score, get_default_weights
 import backend.app.services.jd_manager as jd_manager
 from pydantic import BaseModel
@@ -20,93 +23,61 @@ class JobProfile(BaseModel):
 # 1. API เดิม (เพิ่มการบันทึกข้อมูล)
 # ==========================================
 @router.post("/ucb/from-pdf")
-async def ucb_from_pdf(
-    file: UploadFile = File(...), 
-    job_description: str = Form(None), # รับค่ามาเช็คเองข้างใน
-    job_title: str = Form("General Candidate"), 
-    db: Session = Depends(get_db)
-    
+async def process_pdf(
+    file: UploadFile = File(...),
+    job_description: str = Form("")
 ):
-    if file.content_type != "application/pdf":
-        raise HTTPException(status_code=400, detail="Only PDF files are supported")
+    try:
+        # 1. อ่านไฟล์ PDF
+        file_content = await file.read()
+        
+        # ✅ แก้: ใช้ parse_with_gemini แปลง PDF -> JSON
+        parsed_resume = parse_with_gemini(file_content)
+        
+        if not parsed_resume:
+             raise HTTPException(status_code=400, detail="Failed to parse resume PDF")
 
-    # 🛑 2. เพิ่ม Logic บังคับ JD ตรงนี้
-    if not job_description or len(job_description.strip()) < 10:
-        raise HTTPException(
-            status_code=400, 
-            detail="Job Description is required for analysis."
+        # 2. คำนวณคะแนน (เรียก scoring.py)
+        score_result = calculate_universal_score(
+            parsed_data=parsed_resume, 
+            weights_config={},  
+            job_description_text=job_description 
         )
 
-    file_bytes = await file.read()
-
-    try:
-        # ระบุตำแหน่งไฟล์: backend/static/resumes/ชื่อไฟล์.pdf
-        save_path = f"backend/static/resumes/{file.filename}"
-        with open(save_path, "wb") as f:
-            f.write(file_bytes)
-        print(f"✅ Saved resume to: {save_path}")
-    except Exception as e:
-        print(f"⚠️ Failed to save resume file: {e}")
-
-    # 1) Parse
-    parsed_resume = parse_with_gemini(file_bytes)
-    if not parsed_resume:
-        raise HTTPException(status_code=500, detail="Gemini parsing failed.")
-
-    # 2) Matching
-    match_result = {}
-    if job_description and len(job_description) > 10:
-        # ส่งไปให้ AI เทียบกันเลย
-        match_result = analyze_match_with_gemini(parsed_resume, job_description)
-    else:
-        # ถ้าไม่มี JD ก็ใช้คะแนนกลางๆ (Universal Score) ไปก่อน
-        weights = get_default_weights()
-        base_score = calculate_universal_score(parsed_resume, weights)
-        match_result = {
-            "match_percentage": base_score['final_score'],
-            "matched_reasons": ["(No Job Description provided for detailed matching)"],
-            "missing_gaps": []
+        # 3. เตรียมข้อมูลส่งกลับ Frontend
+        final_response = {
+            "filename": file.filename,
+            "parsed_resume": parsed_resume,
+            "score": score_result, 
+            "job_title": "Applied Position"
         }
 
-    # 3) Result Compilation
-    final_response = {
-        "parsed_resume": parsed_resume,
-        "score": {
-            "final_score": match_result.get("match_percentage", 0),
-            # ส่งรายละเอียด Matched/Gap ไปให้ Frontend แสดงในการ์ด
-            "analysis": match_result 
-        },
-        # 🔥 2. บันทึก job_title ลงไปใน JSON ด้วย
-        "job_title": job_title
-    }
+        # 4. บันทึกลง Database
+        # (ต้องทำภายใน function scope เดียวกัน ไม่เขียนโค้ดลอยๆ นอก try/except)
+        db = next(get_db()) # เรียก session แบบ manual ชั่วคราว หรือควร inject ผ่าน Depends ถ้าแยก function
+        try:
+            c_info = parsed_resume.get("candidate_info", {})
+            new_candidate = CandidateDB(
+                filename=file.filename,
+                candidate_name=c_info.get("name", "Unknown"),
+                email=c_info.get("email", ""),
+                final_score=score_result.get("final_score", 0),
+                full_json_data=final_response
+            )
+            db.add(new_candidate)
+            db.commit()
+            db.refresh(new_candidate)
+            final_response["db_id"] = new_candidate.id
+        except Exception as db_e:
+            db.rollback()
+            print(f"❌ Database Error: {db_e}")
+            # ไม่ raise เพื่อให้ frontend ยังได้ผลลัพธ์การ parse แม้ save ไม่สำเร็จ
 
-    # 🔥 4) บันทึกลง Database (SQL) 🔥
-    # แก้ไข Logic ตรงนี้ให้ปลอดภัยขึ้น
-    try:
-        c_info = parsed_resume.get("candidate_info", {})
-        
-        new_candidate = CandidateDB(
-            filename=file.filename,
-            candidate_name=c_info.get("name", "Unknown"),
-            email=c_info.get("email", ""),
-            final_score=match_result.get("match_percentage", 0),
-            full_json_data=final_response
-        )
-        
-        db.add(new_candidate)
-        db.commit()          # พยายามบันทึก
-        db.refresh(new_candidate)
-        
-        final_response["db_id"] = new_candidate.id
-        
+        return final_response
+
     except Exception as e:
-        db.rollback()        # <--- เพิ่มบรรทัดนี้: ยกเลิกการเปลี่ยนแปลงทันทีถ้า Error
-        print(f"Database Error: {e}")
-        # Option: อาจจะ raise HTTPException กลับไปบอก Frontend ด้วยก็ได้
-        # raise HTTPException(status_code=500, detail="Database save failed")
-
-    return final_response
-
+        print(f"Error process_pdf: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 # ==========================================
 # 2. API ใหม่สำหรับ Warehouse (ดึงประวัติ)
@@ -154,6 +125,20 @@ def get_candidate_history(db: Session = Depends(get_db)):
 # ==========================================
 # 3. API สำหรับลบข้อมูล
 # ==========================================
+@router.delete("/ucb/history/all")
+def delete_all_candidates(db: Session = Depends(get_db)):
+    try:
+        # ลบข้อมูลทั้งหมดในตาราง candidates
+        num_deleted = db.query(CandidateDB).delete()
+        db.commit()
+        
+        # (Optional) ถ้าอยากลบไฟล์ PDF ทั้งหมดด้วย ให้เพิ่มโค้ดลบไฟล์ที่นี่
+        
+        return {"detail": f"Deleted {num_deleted} candidates"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
 @router.delete("/ucb/history/{db_id}")
 def delete_candidate(db_id: int, db: Session = Depends(get_db)):
     candidate = db.query(CandidateDB).filter(CandidateDB.id == db_id).first()

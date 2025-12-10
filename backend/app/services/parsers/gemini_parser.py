@@ -3,32 +3,28 @@ import os
 import json
 import logging
 from dotenv import load_dotenv
+from typing import List, Dict, Any
 
 load_dotenv()
 
 # ดึง Key จาก Docker Environment
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+logging.basicConfig(level=logging.INFO)
 
 def _clean_json_text(raw_text: str) -> str:
     """
-    รับ text จาก Gemini แล้วตัด ```json ... ``` ออก
-    คืนเป็นสตริง JSON ล้วน ๆ
+    Helper function to clean up Gemini's raw text response to ensure valid JSON.
     """
-    text = raw_text.strip()
-
-    # ตัด code fence พวก ```json ... ```
-    if text.startswith("```json"):
-        text = text[len("```json"):].strip()
-    if text.startswith("```"):
-        text = text[len("```"):].strip()
-    if text.endswith("```"):
-        text = text[:-3].strip()
-
-    return text
+    raw_text = raw_text.strip()
+    if raw_text.startswith("```json"):
+        return raw_text.replace("```json", "").replace("```", "").strip()
+    return raw_text
 
 
-def parse_with_gemini(file_bytes, mime_type="application/pdf"):
-
+def parse_with_gemini(file_bytes: bytes, mime_type: str = "application/pdf") -> Dict[str, Any] | None:
+    """
+    ใช้ Gemini เพื่อแยกข้อมูลโครงสร้างจากไฟล์เรซูเม่
+    """
     try:
         model = genai.GenerativeModel('models/gemma-3-12b-it')
 
@@ -113,15 +109,16 @@ def parse_job_description_with_gemini(jd_text):
         logging.error(f"Gemini JD Parsing Error: {e}")
         return {"required_skills": [], "min_experience_years": 0}
 
-def get_standard_skills_for_role(role_name):
+def get_standard_skills_for_role(role_name: str) -> Dict[str, Any]:
     """
-    ถาม AI ว่าอาชีพนี้ควรมีสกิลอะไรบ้าง (แทนการใช้ไฟล์ YAML)
+    ถาม AI เพื่อให้ได้รายการ Hard Skills มาตรฐานที่ครอบคลุมสำหรับบทบาทที่กำหนด
+    (ไม่จำกัดจำนวน)
     """
     try:
         model = genai.GenerativeModel('models/gemma-3-12b-it')
         prompt = f"""
         List the top 10 most important technical skills required for a "{role_name}" role in 2025.
-        Return JSON: {{ "required_skills": ["Skill1", "Skill2", ...] }}
+        Return JSON: {{ "required_skills": ["Skill1", "Skill2", "Skill3", ...] }}
         """
         response = model.generate_content(prompt)
         # ... (clean json logic) ...
@@ -132,6 +129,54 @@ def get_standard_skills_for_role(role_name):
     except Exception as e:
         logging.error(f"Gemini Role Skills Error: {e}")
         return {"required_skills": []}
+    
+# --- 3. ฟังก์ชันใหม่สำหรับการให้คะแนน (Match Scoring Function) ---
+
+def calculate_match_score(
+    required_keywords: List[str], 
+    candidate_skills: List[str]
+) -> Dict[str, Any]:
+    """
+    คำนวณเปอร์เซ็นต์ความตรงกันระหว่าง Keywords ที่ต้องการ กับ Skills ในเรซูเม่
+    
+    Args:
+        required_keywords: รายการ Keywords ที่ HR ต้องการ (K_input)
+        candidate_skills: รายการ Skills ทั้งหมดที่ดึงมาจากเรซูเม่
+        
+    Returns:
+        Dict ที่มี Match Percentage และรายละเอียดการจับคู่
+    """
+    # 1. ทำความสะอาดข้อมูลเพื่อการเปรียบเทียบ
+    # แปลงเป็นตัวพิมพ์เล็กและกำจัดช่องว่าง (Normalization)
+    required_norm = {kw.lower().strip() for kw in required_keywords if kw}
+    candidate_norm = {sk.lower().strip() for sk in candidate_skills if sk}
+    
+    # 2. คำนวณจำนวนทั้งหมดและจำนวนที่พบ
+    total_required = len(required_norm)
+    
+    # ใช้ Intersection เพื่อหา Keywords ที่ตรงกัน
+    matched_skills = required_norm.intersection(candidate_norm)
+    found_count = len(matched_skills)
+    
+    # 3. คำนวณเปอร์เซ็นต์
+    if total_required == 0:
+        match_percentage = 0.0
+    else:
+        # สูตร: (K_found / K_total) * 100
+        match_percentage = (found_count / total_required) * 100
+        # ปัดทศนิยม 2 ตำแหน่ง
+        match_percentage = round(match_percentage, 2)
+    
+    # 4. จัดเตรียมผลลัพธ์
+    unmatched_skills = required_norm.difference(candidate_norm)
+    
+    return {
+        "match_percentage": match_percentage,
+        "keywords_total": total_required,
+        "keywords_found": found_count,
+        "matched_skills": list(matched_skills),
+        "unmatched_skills_required": list(unmatched_skills)
+    }
     
 def analyze_match_with_gemini(resume_data, job_description):
     """

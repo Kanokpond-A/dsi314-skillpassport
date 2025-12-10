@@ -33,9 +33,10 @@ let myChart = null; // ตัวแปรเก็บกราฟ
 // ==================================================
 dropArea.addEventListener('click', () => fileInput.click());
 
-fileInput.addEventListener('change', (e) => {
+fileInput.addEventListener('change', function(e) {
     addFilesToQueue(e.target.files);
     processQueue(); 
+    this.value = '';
 });
 
 dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.style.borderColor = 'var(--primary)'; dropArea.style.background = '#EFF6FF'; });
@@ -228,7 +229,8 @@ function renderCandidateTable(candidates) {
         // ... (ตัวแปร info, score, skills เหมือนเดิม) ...
         const info = c.parsed_resume.candidate_info || {};
         const score = c.score?.final_score || 0;
-        const skills = c.parsed_resume.skills?.hard_skills || [];
+        const rawSkills = c.parsed_resume.skills?.hard_skills || [];
+        const skills = [...rawSkills].sort((a, b) => a.localeCompare(b));
         const isSelected = comparisonList.includes(c.db_id);
         const scoreClass = score >= 80 ? 'high' : (score >= 50 ? 'medium' : 'low');
 
@@ -255,7 +257,7 @@ function renderCandidateTable(candidates) {
             <td>${c.score?.analysis?.years_of_experience || 0} Yrs</td>
             <td>
                 <div style="display:flex; gap:4px; flex-wrap:wrap; max-width:250px;">
-                    ${skills.slice(0, 3).map(s => `<span class="tag-skill">${s}</span>`).join('')}
+                    ${skills.map(s => `<span class="tag-skill">${s}</span>`).join('')}
                 </div>
             </td>
             <td>
@@ -283,6 +285,9 @@ function toggleCompare(dbId, isChecked) {
     } else {
         comparisonList = comparisonList.filter(id => id !== dbId);
     }
+
+    renderComparisonSection();
+
     applyFilters(); 
 }
 
@@ -533,6 +538,31 @@ function closeAnalysisModal() {
 // --- DOM Elements (เพิ่ม sortSelect) ---
 const sortSelect = document.getElementById('sort-select'); // ✅ เพิ่มตัวนี้
 
+// 1. เชื่อมต่อช่องค้นหา (Search Input)
+if (searchInput) {
+    searchInput.addEventListener('input', () => {
+        applyFilters(); // เรียกฟังก์ชันกรองทันทีที่พิมพ์
+    });
+}
+
+// 2. เชื่อมต่อ Slider คะแนน
+if (scoreSlider) {
+    scoreSlider.addEventListener('input', (e) => {
+        // อัปเดตตัวเลขเปอร์เซ็นต์ข้างๆ (ถ้ามี element นี้)
+        if (scoreValDisplay) {
+            scoreValDisplay.textContent = `${e.target.value}%`;
+        }
+        applyFilters(); // เรียกฟังก์ชันกรองทันทีที่เลื่อน
+    });
+}
+
+// 3. เชื่อมต่อ Dropdown เรียงลำดับ (Sort)
+if (sortSelect) {
+    sortSelect.addEventListener('change', () => {
+        applyFilters(); // เรียกฟังก์ชันจัดเรียงเมื่อเปลี่ยนค่า
+    });
+}
+
 // ... (EventListener ของ Slider และ Search Input เหมือนเดิม) ...
 
 function applyFilters() {
@@ -682,17 +712,62 @@ async function loadCandidateHistory() {
     } catch (e) { console.error("History Error:", e); }
 }
 
-async function deleteCandidate(event, dbId, filename) {
-    event.stopPropagation();
-    if (!confirm(`Delete "${filename}"?`)) return;
+// 1. ฟังก์ชันลบทั้งหมด (Delete All)
+async function deleteAllCandidates() {
+    // ถามยืนยันก่อนลบ (Safety First)
+    if (!confirm("⚠️ Are you sure you want to DELETE ALL candidates?\nThis action cannot be undone.")) {
+        return;
+    }
+
     try {
-        const res = await fetch(`http://localhost:8000/api/v3/ucb/history/${dbId}`, { method: 'DELETE' });
+        const res = await fetch('http://localhost:8000/api/v3/ucb/history/all', { 
+            method: 'DELETE' 
+        });
+
         if (res.ok) {
+            // เคลียร์ข้อมูลหน้าบ้าน
+            analyzedCandidates = [];
+            comparisonList = [];
+            fileQueue = []; // เคลียร์คิวด้วยเผื่อมีค้าง
+            
+            // อัปเดตหน้าจอ
+            applyFilters(); 
+            renderComparisonSection();
+            alert("✅ All candidates deleted successfully.");
+        } else {
+            alert("❌ Failed to delete all candidates.");
+        }
+    } catch (e) {
+        console.error("Delete All Error:", e);
+        alert("Error connecting to server.");
+    }
+}
+
+// 2. ฟังก์ชันลบทีละคน (Delete Individual) - แก้ไขของเดิม
+async function deleteCandidate(event, dbId) {
+    event.stopPropagation(); // กันไม่ให้ไปกดโดน row แล้วเด้ง toggle
+    
+    if (!confirm("Delete this candidate?")) return;
+    
+    try {
+        const res = await fetch(`http://localhost:8000/api/v3/ucb/history/${dbId}`, { 
+            method: 'DELETE' 
+        });
+
+        if (res.ok) {
+            // ลบออกจาก Array หน้าบ้าน
             analyzedCandidates = analyzedCandidates.filter(c => c.db_id !== dbId);
             comparisonList = comparisonList.filter(id => id !== dbId);
+            
+            // อัปเดตหน้าจอ
             applyFilters();
+            renderComparisonSection();
+        } else {
+            alert("❌ Failed to delete candidate.");
         }
-    } catch (e) { console.error(e); }
+    } catch (e) {
+        console.error("Delete Error:", e);
+    }
 }
 
 function openResumeModal(url, candidateName) {

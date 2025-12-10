@@ -153,8 +153,17 @@ body {
 .main-content {
     flex: 1;
     background: var(--main-bg);
-    display: flex; flex-direction: column; height: 100vh;
-    overflow: hidden; 
+    
+    /* 🔥 เปลี่ยนจาก hidden เป็น auto เพื่อให้มี Scrollbar ยาวอันเดียว */
+    overflow-y: auto; 
+    overflow-x: hidden;
+    
+    display: flex; 
+    flex-direction: column; 
+    height: 100%;
+    
+    /* ทำให้การเลื่อนนุ่มนวล */
+    scroll-behavior: smooth;
 }
 
 .top-bar {
@@ -181,14 +190,21 @@ body {
    4. Section: Comparison (Top)
    ========================================= */
 .comparison-section {
-    flex: 0 0 auto; 
-    max-height: 50vh; 
-    overflow-y: auto;
+    flex: 0 0 auto;
+    
+    /* ❌ ลบหรือ Comment บรรทัดนี้ทิ้ง (ไม่จำกัดความสูงแล้ว) */
+    /* max-height: 45vh; */
+    
+    /* ❌ เปลี่ยน overflow เป็น visible */
+    overflow-y: visible; 
+    
     padding: 24px;
-    background: #F8FAFC;
+    background: #fff;
     border-bottom: 1px solid var(--border-color);
 }
+
 .cards-container { display: flex; flex-direction: column; gap: 16px; }
+
 .empty-placeholder {
     text-align: center; padding: 40px; border: 2px dashed var(--border-color);
     border-radius: 12px; color: var(--text-light); background: #fff;
@@ -268,11 +284,18 @@ body {
    5. Section: Pool (Bottom)
    ========================================= */
 .pool-section {
-    flex: 1; 
-    padding: 0 24px 40px 24px; 
-    overflow-y: auto; 
-    background: #fff;
+    flex: 0 0 auto; /* เปลี่ยนเป็น auto เพื่อให้มันยาวลงไปเรื่อยๆ */
+    
+    /* ❌ เปลี่ยน overflow เป็น visible */
+    overflow-y: visible;
+    
+    padding: 24px;
+    background: #F8FAFC;
+    
+    /* 🔥 ไฮไลท์: เพิ่มพื้นที่ด้านล่างเยอะๆ (80px) เพื่อไม่ให้ติดขอบจอ */
+    padding-bottom: 80px; 
 }
+
 .section-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .section-header-row h3 { font-size: 1.1rem; color: var(--text-dark); font-weight: 700; }
 
