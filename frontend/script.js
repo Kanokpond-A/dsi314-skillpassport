@@ -76,8 +76,7 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 // ==================================================
 
 async function processQueue() {
-    // 1. เช็ค JD ก่อน (ตามที่คุณเคยขอไว้)
-    const jobDesc = jobDescInput.value || ""; 
+    // 1. เช็ค JD ก่อน (ตามที่คุณเคยขอไว้) 
     if (!jobDesc || jobDesc.trim().length === 0) {
         alert("⚠️ กรุณาเลือก Job Description (หรือสร้างใหม่) ก่อนอัปโหลด Resume ครับ!");
         fileQueue = []; // ล้างคิว
@@ -96,13 +95,18 @@ async function processQueue() {
 
     // 4. ดึงไฟล์แรกออกมาทำ (แต่ยังไม่ลบออกจาก Array นะ เพื่อให้ UI ยังโชว์อยู่)
     const file = fileQueue[0]; 
+    const jobDesc = jobDescInput.value || "";
+    const currentJobTitle = jobTitleInput.value || "General Candidate"; // ดึงชื่อตำแหน่ง
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('job_description', jobDesc);
+    formData.append('job_title', currentJobTitle); // ยัดใส่กล่องตรงนี้เลย
 
     try {
         console.log(`🚀 Sending ${file.name} to AI...`);
         
+        // ส่งกล่อง formData ที่มีครบทุกอย่างไป
         const res = await fetch(API_URL, {
             method: 'POST',
             body: formData
@@ -111,20 +115,6 @@ async function processQueue() {
         if (!res.ok) throw new Error("Server Error");
 
         const data = await res.json();
-
-        // ... (หลังจากดึง jobDesc แล้ว) ...
-        const jobDesc = jobDescInput.value || "";
-
-        // 🔥 1. ดึงชื่อตำแหน่งงาน (Job Title) จากช่อง Input
-        const currentJobTitle = jobTitleInput.value || "General Candidate";
-
-        // ... (ในส่วน FormData) ...
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('job_description', jobDesc);
-
-        // 🔥 2. ส่งชื่อตำแหน่งงานไปด้วย
-        formData.append('job_title', currentJobTitle);
         
         // ✅ สำเร็จ:
         // 1. เพิ่มข้อมูลลงใน Analyzed List
