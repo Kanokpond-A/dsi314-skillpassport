@@ -76,7 +76,11 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 // ==================================================
 
 async function processQueue() {
-    // 1. เช็ค JD ก่อน (ตามที่คุณเคยขอไว้) 
+    // ✅ แก้ไข: ประกาศตัวแปร jobDesc และ currentJobTitle ก่อนเริ่มเช็ค logic
+    const jobDesc = jobDescInput.value || "";
+    const currentJobTitle = jobTitleInput.value || "General Candidate";
+
+    // 1. เช็ค JD ก่อน (ตอนนี้ตัวแปร jobDesc ถูกประกาศแล้ว ใช้งานได้ไม่ Error)
     if (!jobDesc || jobDesc.trim().length === 0) {
         alert("⚠️ กรุณาเลือก Job Description (หรือสร้างใหม่) ก่อนอัปโหลด Resume ครับ!");
         fileQueue = []; // ล้างคิว
@@ -85,28 +89,22 @@ async function processQueue() {
     }
 
     // 2. เริ่มวนลูปไฟล์ในคิว
-    // เราจะไม่ใช้ while loop แบบเดิมที่ blocking แต่จะใช้ Logic แบบทีละไฟล์
-    // เพื่อให้เราควบคุม UI ได้แม่นยำครับ
-    
     if (fileQueue.length === 0) return; // ถ้าคิวว่างก็จบ
 
-    // 3. สั่ง Render Sidebar เพื่อให้เห็นว่า "Analyzing..." (ไฟล์อยู่ใน fileQueue)
+    // 3. สั่ง Render Sidebar เพื่อให้เห็นว่า "Analyzing..."
     renderSidebarItem(analyzedCandidates);
 
-    // 4. ดึงไฟล์แรกออกมาทำ (แต่ยังไม่ลบออกจาก Array นะ เพื่อให้ UI ยังโชว์อยู่)
+    // 4. ดึงไฟล์แรกออกมาทำ
     const file = fileQueue[0]; 
-    const jobDesc = jobDescInput.value || "";
-    const currentJobTitle = jobTitleInput.value || "General Candidate"; // ดึงชื่อตำแหน่ง
-
+    
     const formData = new FormData();
     formData.append('file', file);
     formData.append('job_description', jobDesc);
-    formData.append('job_title', currentJobTitle); // ยัดใส่กล่องตรงนี้เลย
+    formData.append('job_title', currentJobTitle);
 
     try {
         console.log(`🚀 Sending ${file.name} to AI...`);
         
-        // ส่งกล่อง formData ที่มีครบทุกอย่างไป
         const res = await fetch(API_URL, {
             method: 'POST',
             body: formData
@@ -117,31 +115,29 @@ async function processQueue() {
         const data = await res.json();
         
         // ✅ สำเร็จ:
-        // 1. เพิ่มข้อมูลลงใน Analyzed List
-        // (เช็ค db_id ให้ชัวร์)
         const candidateData = data; 
         if (data.db_id) candidateData.db_id = data.db_id;
         
         analyzedCandidates.push(candidateData);
         
-        // 2. ลบไฟล์ออกจากคิว (เพราะเสร็จแล้ว)
+        // ลบไฟล์ออกจากคิว
         fileQueue.shift();
 
-        // 3. อัปเดตหน้าจอทั้งหมด
-        applyFilters(); // ตัวนี้จะไปเรียก renderSidebarItem และ renderCandidateTable ให้เอง
+        // อัปเดตหน้าจอทั้งหมด
+        applyFilters(); 
 
     } catch (err) {
         console.error("❌ Error analyzing:", err);
         alert(`Failed to analyze ${file.name}`);
         
-        // ❌ พลาด: ก็ลบออกจากคิวเหมือนกัน (ไม่งั้นจะค้าง)
+        // ❌ พลาด: ลบออกจากคิว
         fileQueue.shift();
         renderSidebarItem(analyzedCandidates);
     }
 
-    // 5. เรียกตัวเองซ้ำ (Recursion) เพื่อทำไฟล์ถัดไปในคิว
+    // 5. เรียกตัวเองซ้ำ (Recursion) เพื่อทำไฟล์ถัดไป
     if (fileQueue.length > 0) {
-        setTimeout(processQueue, 500); // พัก 0.5 วิ แล้วทำต่อ
+        setTimeout(processQueue, 500); 
     }
 }
 
@@ -290,92 +286,87 @@ function renderComparisonSection() {
     const container = document.getElementById('comparison-container');
     const countLabel = document.getElementById('compare-count');
     
-    // ... (ส่วนเช็ค container ว่าง เหมือนเดิม) ...
     if (!container) return;
     container.innerHTML = '';
     
     const selected = analyzedCandidates.filter(c => comparisonList.includes(c.db_id));
     if (countLabel) countLabel.textContent = selected.length;
 
-    if (!selected.length) {
-        container.innerHTML = `<div class="empty-placeholder"><i data-lucide="arrow-down-circle" size="48" style="color:#cbd5e1; margin-bottom:12px;"></i><p>Select candidates from table.</p></div>`;
-        lucide.createIcons();
-        return;
-    }
+    container.style.display = 'grid';
 
     selected.forEach(c => {
-        // ... (ดึงตัวแปร info, score, matches, gaps เหมือนเดิม) ...
         const info = c.parsed_resume.candidate_info || {};
         const score = c.score?.final_score || 0;
         const analysis = c.score?.analysis || {};
+        
+        // 1. ดึงข้อมูลที่ต้องใช้
         const matches = analysis.matched_criteria || [];
-        const gaps = analysis.missing_gaps || [];
-        let scoreColor = score >= 80 ? '#16A34A' : (score >= 50 ? '#EAB308' : '#EF4444');
-
-        // 🔥 ตรวจสอบสถานะ Shortlist เพื่อเตรียมสีปุ่ม 🔥
+        const gaps = analysis.missing_gaps || []; // ✅ ดึง Skills Gap
+        
+        let themeClass = score >= 80 ? 'score-green' : (score >= 50 ? 'score-yellow' : 'score-red');
         const isShort = c.isShortlisted === true;
-        const btnStyle = isShort 
-            ? 'background-color:#16A34A; color:white; border-color:#16A34A;' 
-            : '';
-        const btnText = isShort 
-            ? '<i data-lucide="check" width="14"></i> Shortlisted' 
-            : '<i data-lucide="star" width="14"></i> Shortlist';
-        const btnClass = isShort ? 'btn-card shortlist active' : 'btn-card shortlist';
+        
+        // จัดการปุ่ม Shortlist
+        const btnClass = isShort ? 'btn-card shortlist active btn-full' : 'btn-card shortlist btn-full';
+        const btnText = isShort ? '<i data-lucide="check" width="14"></i> Starred' : '<i data-lucide="star" width="14"></i> Star';
+        const btnStyle = isShort ? 'background-color:#16A34A; color:white; border-color:#16A34A;' : '';
 
         const card = document.createElement('div');
-        card.className = 'compare-card';
+        card.className = 'compare-card-vertical';
         
-        // ใส่ HTML (สังเกตตรงปุ่ม onclick ส่ง c.db_id ไปด้วย)
         card.innerHTML = `
-            <button class="btn-close-card" onclick="toggleCompare(${c.db_id}, false)"><i data-lucide="x" width="16"></i></button>
+            <button class="btn-close-vertical" onclick="toggleCompare(${c.db_id}, false)">
+                <i data-lucide="x" width="16"></i>
+            </button>
             
-            <div class="col-info">
-                <div class="info-header">
-                    <div class="card-avatar">${(info.name||'U').charAt(0).toUpperCase()}</div>
-                    <div>
-                        <h3 style="margin:0; font-size:1rem; font-weight:700;">${info.name}</h3>
-                        <p style="margin:0; font-size:0.8rem; color:#64748B;">${c.job_title}</p>
+            <div class="score-badge-large ${themeClass}">
+                ${Math.round(score)}%
+            </div>
+
+            <div class="card-name-vertical">${info.name || 'Unknown'}</div>
+            <div class="card-role-vertical">${c.job_title || 'Candidate'}</div>
+
+            <div style="margin-bottom: 12px; width:100%; padding:0 10px;">
+                <div class="contact-mini"><i data-lucide="briefcase" width="12"></i> ${analysis.years_of_experience || 0} Years Exp</div>
+                <div class="contact-mini"><i data-lucide="mail" width="12"></i> ${info.email || '-'}</div>
+                <div class="contact-mini"><i data-lucide="phone" width="12"></i> ${info.phone || '-'}</div>
+            </div>
+
+            <div class="match-summary">
+                <div style="font-size:0.75rem; font-weight:700; color:#16A34A; margin-bottom:6px; text-transform:uppercase;">
+                    Top Matches
+                </div>
+                ${matches.slice(0, 2).map(m => `
+                    <div class="summary-item"><i data-lucide="check" width="12" style="color:#16A34A;"></i> ${m}</div>
+                `).join('') || '<div class="summary-item">- None -</div>'}
+
+                <div class="divider-dashed"></div>
+
+                <div class="header-missing">Missing / Gaps</div>
+                ${gaps.length > 0 ? gaps.slice(0, 2).map(g => `
+                    <div class="summary-item">
+                        <i data-lucide="x" width="12" class="icon-gap"></i> ${g}
                     </div>
-                </div>
-                <div class="info-details">
-                    <div><i data-lucide="mail" width="14"></i> ${info.email || '-'}</div>
-                    <div><i data-lucide="phone" width="14"></i> ${info.phone || '-'}</div>
-                    <div class="badge-exp"><i data-lucide="clock" width="14"></i> ${analysis.years_of_experience || 0} Years</div>
-                </div>
+                `).join('') : '<div class="summary-item text-green-600">All clear!</div>'}
             </div>
 
-            <div class="col-list">
-                <div class="list-header green"><i data-lucide="check-circle-2" width="14"></i> Top Matched</div>
-                <ul class="detail-list">
-                    ${matches.length > 0 ? matches.slice(0, 3).map(m => `<li class="detail-item match"><i data-lucide="check" width="14"></i> <span>${m}</span></li>`).join('') : '<li style="color:#94a3b8;font-size:0.8rem">- No matches -</li>'}
-                </ul>
-            </div>
+            <div class="action-row">
+                <button class="btn-card btn-full" onclick="openResumeModal('http://localhost:8000/static/resumes/${c.filename}', '${info.name}')">
+                    <i data-lucide="file-text" width="14"></i> Resume
+                </button>
 
-            <div class="col-list">
-                <div class="list-header orange"><i data-lucide="alert-circle" width="14"></i> Gaps</div>
-                <ul class="detail-list">
-                    ${gaps.length > 0 ? gaps.slice(0, 3).map(g => `<li class="detail-item gap"><i data-lucide="alert-triangle" width="14"></i> <span>${g}</span></li>`).join('') : '<li style="color:#94a3b8;font-size:0.8rem">- No gaps -</li>'}
-                </ul>
-            </div>
-
-            <div class="col-action">
-                <div class="score-big" style="color:${scoreColor}">${Math.round(score)}%</div>
-                <div class="btn-stack">
-                    <button class="btn-card" onclick="openResumeModal('http://localhost:8000/static/resumes/${c.filename}', '${info.name}')">
-                        <i data-lucide="file-text" width="14"></i> Resume
-                    </button>
-                    <button class="btn-card primary" onclick="openAnalysisModal(${c.db_id})">
-                        <i data-lucide="bar-chart-2" width="14"></i> Analysis
-                    </button>
-                    
-                    <button class="${btnClass}" style="${btnStyle}" onclick="toggleShortlist(this, ${c.db_id})">
-                        ${btnText}
-                    </button>
-                </div>
+                <button class="btn-card btn-outline-primary btn-full" onclick="openAnalysisModal(${c.db_id})">
+                    <i data-lucide="bar-chart-2" width="14"></i> Analysis
+                </button>
+                
+                <button class="${btnClass}" style="${btnStyle}" onclick="toggleShortlist(this, ${c.db_id})">
+                    ${btnText}
+                </button>
             </div>
         `;
         container.appendChild(card);
     });
+    
     lucide.createIcons();
 }
 
@@ -387,38 +378,27 @@ function toggleShortlist(btn, dbId) {
     const candidate = analyzedCandidates.find(c => c.db_id === dbId);
     if (!candidate) return;
 
-    // 2. สลับสถานะ (Toggle Boolean)
-    // ถ้ายังไม่มีค่า isShortlisted ให้เริ่มเป็น false
+    // 2. สลับสถานะ
     candidate.isShortlisted = !candidate.isShortlisted;
 
-    // 3. อัปเดตปุ่มทันที (เพื่อความลื่นไหล)
+    // 3. อัปเดตปุ่ม Visual (เฉพาะปุ่มที่กด)
     updateShortlistButtonVisual(btn, candidate.isShortlisted);
 
-    // 4. อัปเดตตารางด้านล่าง (ให้มีดาวขึ้น)
-    renderCandidateTable(analyzedCandidates.filter(c => {
-        // กรองตาม Logic Filter เดิม (เพื่อให้หน้าจอไม่กระตุก)
-        const minScore = parseInt(scoreSlider.value);
-        const keyword = searchInput.value.toLowerCase();
-        const score = c.score?.final_score || 0;
-        const name = (c.parsed_resume?.candidate_info?.name || '').toLowerCase();
-        return score >= minScore && name.includes(keyword);
-    }));
-
-    // TODO: ถ้ามี API Backend ให้ยิง Save ตรงนี้
-    // saveShortlistStatus(dbId, candidate.isShortlisted); 
+    // 4. ✅ สำคัญ: เรียก applyFilters() เพื่อให้ Table เรียงลำดับใหม่ทันที (Shortlist จะเด้งขึ้นบน)
+    applyFilters(); 
 }
 
 // ฟังก์ชันช่วยปรับสีปุ่ม (แยกออกมาให้เรียกใช้ซ้ำได้)
 function updateShortlistButtonVisual(btn, isActive) {
     if (isActive) {
         btn.classList.add('active'); // เพิ่ม Class ให้ CSS จัดการ
-        btn.innerHTML = '<i data-lucide="check" width="14"></i> Shortlisted';
+        btn.innerHTML = '<i data-lucide="check" width="14"></i> Starred';
         btn.style.backgroundColor = '#16A34A';
         btn.style.color = 'white';
         btn.style.borderColor = '#16A34A';
     } else {
         btn.classList.remove('active');
-        btn.innerHTML = '<i data-lucide="star" width="14"></i> Shortlist';
+        btn.innerHTML = '<i data-lucide="star" width="14"></i> Star';
         btn.style.backgroundColor = 'white';
         btn.style.color = '#334155';
         btn.style.borderColor = '#E2E8F0';
@@ -581,8 +561,19 @@ function applyFilters() {
         return true;
     });
 
-    // 2. Sort (เรียงลำดับ) - ✅ Logic ใหม่
+    // 2. Sort (เรียงลำดับ) - ✅ ปรับปรุงใหม่: Shortlist ต้องมาก่อนเสมอ
     filtered.sort((a, b) => {
+        // --- [NEW] Priority 1: Shortlist (ดันคน Shortlist ขึ้นบนสุด) ---
+        // ถ้า a เป็น Shortlist แต่ b ไม่ใช่ -> a มาก่อน (-1)
+        // ถ้า b เป็น Shortlist แต่ a ไม่ใช่ -> b มาก่อน (1)
+        const isShortA = a.isShortlisted ? 1 : 0;
+        const isShortB = b.isShortlisted ? 1 : 0;
+        
+        if (isShortA !== isShortB) {
+            return isShortB - isShortA; // เรียงจากมากไปน้อย (1 ขึ้นก่อน 0)
+        }
+
+        // --- Priority 2: User Selected Criteria (เรียงตามตัวเลือกปกติ) ---
         const scoreA = a.score?.final_score || 0;
         const scoreB = b.score?.final_score || 0;
         const nameA = (a.parsed_resume?.candidate_info?.name || '').toLowerCase();
@@ -592,16 +583,16 @@ function applyFilters() {
 
         switch (sortMode) {
             case 'score_asc': 
-                return scoreA - scoreB; // คะแนนน้อยไปมาก
+                return scoreA - scoreB;
             case 'name_asc':
-                return nameA.localeCompare(nameB); // ชื่อ ก-ฮ
+                return nameA.localeCompare(nameB);
             case 'name_desc':
-                return nameB.localeCompare(nameA); // ชื่อ ฮ-ก
+                return nameB.localeCompare(nameA);
             case 'exp_desc':
-                return expB - expA; // ประสบการณ์มากไปน้อย
+                return expB - expA;
             case 'score_desc':
             default:
-                return scoreB - scoreA; // คะแนนมากไปน้อย (Default)
+                return scoreB - scoreA;
         }
     });
 
@@ -792,4 +783,115 @@ function toggleSection(panelId, iconId) {
         panel.style.display = 'none';
         if (icon) icon.style.transform = 'rotate(-90deg)';
     }
+}
+
+// --- Resizable Panel Logic ---
+
+// DOM Elements
+const wrapper = document.getElementById('main-dashboard-wrapper');
+const handle = document.getElementById('resizer-handle');
+const poolArea = document.getElementById('pool-area-wrapper');
+
+let isDragging = false;
+const MAX_POOL_HEIGHT_PERCENT = 50; // ✅ กำหนด Limit ไม่เกิน 50% ของหน้าจอ
+
+if (handle && wrapper && poolArea) {
+    handle.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        document.body.style.userSelect = 'none'; // ป้องกันการเลือก Text ขณะลาก
+        document.body.style.cursor = 'ns-resize'; // เปลี่ยน Cursor ทันทีที่กด
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        // คำนวณความสูงของส่วน Pool Area จากด้านล่างของหน้าจอ
+        const windowHeight = window.innerHeight;
+        const newPoolHeight = windowHeight - e.clientY;
+        
+        // แปลงความสูงใหม่เป็นเปอร์เซ็นต์
+        const newPoolHeightPercent = (newPoolHeight / windowHeight) * 100;
+
+        // ✅ CHECK LIMIT: ตรวจสอบไม่ให้เกิน 50%
+        if (newPoolHeightPercent <= MAX_POOL_HEIGHT_PERCENT) {
+            // ไม่ให้ต่ำกว่า 10% (กันผู้ใช้ปิดจนมิด)
+            if (newPoolHeightPercent >= 10) { 
+                poolArea.style.height = `${newPoolHeightPercent}%`;
+            }
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            document.body.style.userSelect = '';
+            document.body.style.cursor = ''; // คืน Cursor
+        }
+    });
+}
+
+// ==================================================
+// 5. Resizable Panel Logic
+// ==================================================
+
+const mainWrapper = document.getElementById('main-dashboard-wrapper');
+const comparisonArea = document.getElementById('comparison-area-wrapper');
+const resizerHandle = document.getElementById('resizer-handle');
+
+let isResizing = false;
+
+// กำหนดขีดจำกัดเป็นเปอร์เซ็นต์ (ตามที่ผู้ใช้ร้องขอ)
+const MIN_COMPARISON_HEIGHT_PERCENT = 15; // Panel บนต้องมีอย่างน้อย 15% (เพื่อ Panel ล่างมีที่แสดง)
+const MAX_COMPARISON_HEIGHT_PERCENT = 90; // Panel บนสูงสุดได้ 85% (ตามที่ผู้ใช้ร้องขอ)
+
+if (resizerHandle && mainWrapper && comparisonArea) {
+    // 1. กำหนดความสูงเริ่มต้นของ Panel บน (เทียบเท่ากับ CSS ที่เคยให้ไป)
+    // การกำหนด height ใน JS ตรงนี้ จะทำให้ CSS height: 60% ถูก Override
+    comparisonArea.style.height = '60%'; 
+
+    // 2. Event Listeners
+    resizerHandle.addEventListener('mousedown', startResize);
+}
+
+function startResize(e) {
+    isResizing = true;
+    // ปิดการเลือกข้อความขณะลาก
+    document.body.style.userSelect = 'none'; 
+    document.body.style.cursor = 'ns-resize'; // เปลี่ยน Cursor ให้ชัดเจน
+
+    document.addEventListener('mousemove', doResize);
+    document.addEventListener('mouseup', stopResize);
+}
+
+function doResize(e) {
+    if (!isResizing) return;
+    
+    const wrapperRect = mainWrapper.getBoundingClientRect();
+    let newHeight = e.clientY - wrapperRect.top; // ความสูงใหม่ (เป็น pixel)
+
+    // A. คำนวณขีดจำกัด (เป็น pixel)
+    const totalHeight = wrapperRect.height;
+    const minHeightPx = totalHeight * (MIN_COMPARISON_HEIGHT_PERCENT / 100);
+    const maxHeightPx = totalHeight * (MAX_COMPARISON_HEIGHT_PERCENT / 100); // 85% limit
+
+    // B. การจำกัดค่า (Clamping)
+    // 1. ใช้ Math.min เพื่อจำกัดไม่ให้เกิน 90% (maxHeightPx)
+    let clampedHeight = Math.min(newHeight, maxHeightPx);
+    
+    // 2. ใช้ Math.max เพื่อจำกัดไม่ให้ต่ำกว่า 15% (minHeightPx)
+    clampedHeight = Math.max(clampedHeight, minHeightPx);
+
+    // C. นำค่าที่ถูกจำกัดไปกำหนดให้กับ Panel บน
+    comparisonArea.style.height = `${clampedHeight}px`;
+
+    // เนื่องจาก comparisonArea มี height เป็น pixel (#pool-area-wrapper) 
+    // ที่มี flex-grow: 1 จะปรับขนาดตามที่เหลือโดยอัตโนมัติ
+}
+
+function stopResize() {
+    isResizing = false;
+    document.body.style.userSelect = ''; // คืนค่าปกติ
+    document.body.style.cursor = 'default';
+    document.removeEventListener('mousemove', doResize);
+    document.removeEventListener('mouseup', stopResize);
 }

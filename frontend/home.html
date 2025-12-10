@@ -127,60 +127,66 @@
         </aside>
 
         <main class="main-content">
-            
-            <section class="comparison-section">
-                <div class="section-header-row">
-                    <div class="section-title static">
-                        <span><i data-lucide="layers"></i> Active Comparison (<span id="compare-count">0</span>/4)</span>
-                    </div>
-                    
-                    <button class="btn-clear-all" onclick="clearComparison()">
-                        <i data-lucide="trash-2"></i>
-                        <span>Clear All</span>
-                    </button>
-                </div>
-                
-                <div id="comparison-container" class="cards-container">
-                    <div class="empty-placeholder">
-                        <i data-lucide="arrow-down-circle" size="48" style="color:#cbd5e1; margin-bottom:12px;"></i>
-                        <p>Select candidates from the <b>table below</b><br>to compare them here.</p>
-                    </div>
-                </div>
-            </section>
 
-            <div class="separator-horizontal"></div>
+            <div id="main-dashboard-wrapper">
 
-            <section class="pool-section">
-                <div class="section-header-row">
-                    <div class="section-title static">
-                        <span><i data-lucide="database"></i> Candidate Pool (<span id="pool-count">0</span>)</span>
-                    </div>
-
-                    <button class="btn-clear-all" onclick="deleteAllCandidates()">
-                        <i data-lucide="trash-2"></i>
-                        <span>Delete All</span>
-                    </button>
-                </div>
-                
-                <div class="table-container">
-                    <table class="candidate-table">
-                        <thead>
-                            <tr>
-                                <th width="50">Select</th> 
-                                <th>Candidate Name / Role</th>
-                                <th>Match Score</th>
-                                <th>Experience</th>
-                                <th>Key Skills</th>
-                                <th width="60">Del</th>
-                            </tr>
-                        </thead>
+                <div id="comparison-area-wrapper">
+                    <section class="comparison-section">
+                        <div class="section-header-row">
+                            <div class="section-title static">
+                                <span><i data-lucide="layers"></i> Active Comparison (<span id="compare-count">0</span>/4)</span>
+                            </div>
+                            
+                            <button class="btn-clear-all" onclick="clearComparison()">
+                                <i data-lucide="trash-2"></i>
+                                <span>Clear All</span>
+                            </button>
+                        </div>
                         
-                        <tbody id="candidate-tbody">
-                        </tbody>
-                        
-                    </table>
+                        <div id="comparison-container" class="cards-container">
+                        </div>
+                    </section>
                 </div>
-            </section>
+
+            <div id="resizer-handle"></div>
+
+            <div id="pool-area-wrapper">
+        
+                <div class="separator-horizontal"></div>
+
+                    <section class="pool-section">
+                        <div class="section-header-row">
+                            <div class="section-title static">
+                                <span><i data-lucide="database"></i> Candidate Pool (<span id="pool-count">0</span>)</span>
+                            </div>
+
+                            <button class="btn-clear-all" onclick="deleteAllCandidates()">
+                                <i data-lucide="trash-2"></i>
+                                <span>Delete All</span>
+                            </button>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="candidate-table">
+                                <thead>
+                                    <tr>
+                                        <th width="50">Select</th> 
+                                        <th>Candidate Name / Role</th>
+                                        <th>Match Score</th>
+                                        <th>Experience</th>
+                                        <th>Key Skills</th>
+                                        <th width="60">Del</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody id="candidate-tbody">
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>    
             
             <div id="resume-modal" class="modal-overlay" onclick="closeResumeModal()">
                 <div class="modal-content" onclick="event.stopPropagation()">

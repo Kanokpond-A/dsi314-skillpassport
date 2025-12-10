@@ -205,11 +205,6 @@ body {
 
 .cards-container { display: flex; flex-direction: column; gap: 16px; }
 
-.empty-placeholder {
-    text-align: center; padding: 40px; border: 2px dashed var(--border-color);
-    border-radius: 12px; color: var(--text-light); background: #fff;
-}
-
 /* Compare Card Component */
 .compare-card {
     background: #fff;
@@ -566,4 +561,183 @@ select.input-sm {
     /* เทคนิคแก้ไอคอนดูต่ำไป: ดันขึ้น 0.5px - 1px */
     position: relative;
     top: -1px; 
+}
+
+/* --- Container จัดเรียง 4 ช่องเท่ากัน --- */
+#comparison-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* แบ่ง 4 ส่วนเท่ากันเป๊ะ */
+    gap: 16px; /* ระยะห่างระหว่างการ์ด */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* --- ตัวการ์ดแนวตั้ง --- */
+.compare-card-vertical {
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* จัดทุกอย่างกึ่งกลาง */
+    text-align: center;
+    position: relative;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.compare-card-vertical:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-color: #3B82F6;
+}
+
+/* ปุ่มปิด (กากบาท) มุมขวาบน */
+.btn-close-vertical {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #94A3B8;
+    cursor: pointer;
+    padding: 4px;
+}
+.btn-close-vertical:hover { color: #EF4444; background: #FEF2F2; border-radius:50%; }
+
+/* --- 1. ส่วนคะแนน (เด่นที่สุด) --- */
+.score-badge-large {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    border: 4px solid #F1F5F9; /* วงแหวนรอบนอก */
+}
+/* สีคะแนน */
+.score-green { color: #16A34A; background: #F0FDF4; border-color: #DCFCE7; }
+.score-yellow { color: #CA8A04; background: #FEF9C3; border-color: #FEF08A; }
+.score-red { color: #DC2626; background: #FEF2F2; border-color: #FEE2E2; }
+
+/* --- 2. ส่วนชื่อและตำแหน่ง --- */
+.card-name-vertical {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+.card-role-vertical {
+    font-size: 0.85rem;
+    color: #64748B;
+    margin-bottom: 12px;
+}
+
+/* --- 3. ข้อมูลติดต่อ --- */
+.contact-mini {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* --- 4. สกิลและจุดเด่น (ย่อให้สั้นลง) --- */
+.match-summary {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+    background: #F8FAFC;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: left;
+}
+.summary-item {
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* --- 5. ปุ่ม Action --- */
+.action-row {
+    margin-top: auto; /* ดันปุ่มไปล่างสุดเสมอ */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.btn-full { width: 100%; justify-content: center; }
+
+/* เส้นแบ่งบางๆ ระหว่าง Match กับ Missing */
+.divider-dashed {
+    border-top: 1px dashed #CBD5E1;
+    margin: 8px 0;
+    width: 100%;
+}
+
+/* หัวข้อสีแดงสำหรับ Missing */
+.header-missing {
+    font-size: 0.75rem; 
+    font-weight: 700; 
+    color: #EF4444; /* สีแดง */
+    margin-bottom: 6px; 
+    text-transform: uppercase;
+}
+
+/* ไอคอนกากบาทสีแดง */
+.icon-gap {
+    color: #EF4444;
+}
+
+/* ปรับปุ่มให้เรียงสวยๆ */
+.btn-outline-primary {
+    background: white;
+    color: #2563EB;
+    border: 1px solid #BFDBFE;
+}
+.btn-outline-primary:hover {
+    background: #EFF6FF;
+    border-color: #2563EB;
+}
+
+/* 1. WRAPPER หลัก */
+#main-dashboard-wrapper {
+    display: flex;
+    flex-direction: column; 
+    flex-grow: 1; 
+    height: 100%; /* ต้องให้ wrapper นี้ยืดเต็มพื้นที่ของ app-layout */
+    overflow: hidden;
+}
+
+/* 2. ส่วนบน (Comparison) */
+#comparison-area-wrapper { 
+    flex-grow: 0; /* เปลี่ยนเป็น 0 เพื่อให้ JS ควบคุมความสูง (clampedHeight) */
+    flex-shrink: 0; /* ป้องกันการย่อเมื่อพื้นที่ไม่พอ */
+    overflow-y: auto; 
+    /* ไม่ต้องกำหนด height: 60%; ใน CSS แล้ว เพราะถูกกำหนดใน JS ตอนโหลด */
+    padding-bottom: 20px; 
+}
+
+/* 3. ตัวแบ่ง (Handle) */
+#resizer-handle {
+    height: 10px; 
+    background-color: #CBD5E1;
+    cursor: ns-resize;
+    flex-shrink: 0; 
+    z-index: 100;
+}
+
+/* 4. ส่วนล่าง (Candidate Pool) */
+#pool-area-wrapper {
+    flex-grow: 1; /* ปล่อยให้กินพื้นที่ที่เหลือทั้งหมดโดยอัตโนมัติ */
+    overflow-y: auto; 
 }

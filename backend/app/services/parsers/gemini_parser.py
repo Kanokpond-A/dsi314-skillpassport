@@ -31,18 +31,20 @@ def parse_with_gemini(file_bytes: bytes, mime_type: str = "application/pdf") -> 
         # 🔥 แก้ไข Prompt ตรงนี้ครับ
         prompt = """
         You are an expert Technical Recruiter AI. 
-        Your task is to extract FULL details from this resume.
-        
+        Your task is to extract FULL details from this resume and return the output as a strict JSON object.
+
         CRITICAL INSTRUCTIONS:
         1. Extract ALL technical skills found. Do not summarize or pick only the top 5. List EVERYTHING.
         2. Normalize skill names (e.g., convert "ReactJS" -> "React", "Node.js" -> "Node.js").
         3. If you find metrics (numbers/%) in work experience, extract them explicitly.
-        4. ANALYSIS RULES:
-           - "job_hopping_risk": If the candidate is a student or fresh graduate, do NOT count internships, part-time jobs, or academic projects as job hopping. Only label 'High' if they have frequent changes in full-time employment.
-           - "years_of_experience": Sum up duration of internships and projects as valid experience.
 
-        
-        Output MUST be a valid JSON object with this exact structure:
+        ANALYSIS & CALCULATION RULES:
+        - Reference Date: Use "December 2025" as the end date for any role marked as 'Current' or 'Present'.
+        - Overlap Check: Check for any overlapping dates between jobs. If dates overlap, do NOT double-count that period in the total 'years_of_experience'.
+        - Job Hopping: If the candidate is a student or fresh graduate, do NOT count internships/part-time as job hopping.
+        - Total Experience: Sum up the duration of all unique working periods (internships included).
+
+        Output MUST be a valid JSON object with this exact structure (Return ONLY raw JSON, no markdown, no conversational text):
         {
             "candidate_info": { "name": "Extract full name", "email": "", "phone": "" },
             "education": [ { "degree": "", "university": "", "year": "" } ],
@@ -50,6 +52,8 @@ def parse_with_gemini(file_bytes: bytes, mime_type: str = "application/pdf") -> 
                 {
                     "company": "", 
                     "role": "", 
+                    "start_date": "MM/YYYY",
+                    "end_date": "MM/YYYY",
                     "duration_years": 0.0,
                     "is_tech_company": true,
                     "description": "Full description",
@@ -57,19 +61,17 @@ def parse_with_gemini(file_bytes: bytes, mime_type: str = "application/pdf") -> 
                 }
             ],
             "skills": {
-                "hard_skills": ["List", "ALL", "technical", "skills", "found", "here"],
-                "soft_skills": ["List", "ALL", "soft", "skills", "found"],
-                "tools": ["List", "ALL", "tools", "libraries", "software"]
+                "hard_skills": ["List", "ALL", "technical", "skills"],
+                "soft_skills": ["List", "ALL", "soft", "skills"],
+                "tools": ["List", "ALL", "tools", "libraries"]
             },
             "analysis": {
                 "years_of_experience": 0.0,
                 "job_hopping_risk": "Low/Medium/High",
                 "career_growth": "Fast/Steady/Slow",
-                "summary": "Summarize strengths and weaknesses in Thai language"
+                "summary": "Summarize strengths, weaknesses, and work history calculation in Thai language. Explicitly mention how the total experience was calculated (e.g., deducting overlaps)."
             }
         }
-        
-        Return ONLY raw JSON. No markdown formatting.
         """
 
         response = model.generate_content([

@@ -27,12 +27,6 @@ def get_default_weights():
     }
 
 def calculate_universal_score(parsed_data: Dict, weights_config: Dict, job_description_text: str = None) -> Dict[str, Any]:
-    """
-    ฟังก์ชันหลักที่รวม Logic ทั้งหมด:
-    1. คำนวณ Keyword Match (Hard Skill intersection)
-    2. คำนวณ Weighted Score สำหรับ Radar Chart (Capabilities & Potential)
-    3. ส่งคืนโครงสร้างข้อมูลที่ Frontend ต้องการ
-    """
     if not weights_config:
         weights_config = get_default_weights()
 
@@ -48,26 +42,27 @@ def calculate_universal_score(parsed_data: Dict, weights_config: Dict, job_descr
     if job_description_text:
         required_keywords = _extract_keywords_from_text(job_description_text)
     
-    # คำนวณ Match Result (เพื่อใช้ใน Analysis และใช้เป็นคะแนน Skill Match)
+    # คำนวณ Match Result
     match_result = calculate_match_score(required_keywords, candidate_skills)
 
     # 2. คำนวณ Score 6 แกน (Capabilities)
-    # ส่ง match_result เข้าไปเพื่อใช้คะแนนจริงแทนการนับจำนวน
     capabilities_result = _calculate_capabilities(parsed_data, weights_config, match_result)
     
     # 3. คำนวณ Score ศักยภาพ (Potential)
     potential_result = _calculate_potential(parsed_data, weights_config)
 
-    # 4. Final Score (อาจจะใช้ Average ระหว่าง Cap + Pot หรือใช้ Cap เป็นหลัก)
-    # ในที่นี้ใช้ Average ของ Cap + Pot เพื่อความสมดุล
+    # 4. Final Score
     final_score = round((capabilities_result['score'] + potential_result['score']) / 2, 1)
+
+    ai_summary = parsed_data.get('analysis', {}).get('summary', 'No summary provided by AI.')
+    match_stat = f"Matched {match_result['keywords_found']} / {match_result['keywords_total']} keywords from JD."
 
     return {
         "final_score": final_score, 
         "analysis": {
             "matched_criteria": match_result['matched_skills'],        
             "missing_gaps": match_result['unmatched_skills_required'], 
-            "summary_comment": f"Matched {match_result['keywords_found']} / {match_result['keywords_total']} keywords from JD.",
+            "summary_comment": f"{ai_summary}\n\n[{match_stat}]",
             "years_of_experience": parsed_data.get('analysis', {}).get('years_of_experience', 0)
         },
         "capabilities": capabilities_result,
@@ -75,37 +70,55 @@ def calculate_universal_score(parsed_data: Dict, weights_config: Dict, job_descr
     }
 
 # ==========================================
-# 2. Match Logic Helpers
+# 2. Match Logic Helpers (สูตรเดิม: Exact Match)
 # ==========================================
 
 def calculate_match_score(required_keywords: List[str], candidate_skills: List[str]) -> Dict[str, Any]:
+    # 1. Normalize
     required_norm = {kw.lower().strip() for kw in required_keywords if kw}
     candidate_norm = {sk.lower().strip() for sk in candidate_skills if sk}
     
+    # 2. Intersection (ต้องตรงกันเป๊ะๆ เท่านั้น)
     matched_skills = required_norm.intersection(candidate_norm)
+    
     total_required = len(required_norm)
     found_count = len(matched_skills)
     
     if total_required == 0:
-        # ถ้าไม่มี JD ให้ถือว่า Match 50% หรือคำนวณจากจำนวน Skill ที่มี
         match_percentage = 50.0 
     else:
         match_percentage = round((found_count / total_required) * 100, 1)
     
-    unmatched_skills = required_norm.difference(candidate_norm)
+    unmatched_skills = list(required_norm.difference(candidate_norm))
     
     return {
         "match_percentage": match_percentage,
         "keywords_total": total_required,
         "keywords_found": found_count,
         "matched_skills": list(matched_skills),
-        "unmatched_skills_required": list(unmatched_skills)
+        "unmatched_skills_required": unmatched_skills
     }
 
 def _extract_keywords_from_text(text: str) -> List[str]:
+    """
+    ยังคงใช้ Regex เพื่อการตัดคำที่ถูกต้อง (จำเป็นต้องมี ไม่งั้นได้ 1 Keyword)
+    """
     if not text: return []
-    clean_text = text.replace('\n', ',').replace('•', '').replace('-', '')
-    return [k.strip() for k in clean_text.split(',') if k.strip()]
+    
+    text = text.replace('•', ' ').replace('-', ' ').replace('*', ' ').replace('/', ' ')
+    
+    # ตัดด้วย , \n ; .
+    raw_tokens = re.split(r'[,\n;\.]+', text)
+    
+    keywords = []
+    stop_words = {'the', 'and', 'or', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'is', 'are', 'be', 'will', 'job', 'description', 'role', 'responsibilities', 'requirements', 'we', 'looking', 'summary'}
+
+    for token in raw_tokens:
+        clean_token = token.strip()
+        if len(clean_token) > 1 and clean_token.lower() not in stop_words:
+            keywords.append(clean_token)
+            
+    return keywords
 
 def _calculate_weighted_average(score_list):
     total_weighted_score = 0
@@ -118,60 +131,62 @@ def _calculate_weighted_average(score_list):
     return round(total_weighted_score / total_active_weight, 2)
 
 # ==========================================
-# 3. Detailed Scoring Logic (Capabilities)
+# 3. Detailed Scoring Logic (Capabilities - สูตรเดิม)
 # ==========================================
 
 def _calculate_capabilities(data, cfg, match_result):
     scores = [] 
     details = {} 
     
-    # A. Skill Match (ใช้ค่าจริงจาก JD Match แล้ว!)
+    # A. Skill Match
     if cfg.get('cap_skills_match_enabled'):
-        # ถ้ามีการ match กับ JD ให้ใช้ % การ match เลย
-        # ถ้าไม่มี JD (total=0) ให้ใช้ตรรกะเดิมคือดูปริมาณสกิล
         if match_result['keywords_total'] > 0:
             raw_score = match_result['match_percentage']
         else:
             hard_skills_count = len(data.get('skills', {}).get('hard_skills', []))
             raw_score = min(hard_skills_count * 10, 100)
-            
         weight = cfg.get('cap_skills_match_w', 0)
         scores.append((raw_score, weight))
         details['skill_match'] = raw_score
 
-    # B. Skill Recency (Mock ไว้ 100 หรือต้องมี Logic วันที่)
+    # B. Recency
     if cfg.get('cap_recency_enabled'):
-        raw_score = 80 # Default กลางๆ
+        raw_score = 80 
         weight = cfg.get('cap_recency_w', 0)
         scores.append((raw_score, weight))
         details['recency'] = raw_score 
 
-    # C. Project Scale
+    # C. Project Scale (ใช้ Keywords ชุดเดิม)
     if cfg.get('cap_scale_enabled'):
         raw_score = 40 
         metrics = []
         for job in data.get('work_experience', []):
             metrics.extend(job.get('metrics_found', []))
+        
+        # Keywords ชุดเดิม (ไม่มี Revenue, Budget)
         scale_keywords = ['million', 'users', 'high traffic', 'scale', 'concurrent']
         all_metrics_str = " ".join(metrics).lower()
         if any(k in all_metrics_str for k in scale_keywords):
             raw_score = 90
-        elif metrics: # มีตัวเลขอะไรก็ได้
+        elif metrics: 
             raw_score = 70
             
         weight = cfg.get('cap_scale_w', 0)
         scores.append((raw_score, weight))
         details['project_scale'] = raw_score
 
-    # D. Engineering Standards
+    # D. Engineering Standards (ใช้ Keywords ชุดเดิม)
     if cfg.get('cap_standards_enabled'):
+        # Keywords ชุดเดิม (เน้น Software Engineer ไม่มี Visualization, Analysis)
         keywords = ['tdd', 'unit test', 'ci/cd', 'pipeline', 'code review', 'agile', 'scrum', 'git']
+        
         found_standards = 0
         all_text = str(data).lower()
         for k in keywords:
             if k in all_text:
                 found_standards += 1
-        raw_score = min(found_standards * 20 + 20, 100) # เริ่มต้นที่ 20 คะแนน
+        
+        raw_score = min(found_standards * 20 + 20, 100)
         weight = cfg.get('cap_standards_w', 0)
         scores.append((raw_score, weight))
         details['standards'] = raw_score
@@ -179,7 +194,7 @@ def _calculate_capabilities(data, cfg, match_result):
     # E. Duration
     if cfg.get('cap_exp_duration_enabled'):
         years = data.get('analysis', {}).get('years_of_experience', 0)
-        required_years = 3 # เกณฑ์มาตรฐาน
+        required_years = 3
         raw_score = min((years / required_years) * 100, 100)
         weight = cfg.get('cap_exp_duration_w', 0)
         scores.append((raw_score, weight))
@@ -194,7 +209,7 @@ def _calculate_capabilities(data, cfg, match_result):
         scores.append((raw_score, weight))
         details['stability_score'] = raw_score
 
-    # Education (Factor เสริม)
+    # Education
     if cfg.get('cap_edu_degree_enabled'):
         raw_score = 100 if data.get('education') else 50
         weight = cfg.get('cap_edu_degree_w', 0)
@@ -223,7 +238,6 @@ def _calculate_potential(data, cfg):
     # B. Learning Agility
     if cfg.get('pot_learning_agility_enabled'):
         skills_count = len(data.get('skills', {}).get('hard_skills', []))
-        # ยิ่งสกิลเยอะ ยิ่งแสดงว่าเรียนรู้หลากหลาย
         raw_score = min(skills_count * 5 + 40, 100) 
         weight = cfg.get('pot_learning_agility_w', 0)
         scores.append((raw_score, weight))
@@ -232,7 +246,7 @@ def _calculate_potential(data, cfg):
     # C. Leadership
     if cfg.get('pot_leadership_enabled'):
         lead_kw = ['lead', 'manage', 'mentor', 'head', 'chief', 'senior']
-        raw_score = 40 # ฐานคะแนน
+        raw_score = 40
         all_text = str(data.get('work_experience', [])).lower()
         if any(k in all_text for k in lead_kw):
             raw_score = 90

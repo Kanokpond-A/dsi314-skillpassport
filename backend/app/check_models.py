@@ -24,3 +24,5 @@ else:
             print("\n⚠️ ไม่พบโมเดลที่รองรับ generateContent เลย")
     except Exception as e:
         print(f"\n❌ เกิด Error: {e}")
+
+# ปรินท์ใน terminal: python backend/app/check_models.py
