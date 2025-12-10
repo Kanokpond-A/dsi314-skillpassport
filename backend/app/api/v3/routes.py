@@ -23,7 +23,9 @@ class JobProfile(BaseModel):
 async def ucb_from_pdf(
     file: UploadFile = File(...), 
     job_description: str = Form(None), # รับค่ามาเช็คเองข้างใน
+    job_title: str = Form("General Candidate"), 
     db: Session = Depends(get_db)
+    
 ):
     if file.content_type != "application/pdf":
         raise HTTPException(status_code=400, detail="Only PDF files are supported")
@@ -73,7 +75,9 @@ async def ucb_from_pdf(
             "final_score": match_result.get("match_percentage", 0),
             # ส่งรายละเอียด Matched/Gap ไปให้ Frontend แสดงในการ์ด
             "analysis": match_result 
-        }
+        },
+        # 🔥 2. บันทึก job_title ลงไปใน JSON ด้วย
+        "job_title": job_title
     }
 
     # 🔥 4) บันทึกลง Database (SQL) 🔥

@@ -3,48 +3,81 @@ import os
 from pathlib import Path
 from typing import List, Dict
 
-# 1. ระบุตำแหน่งโฟลเดอร์ให้แม่นยำ (ใช้โค้ดเดิมที่ถูกต้องแล้ว)
+# ==================================================
+# 🔧 Path Configuration (Smart Discovery)
+# ==================================================
+
+# 1. Get current file location
 CURRENT_FILE = Path(__file__).resolve()
-PROJECT_ROOT = CURRENT_FILE.parents[3] # ถอย 4 ชั้นไปหา Root
-JD_STORAGE_PATH = PROJECT_ROOT / "config" / "jd_profiles"
 
-# สร้างโฟลเดอร์รอไว้เสมอ
-JD_STORAGE_PATH.mkdir(parents=True, exist_ok=True)
+# 2. Define potential locations for 'config/jd_profiles'
+possible_paths = [
+    # Option A: Relative to the current working directory (where you ran the command)
+    Path(os.getcwd()) / "config" / "jd_profiles",
+    
+    # Option B: Relative to this file (backend/app/services/jd_manager.py) -> Go up to Root
+    CURRENT_FILE.parents[3] / "config" / "jd_profiles",
+    
+    # Option C: In case 'config' is inside 'backend' (backend/config/jd_profiles)
+    CURRENT_FILE.parents[2] / "config" / "jd_profiles"
+]
 
-print(f"📂 JD Manager Active. Path: {JD_STORAGE_PATH}")
+JD_STORAGE_PATH = None
+
+print("--------------------------------------------------")
+print("🔍 DEBUG: JD Manager Path Discovery")
+
+# 3. Search for an existing folder
+for path in possible_paths:
+    print(f"   Checking: {path}")
+    if path.exists():
+        JD_STORAGE_PATH = path
+        print(f"✅ Found Config Folder at: {JD_STORAGE_PATH}")
+        break
+
+# 4. Fallback: If not found, create it at the project root (Option B)
+if JD_STORAGE_PATH is None:
+    print("⚠️ Config folder not found. Creating new one at standard root.")
+    # Default to 4 levels up (standard structure)
+    JD_STORAGE_PATH = CURRENT_FILE.parents[3] / "config" / "jd_profiles"
+    JD_STORAGE_PATH.mkdir(parents=True, exist_ok=True)
+    print(f"📁 Created new folder at: {JD_STORAGE_PATH}")
+
+print("--------------------------------------------------")
+
 
 def get_all_jobs() -> List[Dict]:
-    """อ่านไฟล์ Job Profile ทั้งหมดในโฟลเดอร์"""
+    """Reads all Job Profile JSON files from the folder."""
     jobs = []
     
-    # Debug: ดูซิว่าในโฟลเดอร์มีไฟล์อะไรบ้าง (ไม่สนนามสกุล)
     try:
-        all_files = list(JD_STORAGE_PATH.iterdir())
-        print(f"🔍 Checking folder... Found {len(all_files)} files: {[f.name for f in all_files]}")
+        # Check if directory exists before iterating
+        if not JD_STORAGE_PATH.exists():
+             print(f"❌ Error: Directory {JD_STORAGE_PATH} does not exist.")
+             return []
+
+        all_files = list(JD_STORAGE_PATH.glob("*.json"))
+        print(f"📂 Reading JDs from: {JD_STORAGE_PATH}")
+        print(f"📄 Found {len(all_files)} json files.")
         
         for file_path in all_files:
-            # อ่านเฉพาะไฟล์นามสกุล .json
-            if file_path.suffix.lower() == '.json':
-                try:
-                    with open(file_path, "r", encoding="utf-8") as f:
-                        data = json.load(f)
-                        jobs.append(data)
-                except Exception as e:
-                    print(f"❌ Corrupted JSON {file_path.name}: {e}")
-            else:
-                # แจ้งเตือนถ้ามีไฟล์แปลกปลอม (เช่น .txt)
-                if file_path.name != "SYSTEM_TEST.txt":
-                    print(f"⚠️ Skipping non-json file: {file_path.name}")
+            try:
+                with open(file_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    # Use filename as title if missing
+                    if "title" not in data:
+                        data["title"] = file_path.stem.replace("_", " ").title()
+                    jobs.append(data)
+            except Exception as e:
+                print(f"❌ Corrupted JSON {file_path.name}: {e}")
 
     except Exception as e:
         print(f"❌ Error accessing folder: {e}")
         return []
 
-    print(f"✅ Loaded {len(jobs)} profiles successfully.")
     return jobs
 
 def save_job(title: str, description: str):
-    # (ใช้โค้ดเดิมได้เลยครับ หรือจะ Copy ใหม่ก็ได้)
     print(f"💾 Saving Job: '{title}'")
     safe_filename = "".join(c for c in title.strip().replace(" ", "_").lower() if c.isalnum() or c in ('_', '-')) 
     if not safe_filename: safe_filename = "untitled"
@@ -53,10 +86,11 @@ def save_job(title: str, description: str):
     
     data = {"id": f"{safe_filename}.json", "title": title.strip(), "description": description.strip()}
     
-    with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
-        f.flush()
-        os.fsync(f.fileno())
-        
-    print(f"✅ File saved: {file_path}")
-    return data
+    try:
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+        print(f"✅ File saved: {file_path}")
+        return data
+    except Exception as e:
+        print(f"❌ Save Error: {e}")
+        raise e

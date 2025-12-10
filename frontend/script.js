@@ -110,6 +110,20 @@ async function processQueue() {
         if (!res.ok) throw new Error("Server Error");
 
         const data = await res.json();
+
+        // ... (หลังจากดึง jobDesc แล้ว) ...
+        const jobDesc = jobDescInput.value || "";
+
+        // 🔥 1. ดึงชื่อตำแหน่งงาน (Job Title) จากช่อง Input
+        const currentJobTitle = jobTitleInput.value || "General Candidate";
+
+        // ... (ในส่วน FormData) ...
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('job_description', jobDesc);
+
+        // 🔥 2. ส่งชื่อตำแหน่งงานไปด้วย
+        formData.append('job_title', currentJobTitle);
         
         // ✅ สำเร็จ:
         // 1. เพิ่มข้อมูลลงใน Analyzed List
@@ -587,41 +601,44 @@ function resetFilters() {
     applyFilters();
 }
 
-function renderSidebarItem(candidates = []) {
-    candidateListEl.innerHTML = '';
-    if (Array.isArray(candidates)) {
-        candidates.forEach(c => {
-            const div = document.createElement('div');
-            div.className = 'candidate-item';
-            div.innerHTML = `
-                <div class="c-avatar small" style="width:24px; height:24px; font-size:0.75rem;">${(c.parsed_resume?.candidate_info?.name||'U').charAt(0)}</div>
-                <div class="c-info"><div class="c-name" style="font-size:0.8rem;">${c.parsed_resume?.candidate_info?.name}</div></div>
-                <div class="c-score" style="font-size:0.75rem;">${Math.round(c.score?.final_score)}%</div>
-            `;
-            div.onclick = () => toggleCompare(c.db_id, true);
-            candidateListEl.appendChild(div);
-        });
-    }
-    fileQueue.forEach(f => {
-        const div = document.createElement('div');
-        div.className = 'candidate-item pulse';
-        div.innerHTML = `<div class="c-info" style="margin-left:8px;">Analyzing ${f.name}...</div>`;
-        candidateListEl.appendChild(div);
-    });
-}
-
 // ==================================================
 // 7. Job Context & Utils
 // ==================================================
-function showNewJobForm() { jobSelect.value = ""; jobTitleInput.value = ""; jobDescInput.value = ""; jobEditorArea.style.display = "block"; jobTitleInput.focus(); }
 function hideJobForm() { jobEditorArea.style.display = "none"; }
+
+// ฟังก์ชันสำหรับสั่งยืดกล่องข้อความ
+function autoResize(element) {
+    element.style.height = 'auto'; // รีเซ็ตความสูงก่อนคำนวณ
+    element.style.height = element.scrollHeight + 'px'; // ตั้งความสูงเท่ากับเนื้อหา
+}
+
+// ผูก Event ว่า "ถ้ามีการพิมพ์ (input)" ให้เรียกใช้ฟังก์ชันยืดกล่อง
+const jdTextArea = document.getElementById('job-desc-input');
+if (jdTextArea) {
+    jdTextArea.addEventListener('input', function() {
+        autoResize(this);
+    });
+}
+
+function showNewJobForm() { 
+    jobSelect.value = ""; 
+    jobTitleInput.value = ""; 
+    jobDescInput.value = ""; 
+    jobEditorArea.style.display = "block"; 
+    jobTitleInput.focus(); 
+    jobDescInput.style.height = '120px'; 
+}
 
 function loadJobDescription() {
     const selectedVal = jobSelect.value;
     if (!selectedVal) { jobEditorArea.style.display = "none"; return; }
     const job = JSON.parse(decodeURIComponent(selectedVal));
-    jobTitleInput.value = job.title; jobDescInput.value = job.description;
+    jobTitleInput.value = job.title; 
+    jobDescInput.value = job.description;
+
     jobEditorArea.style.display = "block";
+
+    autoResize(jobDescInput);
 }
 
 async function saveJobProfile() {
@@ -695,16 +712,19 @@ document.addEventListener('keydown', (e) => {
 
 window.addEventListener('DOMContentLoaded', () => { fetchJobProfiles(); loadCandidateHistory(); });
 
-function toggleJobContext() {
-    const panel = document.getElementById('job-context-panel');
-    const icon = document.querySelector('.toggle-btn i[data-lucide="chevron-down"]');
+function toggleSection(panelId, iconId) {
+    const panel = document.getElementById(panelId);
+    const icon = document.getElementById(iconId);
     
-    // เช็คสถานะปัจจุบัน ถ้าปิดอยู่ให้เปิด ถ้าเปิดอยู่ให้ปิด
+    if (!panel) return;
+
     if (panel.style.display === 'none' || panel.style.display === '') {
+        // สั่งเปิด
         panel.style.display = 'block';
-        if(icon) icon.style.transform = 'rotate(0deg)'; // หมุนลูกศรกลับ
+        if (icon) icon.style.transform = 'rotate(0deg)';
     } else {
+        // สั่งปิด
         panel.style.display = 'none';
-        if(icon) icon.style.transform = 'rotate(-90deg)'; // หมุนลูกศรให้รู้ว่าปิด
+        if (icon) icon.style.transform = 'rotate(-90deg)';
     }
 }

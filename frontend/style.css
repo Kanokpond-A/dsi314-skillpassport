@@ -30,35 +30,106 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* 1. ปรับ Body ให้เป็นกล่องแนวตั้ง เพื่อวาง Navbar ไว้บนสุด */
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--main-bg);
     color: var(--text-main);
     height: 100vh;
     overflow: hidden;
-    font-size: 14px;
+    display: flex;
+    flex-direction: column; /* 🔥 สำคัญ: เรียงจากบนลงล่าง */
 }
 
-.app-container, body { display: flex; height: 100vh; width: 100vw; }
+/* 2. Global Navbar Style */
+.global-navbar {
+    height: 64px;
+    background: #fff;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    flex-shrink: 0;
+    z-index: 50;
+    box-shadow: var(--shadow-sm);
+}
+.nav-right { display: flex; align-items: center; gap: 24px; }
+.page-title { font-size: 1rem; font-weight: 600; color: var(--text-dark); margin: 0; }
 
-/* =========================================
-   2. Sidebar
-   ========================================= */
+/* 3. Wrapper สำหรับ Sidebar และ Main Content */
+.app-layout {
+    display: flex;
+    flex: 1; /* ยืดเต็มพื้นที่ที่เหลือจาก Header */
+    height: calc(100vh - 64px);
+    overflow: hidden;
+    width: 100%;
+}
+
+/* 4. ปรับ Sidebar (ลบ Header เดิมทิ้ง) */
 .sidebar {
     width: 320px;
     background: var(--card-bg);
     border-right: 1px solid var(--border-color);
-    display: flex; flex-direction: column; flex-shrink: 0; z-index: 10;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
-.sidebar-header { padding: 20px; border-bottom: 1px solid var(--border-color); }
+
+/* 5. ปรับ Content ใน Sidebar ให้มีระยะห่าง */
+.sidebar-content {
+    padding: 24px; /* ✅ ใส่ Padding รอบด้านตรงนี้แทน */
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #fff;
+}
+
+/* 6. Main Content */
+.main-content {
+    flex: 1;
+    background: var(--main-bg);
+    display: flex; 
+    flex-direction: column; 
+    height: 100%;
+    overflow: hidden;
+}
+
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.2rem; color: var(--text-dark); }
 .logo-icon { color: var(--primary); width: 24px; }
 .badge-pro { background: linear-gradient(135deg, var(--primary), #60A5FA); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; margin-left: 4px; }
-.sidebar-content { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 20px; background: #fff; }
 
 /* Components inside Sidebar */
 .panel-section { margin-bottom: 8px; }
-.section-title { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+
+.section-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;      
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;   /* ระยะห่างตัวอักษรแบบโปร */
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* จัดให้ไอคอนลูกศรไปอยู่ขวาสุด */
+    cursor: pointer;
+    transition: color 0.2s;
+    user-select: none; /* ห้ามลากคลุมดำหัวข้อ */
+}
+
+.section-title:hover {
+    color: var(--primary);
+}
+
+.section-title span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .section-header .title { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
 .reset-link { font-size: 0.75rem; color: var(--primary); cursor: pointer; }
@@ -335,4 +406,141 @@ select.input-sm {
     background-size: .65em auto;
     appearance: none; /* ลบลูกศร Default ของ Browser */
     padding-right: 1.5em;
+}
+
+/* เพิ่ม Keyframes สำหรับอนิเมชั่นกระพริบ */
+@keyframes pulse-blue {
+    0% { background-color: #F0F9FF; border-color: #BFDBFE; opacity: 1; }
+    50% { background-color: #DBEAFE; border-color: #60A5FA; opacity: 0.7; }
+    100% { background-color: #F0F9FF; border-color: #BFDBFE; opacity: 1; }
+}
+
+.candidate-item.pulse {
+    /* เรียกใช้ Animation */
+    animation: pulse-blue 1.5s infinite ease-in-out;
+    
+    pointer-events: none; /* ห้ามกดขณะกำลังโหลด */
+    color: var(--primary); 
+    font-weight: 500;
+}
+
+/* แถม: ไอคอนหมุนติ้วๆ สำหรับ Loading */
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.loading-spinner {
+    animation: spin 1s linear infinite;
+}
+
+/* 🔥 ปรับแต่งกล่อง Job Description ให้ยืดหยุ่น */
+#job-desc-input {
+    font-family: 'Inter', sans-serif; /* บังคับฟอนต์เดียวกับ Job Title */
+    font-size: 0.9rem;                /* ขนาดเท่ากัน */
+    line-height: 1.5;                 /* ระยะห่างบรรทัดให้อ่านง่าย */
+    
+    overflow-y: hidden; /* ซ่อน Scrollbar (เพราะเราจะให้มันยืดแทน) */
+    resize: none;       /* ปิดไม่ให้ user ลากขยายเอง */
+    min-height: 120px;  /* ความสูงเริ่มต้น */
+    transition: height 0.1s ease; /* เวลายืดจะได้นุ่มนวล */
+}
+
+/* เพิ่มความสวยงามให้ช่อง Job Title ด้วย */
+#job-title-input {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600; /* ทำให้หนากว่าปกตินิดนึงจะได้ดูเป็นหัวข้อ */
+}
+
+.section-title.static {
+    cursor: default;       /* ไม่ต้องเป็นรูปมือนิ้วชี้ */
+    margin-bottom: 0;      /* จัดระยะเองผ่าน Container */
+    font-size: 0.8rem;     /* ใหญ่กว่า Sidebar นิดนึง (0.05rem) เพราะเป็นเนื้อหาหลัก */
+    color: var(--text-dark); /* สีเข้มขึ้นนิดนึงเพื่อให้เด่นกว่า Sidebar */
+}
+.section-title.static:hover {
+    color: var(--text-dark); /* ไม่เปลี่ยนสีเมื่อชี้ */
+}
+
+/* 2. ปรับปรุงเส้นแบ่ง (Separator) ให้เนียนตา */
+/* ลบเส้นแบ่งแบบเก่าทิ้ง หรือซ่อนไว้ */
+.separator-horizontal {
+    display: none; 
+}
+
+/* ใช้ Border-Bottom ของ Section บน แทนเส้นแบ่งแยก */
+.comparison-section {
+    flex: 0 0 auto;
+    max-height: 45vh;
+    overflow-y: auto;
+    padding: 24px;
+    background: #fff; /* เปลี่ยนเป็นสีขาวเพื่อให้สะอาดตา */
+    
+    /* 🔥 นี่คือเส้นแบ่งใหม่: เนียนกว่าและติดขอบล่างพอดี */
+    border-bottom: 1px solid var(--border-color); 
+    box-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.05); /* เงาจางๆ ด้านล่างเพิ่มมิติ */
+}
+
+/* ปรับ Section ล่าง (Pool) ให้รับกับเส้นแบ่งใหม่ */
+.pool-section {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    background: #F8FAFC; /* ให้พื้นหลังส่วนล่างเป็นสีเทาจางๆ แยกโซนชัดเจน */
+}
+
+/* จัดระเบียบ Header ฝั่งขวาใหม่ */
+.section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px; /* เพิ่มระยะห่างจากหัวข้อถึงการ์ด */
+    padding-bottom: 12px; /* เพิ่มพื้นที่หายใจ */
+    border-bottom: 1px dashed var(--border-color); /* เส้นประจางๆ ใใต้หัวข้อแต่ละอัน */
+}
+
+.btn-clear-all {
+    /* Flexbox คือหัวใจของการจัดระเบียบ */
+    display: inline-flex;       
+    align-items: center;        /* จัดกึ่งกลางแนวตั้งเป๊ะๆ */
+    justify-content: center;    
+    
+    gap: 6px;                   /* ระยะห่างระหว่างไอคอนกับตัวหนังสือ */
+    padding: 6px 14px;          /* เพิ่มความกว้างด้านข้างอีกนิดให้ดูโปร่ง */
+    height: 30px;               /* 🔥 กำหนดความสูงแน่นอน เพื่อไม่ให้เบี้ยว */
+    
+    border-radius: 99px;        /* ทรงแคปซูล (Pill Shape) */
+    
+    font-size: 0.75rem;         
+    font-weight: 600;           
+    line-height: 1;             /* ตัดพื้นที่ว่างบนล่างของตัวหนังสือออก */
+    
+    /* สีและสไตล์เดิม */
+    color: var(--text-muted); 
+    background: rgba(0, 0, 0, 0.04); 
+    border: 1px solid transparent; 
+    
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Animation นุ่มๆ */
+}
+
+/* Hover Effect */
+.btn-clear-all:hover {
+    background: #FEF2F2; 
+    color: #DC2626;      
+    border-color: #FECACA; 
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.1); /* เงาสีแดงจางๆ */
+    transform: translateY(-1px); /* ลอยขึ้นนิดนึง */
+}
+
+/* Active State */
+.btn-clear-all:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* 🔧 ปรับตำแหน่งไอคอนแบบละเอียด (Pixel Perfect) */
+.btn-clear-all i {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2.5px; /* หนาขึ้นอีกนิดให้สมดุลกับตัวหนังสือ */
+    
+    /* เทคนิคแก้ไอคอนดูต่ำไป: ดันขึ้น 0.5px - 1px */
+    position: relative;
+    top: -1px; 
 }
