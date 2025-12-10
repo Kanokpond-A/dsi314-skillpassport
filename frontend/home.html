@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TalentMatch Pro: Real AI</title>
+    <title>Unified Candidate Brief</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,7 +19,7 @@
         <div class="sidebar-header">
             <div class="brand">
                 <i data-lucide="layout-grid" class="logo-icon"></i>
-                <span>TalentMatch <span class="badge-pro">AI</span></span>
+                <span>Unified Candidate Brief <span class="badge-pro">AI</span></span>
             </div>
         </div>
 
@@ -28,7 +32,6 @@
                 </div>
                 
                 <div class="hidden-content" id="job-context-panel" style="display:block;">
-                    
                     <div style="display:flex; gap:8px; margin-bottom: 12px;">
                         <select id="job-select" class="input-sm" style="flex:1;" onchange="loadJobDescription()">
                             <option value="">-- Select Profile --</option>
@@ -39,24 +42,19 @@
                     </div>
 
                     <div id="job-editor-area" style="display: none; border-top:1px dashed #e2e8f0; padding-top:12px;">
-                        
                         <div style="margin-bottom: 8px;">
                             <input type="text" id="job-title-input" class="input-sm" placeholder="Job Title (e.g. Data Engineer)">
                         </div>
-
                         <div style="margin-bottom: 8px;">
                             <textarea id="job-desc-input" rows="5" class="input-sm" placeholder="Paste full requirements here..."></textarea>
                         </div>
-
                         <button onclick="saveJobProfile()" style="width:100%; padding:8px; background:#eff6ff; color:#3b82f6; border:1px solid #bfdbfe; border-radius:6px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; font-size:0.85rem;">
                             <i data-lucide="save" style="width:14px;"></i> Save Profile
                         </button>
-                        
                         <div style="text-align:center; margin-top:8px;">
                             <span onclick="hideJobForm()" style="font-size:0.75rem; color:#94a3b8; cursor:pointer; text-decoration:underline;">Close / Cancel</span>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -73,16 +71,27 @@
 
             <div class="panel-section">
                 <div class="section-header">
-                    <span class="title"><i data-lucide="filter"></i> Filter</span>
+                    <span class="title"><i data-lucide="filter"></i> Filter & Sort</span>
                     <span class="reset-link" onclick="resetFilters()">Reset</span>
                 </div>
-                <div class="search-box">
-                    <i data-lucide="search" size="14"></i>
-                    <input type="text" id="search-input" placeholder="Search name, skills...">
+                
+                <div class="search-box" style="margin-bottom: 8px;">
+                    <i data-lucide="search" size="14" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+                    <input type="text" id="search-input" class="input-sm" style="padding-left: 32px;" placeholder="Search Name or Skills">
                 </div>
-                <div class="filter-row">
-                    <label>Score > <span id="score-val">0%</span></label>
-                    <input type="range" class="range-slider" id="score-slider" min="0" max="100" value="0">
+
+                <div style="margin-bottom: 8px;">
+                    <select id="sort-select" class="input-sm" onchange="applyFilters()">
+                        <option value="score_desc">Score High to Low</option>
+                        <option value="name_asc">Name A - Z</option>
+                        <option value="name_desc">Name Z - A</option>
+                        <option value="exp_desc">Experience Most to Least</option>
+                    </select>
+                </div>
+
+                <div class="filter-row" style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem;">
+                    <label>Min Score: <span id="score-val" style="font-weight:600; color:var(--primary);">0%</span></label>
+                    <input type="range" class="range-slider" id="score-slider" min="0" max="100" value="0" style="width: 60%;">
                 </div>
             </div>
 
@@ -90,11 +99,9 @@
 
             <div class="panel-section results-section">
                 <div class="section-header">
-                    <span class="title" id="results-count-label"><i data-lucide="users"></i> Results (0)</span>
+                    <span class="title" id="results-count-label"><i data-lucide="users"></i> Uploaded (0)</span>
                 </div>
-                
-                <div class="candidate-list" id="candidate-list">
-                    </div>
+                <div class="candidate-list" id="candidate-list"></div>
             </div>
 
         </div>
@@ -105,18 +112,85 @@
         <header class="top-bar">
             <h1>Candidate Comparison</h1>
             <div class="actions">
-                <button class="btn-outline"><i data-lucide="download"></i> Export</button>
+                <button class="btn-outline" onclick="window.print()"><i data-lucide="printer"></i> Print Report</button>
             </div>
         </header>
 
-        <div class="comparison-container" id="comparison-container">
+        <section class="comparison-section">
+            <div class="section-header-row">
+                <h3><i data-lucide="layers"></i> Active Comparison (<span id="compare-count">0</span>/4)</h3>
+                <button class="reset-link" onclick="clearComparison()">Clear All</button>
+            </div>
             
-            <div class="add-compare-card" id="placeholder-card">
-                <i data-lucide="layers" size="48"></i>
-                <p>Upload resumes or select from list<br>to compare candidates</p>
+            <div id="comparison-container" class="cards-container">
+                <div class="empty-placeholder">
+                    <i data-lucide="arrow-down-circle" size="48" style="color:#cbd5e1; margin-bottom:12px;"></i>
+                    <p>Select candidates from the <b>table below</b><br>to compare them here.</p>
+                </div>
             </div>
+        </section>
 
+        <div class="separator-horizontal"></div>
+
+        <section class="pool-section">
+            <div class="section-header-row">
+                <h3><i data-lucide="database"></i> Candidate Pool (<span id="pool-count">0</span>)</h3>
             </div>
+            
+            <div class="table-container">
+                <table class="candidate-table">
+                    <thead>
+                        <tr>
+                            <th width="50">Select</th> <th>Candidate Name / Role</th>
+                            <th>Match Score</th>
+                            <th>Experience</th>
+                            <th>Key Skills</th>
+                            <th width="60">Del</th>
+                        </tr>
+                    </thead>
+                    <tbody id="candidate-tbody">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div id="resume-modal" class="modal-overlay" onclick="closeResumeModal()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3 id="modal-title">📄 Resume Preview</h3>
+                    <button class="btn-icon" onclick="closeResumeModal()"><i data-lucide="x"></i></button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="resume-frame" src=""></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div id="analysis-modal" class="modal-overlay" onclick="closeAnalysisModal()">
+            <div class="modal-content large-modal" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div class="big-avatar small" id="ana-avatar">A</div>
+                        <div>
+                            <h3 id="ana-name">Candidate Name</h3>
+                            <p style="margin:0; font-size:0.8rem; color:#64748B;" id="ana-role">Position</p>
+                        </div>
+                    </div>
+                    <button class="btn-icon" onclick="closeAnalysisModal()"><i data-lucide="x"></i></button>
+                </div>
+                
+                <div class="modal-body-analysis">
+                    <div class="ana-chart-box">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                    <div class="ana-text-box">
+                        <h4><i data-lucide="bot"></i> AI Executive Summary</h4>
+                        <div class="summary-content" id="ana-summary">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script src="script.js"></script>

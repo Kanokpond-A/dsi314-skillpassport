@@ -1,509 +1,338 @@
 /* =========================================
-   1. Global Variables & Reset (Modern Theme)
+   1. Global Variables & Reset
    ========================================= */
 :root {
-    /* Color Palette from References */
-    --primary: #2563EB;           /* สีหลักปุ่ม Action */
-    --primary-hover: #1d4ed8;
-    --secondary-bg: #F1F5F9;      /* สีพื้นหลัง Sidebar / ส่วนรอง */
-    --main-bg: #F8FAFC;           /* สีพื้นหลังหลัก */
-    --card-bg: #FFFFFF;           /* สีพื้นหลังการ์ด */
+    /* Color Palette */
+    --primary: #2563EB;           /* Blue-600 */
+    --primary-hover: #1d4ed8;     /* Blue-700 */
+    --secondary-bg: #F8FAFC;      /* Slate-50 */
+    --main-bg: #F1F5F9;           /* Slate-100 */
+    --card-bg: #FFFFFF;
     
-    --text-dark: #1E293B;         /* สีตัวหนังสือเข้มมาก (หัวข้อ) */
-    --text-main: #334155;         /* สีตัวหนังสือเนื้อหา */
-    --text-muted: #64748B;        /* สีตัวหนังสือรอง/label */
-    --text-light: #94A3B8;        /* สีตัวหนังสือจางๆ */
+    --text-dark: #0F172A;         /* Slate-900 */
+    --text-main: #334155;         /* Slate-700 */
+    --text-muted: #64748B;        /* Slate-500 */
+    --text-light: #94A3B8;        /* Slate-400 */
 
-    --border-color: #E2E8F0;      /* สีเส้นขอบทั่วไป */
-    --border-hover: #CBD5E1;
+    --border-color: #E2E8F0;      /* Slate-200 */
     
     /* Status Colors */
-    --success-bg: #DCFCE7;        /* พื้นหลังสีเขียว (Match) */
-    --success-text: #166534;      /* ตัวหนังสือสีเขียว */
-    --warning-bg: #FEF3C7;        /* พื้นหลังสีเหลือง (Gaps) */
-    --warning-text: #92400E;      /* ตัวหนังสือสีเหลือง */
-    --danger-bg: #FEE2E2;         /* พื้นหลังสีแดง */
-    --danger-text: #991B1B;       /* ตัวหนังสือสีแดง */
+    --success-bg: #DCFCE7;  --success-text: #15803D;
+    --warning-bg: #FEF3C7;  --warning-text: #B45309;
+    --danger-bg: #FEE2E2;   --danger-text: #991B1B;
 
     /* Shadows & Radius */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     --radius-md: 8px;
     --radius-lg: 12px;
-    --radius-full: 9999px;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
     background-color: var(--main-bg);
     color: var(--text-main);
     height: 100vh;
     overflow: hidden;
-    font-size: 14px; /* Base font size ลดลงเล็กน้อยให้ดู Modern */
-    -webkit-font-smoothing: antialiased;
+    font-size: 14px;
 }
+
+.app-container, body { display: flex; height: 100vh; width: 100vw; }
 
 /* =========================================
-   2. Main Layout Structure
+   2. Sidebar
    ========================================= */
-.app-container, body { /* แก้ให้ body ทำหน้าที่เป็น container หลัก */
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-}
-
-/* --- Sidebar (Left Panel) --- */
 .sidebar {
-    width: 320px; /* ปรับความกว้างตาม Reference */
+    width: 320px;
     background: var(--card-bg);
     border-right: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    z-index: 10;
+    display: flex; flex-direction: column; flex-shrink: 0; z-index: 10;
 }
+.sidebar-header { padding: 20px; border-bottom: 1px solid var(--border-color); }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.2rem; color: var(--text-dark); }
+.logo-icon { color: var(--primary); width: 24px; }
+.badge-pro { background: linear-gradient(135deg, var(--primary), #60A5FA); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; margin-left: 4px; }
+.sidebar-content { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 20px; background: #fff; }
 
-.sidebar-header {
-    padding: 20px;
-    border-bottom: 1px solid var(--border-color);
-}
+/* Components inside Sidebar */
+.panel-section { margin-bottom: 8px; }
+.section-title { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.section-header .title { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+.reset-link { font-size: 0.75rem; color: var(--primary); cursor: pointer; }
 
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: var(--text-dark);
-}
+/* Inputs & Upload */
+.input-sm, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.9rem; background: #fff; }
+.input-sm:focus { outline: none; border-color: var(--primary); }
+.upload-zone-compact { border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: #F8FAFC; }
+.upload-zone-compact:hover { border-color: var(--primary); background: #EFF6FF; }
 
-.logo-icon {
-    color: var(--primary);
-    width: 24px; height: 24px;
-}
+/* Candidate List Item */
+.candidate-list { display: flex; flex-direction: column; gap: 6px; }
+.candidate-item { display: flex; align-items: center; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; transition: all 0.1s; background: #fff; }
+.candidate-item:hover { background: #F1F5F9; border-color: #CBD5E1; }
+.candidate-item.pulse { opacity: 0.6; pointer-events: none; }
 
-.badge-pro {
-    background: linear-gradient(135deg, var(--primary), #60A5FA);
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    vertical-align: middle;
-    margin-left: 4px;
-}
 
-.sidebar-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px; /* ระยะห่างระหว่าง Section ใหญ่ขึ้น */
-    background: var(--secondary-bg); /* พื้นหลัง Sidebar สีเทาอ่อน */
-}
-
-/* --- Main Content (Right Panel) --- */
+/* =========================================
+   3. Main Content Layout
+   ========================================= */
 .main-content {
     flex: 1;
     background: var(--main-bg);
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column; height: 100vh;
+    overflow: hidden; 
 }
 
 .top-bar {
     background: var(--card-bg);
     padding: 16px 32px;
     border-bottom: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-shrink: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; z-index: 20;
 }
+.top-bar h1 { font-size: 1.25rem; font-weight: 700; color: var(--text-dark); }
 
-.top-bar h1 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--text-dark);
+.btn-outline {
+    background: white; border: 1px solid var(--border-color); color: var(--text-main);
+    padding: 8px 16px; border-radius: 6px; font-weight: 500; cursor: pointer;
+    display: flex; align-items: center; gap: 8px; transition: all 0.2s;
 }
+.btn-outline:hover { background: var(--secondary-bg); border-color: var(--text-muted); }
+
+/* Separator */
+.separator-horizontal { height: 1px; background: var(--border-color); margin: 24px; }
+
 
 /* =========================================
-   3. Sidebar Components Styling
+   4. Section: Comparison (Top)
    ========================================= */
-
-/* --- Panel Headers --- */
-.panel-section {
-    /* ไม่ต้องมีกรอบใน Sidebar แบบใหม่ */
-    background: transparent;
-    border: none;
-    padding: 0;
-}
-
-.section-title, .section-header .title {
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    letter-spacing: 0.05em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: default;
-}
-.section-title i, .section-header i { width: 16px; height: 16px; }
-.toggle-btn { cursor: pointer; }
-.toggle-btn:hover { color: var(--primary); }
-
-
-/* --- Inputs & Controls (Modern Look) --- */
-.input-sm, select, input[type="text"], textarea {
-    width: 100%;
-    padding: 10px 12px;
-    font-size: 0.9rem;
-    color: var(--text-dark);
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    transition: all 0.2s ease;
-    box-shadow: var(--shadow-sm);
-}
-
-.input-sm:focus, select:focus, input[type="text"]:focus, textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-/* ปุ่มต่างๆ ใน Job Context */
-#job-context-panel button[title="New Job"] {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-muted);
-    border-radius: var(--radius-md);
-    transition: all 0.2s;
-}
-#job-context-panel button[title="New Job"]:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-    background: var(--secondary-bg);
-}
-
-#job-context-panel button[onclick="saveJobProfile()"] {
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    padding: 10px;
-    font-weight: 500;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s;
-}
-#job-context-panel button[onclick="saveJobProfile()"]:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-}
-
-/* Job Editor Area */
-#job-editor-area {
-    background: var(--card-bg);
-    padding: 16px;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border-color) !important; /* Override inline style */
-    margin-top: 12px;
-    box-shadow: var(--shadow-sm);
-}
-
-
-/* --- Upload Zone --- */
-.upload-zone-compact {
-    border: 2px dashed var(--border-color);
-    border-radius: var(--radius-lg);
+.comparison-section {
+    flex: 0 0 auto; 
+    max-height: 50vh; 
+    overflow-y: auto;
     padding: 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: var(--card-bg);
+    background: #F8FAFC;
+    border-bottom: 1px solid var(--border-color);
 }
-.upload-zone-compact:hover {
-    border-color: var(--primary);
-    background: #EFF6FF; /* Primary light */
-}
-.upload-zone-compact .icon-box {
-    color: var(--primary); margin-bottom: 8px;
-}
-.upload-zone-compact strong { color: var(--text-dark); font-weight: 600; }
-
-
-/* --- Filters --- */
-.search-box {
-    position: relative; margin-bottom: 16px;
-}
-.search-box i {
-    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-    color: var(--text-light); width: 18px; height: 18px;
-}
-.search-box input { padding-left: 38px; }
-
-.filter-row {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
-    font-size: 0.9rem; color: var(--text-main);
-}
-.range-slider { flex: 1; margin-left: 12px; accent-color: var(--primary); }
-.reset-link { font-size: 0.8rem; color: var(--primary); cursor: pointer; }
-
-.separator { height: 1px; background: var(--border-color); margin: 8px 0; }
-
-
-/* --- Candidate List Item (Reference Style) --- */
-.candidate-list {
-    display: flex; flex-direction: column; gap: 8px;
+.cards-container { display: flex; flex-direction: column; gap: 16px; }
+.empty-placeholder {
+    text-align: center; padding: 40px; border: 2px dashed var(--border-color);
+    border-radius: 12px; color: var(--text-light); background: #fff;
 }
 
-.candidate-item {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    background: var(--card-bg);
+/* Compare Card Component */
+.compare-card {
+    background: #fff;
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: all 0.2s;
+    border-radius: 12px;
+    padding: 20px;
+    display: grid;
+    /* Updated Grid from your latest request */
+    grid-template-columns: 240px 1.2fr 1.2fr 170px; 
+    gap: 20px;
     box-shadow: var(--shadow-sm);
+    animation: slideIn 0.2s ease;
+    position: relative;
 }
+@keyframes slideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
-.candidate-item:hover {
-    border-color: var(--primary-hover);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
-}
-
-/* สถานะ Active ในลิสต์ */
-.candidate-item.active {
+.compare-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     border-color: var(--primary);
-    background: #EFF6FF;
-}
-.candidate-item.pulse { opacity: 0.7; pointer-events: none; }
-
-.c-avatar {
-    width: 40px; height: 40px;
-    background: var(--secondary-bg);
-    color: var(--text-muted);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 600; font-size: 1rem;
-    margin-right: 12px;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-.c-avatar.red { background: #FEE2E2; color: #991B1B; }
-.c-avatar.yellow { background: #FEF3C7; color: #92400E; }
-/* ถ้า active ให้ avatar เป็นสีหลัก */
-.candidate-item.active .c-avatar {
-    background: var(--primary); color: white;
+    transform: translateY(-2px);
+    transition: all 0.2s;
 }
 
-.c-info { flex: 1; overflow: hidden; }
-.c-name {
-    font-size: 0.95rem; font-weight: 600; color: var(--text-dark);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+/* Card Columns */
+.col-info { display: flex; flex-direction: column; gap: 10px; border-right: 1px dashed var(--border-color); padding-right: 16px; }
+.info-header { display: flex; align-items: center; gap: 12px; }
+.card-avatar {
+    width: 48px; height: 48px; border-radius: 50%; background: #EFF6FF; color: var(--primary);
+    font-weight: 700; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+    border: 1px solid #BFDBFE;
 }
-.c-role {
-    font-size: 0.8rem; color: var(--text-muted);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;
+.badge-exp { display: inline-flex; align-items: center; gap: 6px; background: #F1F5F9; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; width: fit-content; }
+
+.col-list h4 { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.col-list h4.green { color: var(--success-text); }
+.col-list h4.orange { color: var(--warning-text); }
+.detail-list { list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; }
+.detail-item { display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: var(--text-main); }
+.detail-item i { flex-shrink: 0; margin-top: 2px; }
+.detail-item.match i { color: var(--success-text); }
+.detail-item.gap i { color: var(--warning-text); }
+
+.col-action { display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px dashed var(--border-color); padding-left: 16px; gap: 12px; }
+.score-big { font-size: 2.2rem; font-weight: 800; line-height: 1; color: var(--primary); }
+
+.btn-stack { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+.btn-card {
+    padding: 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+    border: 1px solid var(--border-color); background: white; transition: all 0.1s;
+    color: var(--text-main);
+}
+.btn-card:hover { border-color: var(--primary); color: var(--primary); background: #F8FAFC; }
+.btn-card.primary { background: var(--primary); color: white; border: none; }
+.btn-card.primary:hover { background: var(--primary-hover); }
+
+/* Shortlist Button State */
+.btn-card.shortlist.active {
+    background: #16A34A !important; 
+    color: white !important;
+    border-color: #16A34A !important;
+    font-weight: 600;
+}
+.btn-close-card {
+    position: absolute; top: 12px; right: 12px;
+    background: transparent; border: none; color: #CBD5E1; cursor: pointer;
+}
+.btn-close-card:hover { color: #EF4444; }
+
+
+/* =========================================
+   5. Section: Pool (Bottom)
+   ========================================= */
+.pool-section {
+    flex: 1; 
+    padding: 0 24px 40px 24px; 
+    overflow-y: auto; 
+    background: #fff;
+}
+.section-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.section-header-row h3 { font-size: 1.1rem; color: var(--text-dark); font-weight: 700; }
+
+.table-container {
+    background: #fff;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    overflow: hidden; 
 }
 
-/* Badge คะแนนในลิสต์ */
-.c-score {
-    font-size: 0.85rem; font-weight: 700;
-    padding: 4px 8px;
-    border-radius: var(--radius-full);
+.candidate-table { width: 100%; border-collapse: collapse; }
+
+.candidate-table th {
+    background: #F8FAFC;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.75rem; font-weight: 700; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-color);
 }
+
+.candidate-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+    vertical-align: middle;
+}
+
+/* 🔥 Pro UI: Improved Hover Effect */
+.candidate-table tr {
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+    border-left: 3px solid transparent; /* Prepare border */
+}
+.candidate-table tr:hover {
+    background-color: #F0F9FF;      /* Light Blue Tint */
+    border-left: 3px solid #60A5FA; /* Blue Accent Border */
+    cursor: pointer;
+}
+
+/* Selected Row */
+.candidate-table tr.selected {
+    background-color: #EFF6FF !important;
+    border-left: 3px solid var(--primary) !important;
+}
+/* Shortlisted Row */
+.candidate-table tr.is-shortlisted {
+    background-color: #F0FDF4; 
+}
+
+.c-score { display: inline-block; font-weight: 700; min-width: 40px; text-align: center; }
 .c-score.high { background: var(--success-bg); color: var(--success-text); }
 .c-score.medium { background: var(--warning-bg); color: var(--warning-text); }
 .c-score.low { background: var(--secondary-bg); color: var(--text-muted); }
+.tag-skill { background: #F1F5F9; padding: 2px 8px; font-size: 0.75rem; border-radius: 4px; color: #475569; border: 1px solid #E2E8F0; }
+
+.checkbox-custom { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+.btn-delete-item { background: transparent; border: none; color: var(--text-light); cursor: pointer; padding: 6px; border-radius: 4px; }
+.btn-delete-item:hover { background: #FEE2E2; color: #991B1B; }
 
 
 /* =========================================
-   4. Comparison View (Main Content - Card Style)
+   6. Modals (Resume & Analysis)
    ========================================= */
-
-/* คอนเทนเนอร์หลักของการเปรียบเทียบ - เปลี่ยนเป็นแนวนอน */
-.comparison-container {
-    padding: 32px;
-    display: flex;
-    flex-direction: row; /* เรียงเป็นการ์ดแนวนอน */
-    gap: 24px;
-    align-items: flex-start;
-    overflow-x: auto; /* ให้ Scroll แนวนอนได้ถ้าการ์ดเยอะ */
-    height: 100%;
-    /* ซ่อน scrollbar แต่ยัง scroll ได้ */
-    scrollbar-width: none; 
-    -ms-overflow-style: none;
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.6); z-index: 1000;
+    display: none; align-items: center; justify-content: center;
+    backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.2s;
 }
-.comparison-container::-webkit-scrollbar { display: none; }
+.modal-overlay.show { display: flex; opacity: 1; }
 
-/* Placeholder Card (เมื่อยังไม่เลือกใคร) */
-.add-compare-card {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    min-width: 300px; height: 400px; /* กำหนดขนาดขั้นต่ำ */
-    background: var(--card-bg);
-    border: 2px dashed var(--border-color);
-    border-radius: var(--radius-lg);
-    color: var(--text-light);
-    text-align: center;
-}
-.add-compare-card i { color: var(--border-color); margin-bottom: 16px; }
-.add-compare-card p { font-size: 1rem; }
-
-/* --- The Comparison Card (Reference Style) --- */
-.compare-card {
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--border-color);
-    min-width: 340px; /* ความกว้างการ์ดตาม Reference */
-    max-width: 360px;
+.modal-content {
+    background: white; width: 90%; max-width: 900px; height: 90vh;
+    border-radius: var(--radius-lg); overflow: hidden;
     display: flex; flex-direction: column;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    animation: slideInRight 0.3s ease-out;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    transform: scale(0.95); transition: transform 0.2s;
 }
-@keyframes slideInRight {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
+.modal-overlay.show .modal-content { transform: scale(1); }
 
-/* Header ของการ์ด */
-.compare-header {
-    padding: 24px;
-    border-bottom: 1px solid var(--border-color);
-    display: flex; align-items: center; gap: 16px;
+.modal-header { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: #fff; }
+.modal-header h3 { font-size: 1.1rem; font-weight: 600; color: var(--text-dark); margin: 0; }
+.btn-icon { background: transparent; border: none; cursor: pointer; color: var(--text-light); }
+.btn-icon:hover { color: var(--text-dark); }
+
+/* Resume Modal Specific */
+.modal-body { flex: 1; background: #E2E8F0; padding: 0; overflow: hidden; }
+.modal-body iframe { width: 100%; height: 100%; border: none; }
+
+/* Analysis Modal Specific (Consolidated) */
+.large-modal { width: 90%; max-width: 900px; height: 600px; display: flex; flex-direction: column; }
+.modal-body-analysis { display: flex; padding: 32px; gap: 40px; height: 100%; overflow: hidden; }
+
+.ana-chart-box { 
+    flex: 0 0 380px; /* Fixed chart width */
+    display: flex; align-items: center; justify-content: center; 
     position: relative;
 }
-
-/* วงกลมคะแนนขนาดใหญ่ */
-.match-ring {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.75rem; font-weight: 800;
-    flex-shrink: 0;
-    box-shadow: 0 0 0 4px var(--card-bg), 0 0 0 8px var(--secondary-bg);
+.ana-text-box { 
+    flex: 1; display: flex; flex-direction: column; overflow: hidden; 
 }
-.match-ring.high { background: var(--success-bg); color: var(--success-text); }
-.match-ring.medium { background: var(--warning-bg); color: var(--warning-text); }
-.match-ring.low { background: var(--secondary-bg); color: var(--text-muted); }
-
-.c-details h3 {
-    font-size: 1.1rem; font-weight: 700; color: var(--text-dark); margin-bottom: 4px;
+.ana-text-box h4 { 
+    font-size: 0.95rem; font-weight: 700; color: var(--text-dark); margin-bottom: 16px; 
+    display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.05em;
 }
-.c-details p { font-size: 0.9rem; color: var(--text-muted); }
-
-/* ปุ่มปิดการ์ด */
-.btn-icon {
-    position: absolute; top: 16px; right: 16px;
-    background: transparent; border: none; color: var(--text-light);
-    cursor: pointer; padding: 4px; border-radius: 50%;
-    transition: all 0.2s;
-}
-.btn-icon:hover { background: var(--secondary-bg); color: var(--text-dark); }
-.btn-icon i { width: 18px; height: 18px; }
-
-
-/* Body ของการ์ด */
-.compare-body {
-    padding: 24px;
-    flex: 1;
-    display: flex; flex-direction: column; gap: 20px;
+.summary-content {
+    background: #F8FAFC; 
+    padding: 24px; 
+    border-radius: 12px; 
+    border-left: 5px solid var(--primary);
+    line-height: 1.7; 
+    color: var(--text-main); 
+    flex: 1; 
+    overflow-y: auto; 
+    font-size: 1rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
 }
 
-.attr-group label {
-    display: block; font-size: 0.85rem; font-weight: 600;
-    color: var(--text-dark); margin-bottom: 10px;
-    text-transform: uppercase; letter-spacing: 0.05em;
+.search-box {
+    position: relative;
+    width: 100%;
 }
 
-/* Tags (Matched Criteria / Skills) */
-.tags { display: flex; flex-wrap: wrap; gap: 8px; }
-.tag {
-    padding: 6px 12px; border-radius: var(--radius-full);
-    font-size: 0.85rem; font-weight: 500; display: inline-flex; align-items: center;
+/* ปรับ Dropdown ให้ดูดีขึ้น */
+select.input-sm {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right .7em top 50%;
+    background-size: .65em auto;
+    appearance: none; /* ลบลูกศร Default ของ Browser */
+    padding-right: 1.5em;
 }
-.tag.green { background: var(--success-bg); color: var(--success-text); }
-
-/* Gaps List */
-.gap-list { list-style: none; }
-.gap-list li {
-    position: relative; padding-left: 20px; margin-bottom: 8px;
-    font-size: 0.9rem; color: var(--text-main);
-}
-.gap-list li::before {
-    content: '⚠️'; position: absolute; left: 0; top: 1px; font-size: 0.8rem;
-}
-
-/* Info Rows (Experience, Summary) */
-.info-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 0; border-bottom: 1px solid var(--border-color);
-    font-size: 0.95rem; color: var(--text-main);
-}
-.info-row span { color: var(--text-muted); font-weight: 500; }
-.info-row strong { color: var(--text-dark); font-weight: 600; }
-
-/* Footer ของการ์ด (ปุ่ม Action) */
-.compare-footer {
-    padding: 20px 24px;
-    border-top: 1px solid var(--border-color);
-    background: var(--main-bg);
-}
-
-.btn-full {
-    width: 100%; padding: 10px;
-    background: var(--card-bg); color: var(--text-dark);
-    border: 1px solid var(--border-color); border-radius: var(--radius-md);
-    font-weight: 600; cursor: pointer; transition: all 0.2s;
-    box-shadow: var(--shadow-sm);
-}
-.btn-full:hover {
-    border-color: var(--text-muted); background: var(--secondary-bg);
-}
-/* ปุ่มหลัก (ถ้ามีในอนาคต) ให้ใช้ style นี้ */
-.btn-primary { 
-    background: var(--primary); color: white; border: none;
-}
-.btn-primary:hover { background: var(--primary-hover); }
-
-/* ปุ่ม Top Bar */
-.btn-outline {
-    padding: 8px 16px; background: transparent;
-    border: 1px solid var(--border-color); border-radius: var(--radius-md);
-    color: var(--text-main); font-weight: 500; cursor: pointer;
-    display: flex; align-items: center; gap: 8px; transition: all 0.2s;
-}
-.btn-outline:hover { border-color: var(--text-muted); background: var(--secondary-bg); }
-.btn-outline i { width: 16px; height: 16px; }
-
-/* =========================================
-   5. Utilities & Animations
-   ========================================= */
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-.spin { animation: spin 1s linear infinite; color: var(--primary); }
-
-/* Custom Scrollbar เพื่อความสวยงาม */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-light); }

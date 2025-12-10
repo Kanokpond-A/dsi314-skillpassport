@@ -22,11 +22,18 @@ class JobProfile(BaseModel):
 @router.post("/ucb/from-pdf")
 async def ucb_from_pdf(
     file: UploadFile = File(...), 
-    job_description: str = Form(None),
-    db: Session = Depends(get_db) # <--- เพิ่ม Dependency Database
+    job_description: str = Form(None), # รับค่ามาเช็คเองข้างใน
+    db: Session = Depends(get_db)
 ):
     if file.content_type != "application/pdf":
         raise HTTPException(status_code=400, detail="Only PDF files are supported")
+
+    # 🛑 2. เพิ่ม Logic บังคับ JD ตรงนี้
+    if not job_description or len(job_description.strip()) < 10:
+        raise HTTPException(
+            status_code=400, 
+            detail="Job Description is required for analysis."
+        )
 
     file_bytes = await file.read()
 
@@ -70,6 +77,7 @@ async def ucb_from_pdf(
     }
 
     # 🔥 4) บันทึกลง Database (SQL) 🔥
+    # แก้ไข Logic ตรงนี้ให้ปลอดภัยขึ้น
     try:
         c_info = parsed_resume.get("candidate_info", {})
         
@@ -77,21 +85,21 @@ async def ucb_from_pdf(
             filename=file.filename,
             candidate_name=c_info.get("name", "Unknown"),
             email=c_info.get("email", ""),
-            
             final_score=match_result.get("match_percentage", 0),
-            
             full_json_data=final_response
         )
         
         db.add(new_candidate)
-        db.commit()
+        db.commit()          # พยายามบันทึก
         db.refresh(new_candidate)
         
-        final_response["db_id"] = new_candidate.id  # ส่ง id กลับไปด้วย เผื่อ Frontend จะใช้
+        final_response["db_id"] = new_candidate.id
         
     except Exception as e:
+        db.rollback()        # <--- เพิ่มบรรทัดนี้: ยกเลิกการเปลี่ยนแปลงทันทีถ้า Error
         print(f"Database Error: {e}")
-        # ถึง save ไม่ได้ ก็ยังส่งผล analysis กลับไปได้ (แต่ควร log error ไว้)
+        # Option: อาจจะ raise HTTPException กลับไปบอก Frontend ด้วยก็ได้
+        # raise HTTPException(status_code=500, detail="Database save failed")
 
     return final_response
 
