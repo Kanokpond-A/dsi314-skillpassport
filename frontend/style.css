@@ -155,7 +155,7 @@ body {
     background: var(--main-bg);
     
     /* 🔥 เปลี่ยนจาก hidden เป็น auto เพื่อให้มี Scrollbar ยาวอันเดียว */
-    overflow-y: auto; 
+    overflow-y: hidden;
     overflow-x: hidden;
     
     display: flex; 
@@ -191,6 +191,8 @@ body {
    ========================================= */
 .comparison-section {
     flex: 0 0 auto;
+    width: 100%; 
+    min-height: 100vh;
     
     /* ❌ ลบหรือ Comment บรรทัดนี้ทิ้ง (ไม่จำกัดความสูงแล้ว) */
     /* max-height: 45vh; */
@@ -725,19 +727,24 @@ select.input-sm {
     overflow-y: auto; 
     /* ไม่ต้องกำหนด height: 60%; ใน CSS แล้ว เพราะถูกกำหนดใน JS ตอนโหลด */
     padding-bottom: 20px; 
+    height: 75%;
 }
 
 /* 3. ตัวแบ่ง (Handle) */
 #resizer-handle {
-    height: 10px; 
-    background-color: #CBD5E1;
-    cursor: ns-resize;
-    flex-shrink: 0; 
-    z-index: 100;
+    height: 6px; /* ความหนาของเส้นแบ่ง */
+    width: 100%;
+    cursor: ns-resize; /* เปลี่ยนเมาส์ให้รู้ว่าลากได้ */
+    background: var(--main-bg); /* สีพื้นหลัง */
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
 }
 
 /* 4. ส่วนล่าง (Candidate Pool) */
 #pool-area-wrapper {
-    flex-grow: 1; /* ปล่อยให้กินพื้นที่ที่เหลือทั้งหมดโดยอัตโนมัติ */
+    flex-grow: 1;    /* 🔥 สำคัญ: ให้ส่วนล่างกินพื้นที่ที่เหลือทั้งหมด */
+    flex-shrink: 1;
     overflow-y: auto; 
+    background: var(--secondary-bg);
 }

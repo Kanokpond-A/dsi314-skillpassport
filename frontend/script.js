@@ -766,7 +766,12 @@ document.addEventListener('keydown', (e) => {
     if (e.key === "Escape") { closeResumeModal(); closeAnalysisModal(); } 
 });
 
-window.addEventListener('DOMContentLoaded', () => { fetchJobProfiles(); loadCandidateHistory(); });
+window.addEventListener('DOMContentLoaded', () => { fetchJobProfiles(); loadCandidateHistory();
+    if (resizerHandle && mainWrapper && comparisonArea) {
+        // ไม่ต้องกำหนด height เริ่มต้นที่นี่แล้ว เพราะตั้งใน CSS เป็น 75% แล้ว
+        resizerHandle.addEventListener('mousedown', startResize);
+    }
+ });
 
 function toggleSection(panelId, iconId) {
     const panel = document.getElementById(panelId);
@@ -841,7 +846,7 @@ const resizerHandle = document.getElementById('resizer-handle');
 let isResizing = false;
 
 // กำหนดขีดจำกัดเป็นเปอร์เซ็นต์ (ตามที่ผู้ใช้ร้องขอ)
-const MIN_COMPARISON_HEIGHT_PERCENT = 15; // Panel บนต้องมีอย่างน้อย 15% (เพื่อ Panel ล่างมีที่แสดง)
+const MIN_COMPARISON_HEIGHT_PERCENT = 10; // Panel บนต้องมีอย่างน้อย 15% (เพื่อ Panel ล่างมีที่แสดง)
 const MAX_COMPARISON_HEIGHT_PERCENT = 90; // Panel บนสูงสุดได้ 85% (ตามที่ผู้ใช้ร้องขอ)
 
 if (resizerHandle && mainWrapper && comparisonArea) {
@@ -878,7 +883,7 @@ function doResize(e) {
     // 1. ใช้ Math.min เพื่อจำกัดไม่ให้เกิน 90% (maxHeightPx)
     let clampedHeight = Math.min(newHeight, maxHeightPx);
     
-    // 2. ใช้ Math.max เพื่อจำกัดไม่ให้ต่ำกว่า 15% (minHeightPx)
+    // 2. ใช้ Math.max เพื่อจำกัดไม่ให้ต่ำกว่า 10% (minHeightPx)
     clampedHeight = Math.max(clampedHeight, minHeightPx);
 
     // C. นำค่าที่ถูกจำกัดไปกำหนดให้กับ Panel บน
