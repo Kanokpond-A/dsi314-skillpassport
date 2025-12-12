@@ -80,9 +80,9 @@ async function processQueue() {
     const jobDesc = jobDescInput.value || "";
     const currentJobTitle = jobTitleInput.value || "General Candidate";
 
-    // 1. เช็ค JD ก่อน (ตอนนี้ตัวแปร jobDesc ถูกประกาศแล้ว ใช้งานได้ไม่ Error)
+    // 1. เช็ค JD ก่อน
     if (!jobDesc || jobDesc.trim().length === 0) {
-        alert("⚠️ กรุณาเลือก Job Description (หรือสร้างใหม่) ก่อนอัปโหลด Resume ครับ!");
+        alert("⚠️ กรุณาเลือก Job Description (หรือสร้างใหม่) ก่อนอัปโหลด Resume");
         fileQueue = []; // ล้างคิว
         renderSidebarItem(analyzedCandidates); // รีเฟรชหน้าจอ
         return; 
